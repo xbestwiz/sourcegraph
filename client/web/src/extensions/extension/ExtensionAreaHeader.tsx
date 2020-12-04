@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { Link, NavLink, RouteComponentProps } from 'react-router-dom'
-import { isExtensionEnabled } from '../../../../shared/src/extensions/extension'
+import { isExtensionEnabled, splitExtensionID } from '../../../../shared/src/extensions/extension'
 import { ExtensionManifest } from '../../../../shared/src/schema/extensionSchema'
 import { isErrorLike } from '../../../../shared/src/util/errors'
 import { NavItemWithIconDescriptor } from '../../util/contributions'
@@ -10,7 +10,6 @@ import { WorkInProgressBadge } from './WorkInProgressBadge'
 import { isEncodedImage } from '../../../../shared/src/util/icon'
 import { useTimeoutManager } from '../../../../shared/src/util/useTimeoutManager'
 import classNames from 'classnames'
-import { splitExtensionID } from './extension'
 
 interface ExtensionAreaHeaderProps extends ExtensionAreaRouteContext, RouteComponentProps<{}> {
     navItems: readonly ExtensionAreaHeaderNavItem[]

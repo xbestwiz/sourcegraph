@@ -1327,6 +1327,25 @@ type SearchOnboarding struct {
 	CloseOnboardingTourClicked *int32
 }
 
+// Weekly usage statistics for the extensions platform
+type ExtensionsUsageStatistics struct {
+	UsageStatisticsByExtension map[string]*ExtensionUsageStatistics
+	// Average number of non-default extensions used by users
+	// that have used at least one non-default extension
+	AverageNonDefaultExtensions *float64
+	// The count of users that have activated a non-default extension this week
+	NonDefaultExtensionUsers *int32
+}
+
+// Weekly statistics for an individual extension
+type ExtensionUsageStatistics struct {
+	// The count of users that have activated this extension
+	UserCount *int32
+	// The average number of activations for users that have
+	// used this extension at least once
+	AverageActivations *float64
+}
+
 // Secret represents the secrets table
 type Secret struct {
 	ID int32
