@@ -98,6 +98,10 @@ export function addSourcegraphSearchCodeIntelligence(
         })
     )
 
+    subscriptions.add(
+        toUnsubscribable(monaco.languages.registerCodeActionProvider(SOURCEGRAPH_SEARCH, providers.actions))
+    )
+
     return subscriptions
 }
 
@@ -240,14 +244,17 @@ export class MonacoQueryInput extends React.PureComponent<MonacoQueryInputProps>
             folding: false,
             rulers: [],
             overviewRulerLanes: 0,
-            wordBasedSuggestions: false,
-            quickSuggestions: false,
+            wordBasedSuggestions: true,
+            quickSuggestions: true,
             fixedOverflowWidgets: true,
-            contextmenu: false,
+            //            contextmenu: false,
             links: false,
             // Display the cursor as a 1px line.
             cursorStyle: 'line',
             cursorWidth: 1,
+            lightbulb: { enabled: true },
+
+            // Undo: https://github.com/microsoft/vscode/pull/83938
         }
         return (
             <>

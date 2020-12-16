@@ -8,12 +8,14 @@ import { getCompletionItems } from './completion'
 import { getHoverResult } from './hover'
 import { SearchSuggestion } from '../suggestions'
 import { SearchPatternType } from '../../graphql-operations'
+import { getActions } from './actions'
 
 interface SearchFieldProviders {
     tokens: Monaco.languages.TokensProvider
     hover: Monaco.languages.HoverProvider
     completion: Monaco.languages.CompletionItemProvider
     diagnostics: Observable<Monaco.editor.IMarkerData[]>
+    actions: Monaco.languages.CodeActionProvider
 }
 
 /**
@@ -104,5 +106,19 @@ export function getProviders(
         diagnostics: scannedQueries.pipe(
             map(({ scanned }) => (scanned.type === 'success' ? getDiagnostics(scanned.term, options.patternType) : []))
         ),
+        actions: {
+            provideCodeActions: (textModel, position, context, token) =>
+                scannedQueries
+                    .pipe(
+                        first(),
+                        map(({ scanned }) =>
+                            scanned.type === 'error'
+                                ? { actions: [], dispose: () => null }
+                                : getActions(scanned.term, position, context, textModel, options.enableSmartQuery)
+                        ),
+                        takeUntil(fromEventPattern(handler => token.onCancellationRequested(handler)))
+                    )
+                    .toPromise(),
+        },
     }
 }

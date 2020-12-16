@@ -25,8 +25,7 @@ export function getDiagnostics(tokens: Token[], patternType: SearchPatternType):
             if (patternType === SearchPatternType.literal) {
                 diagnostics.push({
                     severity: Monaco.MarkerSeverity.Warning,
-                    message:
-                        'Your search is interpreted literally and contains quotes. Did you mean to search for quotes?',
+                    message: 'Work. Please just work.',
                     ...toMonacoRange(token.range),
                 })
             }
