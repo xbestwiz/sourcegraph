@@ -26,7 +26,13 @@ export type DecoratedToken = Token | MetaToken
 /**
  * A MetaToken defines a token that is associated with some language-specific metasyntax.
  */
-export type MetaToken = MetaRegexp | MetaStructural | MetaField | MetaRepoRevisionSeparator | MetaRevision
+export type MetaToken =
+    | MetaRegexp
+    | MetaStructural
+    | MetaField
+    | MetaRepoRevisionSeparator
+    | MetaRevision
+    | MetaPathSeparator
 
 /**
  * Defines common properties for meta tokens.
@@ -126,6 +132,75 @@ export enum MetaGitRevision {
  */
 export interface MetaRepoRevisionSeparator extends BaseMetaToken {
     type: 'metaRepoRevisionSeparator'
+}
+
+/**
+ * A token for contextually highlighting path separators, i.e., `/`.
+ */
+export interface MetaPathSeparator extends BaseMetaToken {
+    type: 'metaPathSeparator'
+}
+
+/**
+ * Returns true for filter values where that have path-like values where we can
+ * contextually highlight {@link MetaPathSeparator} tokens. E.g., repo, file, revision.
+ */
+export const hasPathLikeValue = (field: string): boolean => {
+    const fieldName = field.startsWith('-') ? field.slice(1) : field
+    switch (fieldName.toLocaleLowerCase()) {
+        case 'repo':
+        case 'r':
+        case 'file':
+        case 'f':
+        case 'repohasfile':
+        case 'rev':
+        case 'revision':
+            return true
+        default:
+            return false
+    }
+}
+
+const mapLiteralToPattern = (tokens: DecoratedToken[], kind: PatternKind): DecoratedToken[] =>
+    tokens.map(token =>
+        token.type === 'literal' ? { type: 'pattern', kind, range: token.range, value: token.value } : token
+    )
+
+// Tokenize a literal value like "^foo/bar/baz$" by a path separator '/'.
+const mapPathMeta = (token: Literal): DecoratedToken[] => {
+    const tokens: DecoratedToken[] = []
+    const offset = token.range.start
+    let start = 0
+    let current = 0
+    while (token.value[current]) {
+        if (token.value[current] === '\\') {
+            current = current + 2 // Continue past escaped value.
+            continue
+        }
+        if (token.value[current] === '/') {
+            tokens.push({
+                type: 'literal',
+                range: { start: offset + start, end: offset + current - 1 },
+                value: token.value.slice(start, current),
+            })
+            tokens.push({
+                type: 'metaPathSeparator',
+                range: { start: offset + current, end: offset + current + 1 },
+                value: '/',
+            })
+            current = current + 1
+            start = current
+            continue
+        }
+        current = current + 1
+    }
+    // Push last token.
+    tokens.push({
+        type: 'literal',
+        range: { start: offset + start, end: offset + current },
+        value: token.value.slice(start, current),
+    })
+    return tokens
 }
 
 /**
@@ -361,14 +436,6 @@ const mapRegexpMeta = (pattern: Pattern): DecoratedToken[] => {
     } catch {
         tokens.push(pattern)
     }
-    // The AST is not necessarily traversed in increasing range. We need
-    // to sort by increasing range because the ordering is significant to Monaco.
-    tokens.sort((left, right) => {
-        if (left.range.start < right.range.start) {
-            return -1
-        }
-        return 0
-    })
     return coalescePatterns(tokens)
 }
 
@@ -634,7 +701,6 @@ const specifiesRevision = (value: string): boolean => value.match(/@/) !== null
 const decorateRepoRevision = (token: Literal): DecoratedToken[] => {
     const [repo, revision] = token.value.split('@', 2)
     const offset = token.range.start
-
     return [
         ...decorate({
             type: 'pattern',
@@ -696,13 +762,16 @@ export const decorate = (token: Token): DecoratedToken[] => {
                 token.field.value.toLowerCase().match(/rev|revision/i) &&
                 token.value.type === 'literal'
             ) {
-                decorated.push(
-                    ...mapRevisionMeta({
-                        type: 'literal',
-                        value: token.value.value,
-                        range: token.value.range,
-                    })
-                )
+                const pathDecorated: DecoratedToken[] =
+                    hasPathLikeValue(token.field.value) && token.value !== undefined && token.value.type === 'literal'
+                        ? mapPathMeta(token.value)
+                        : [token.value]
+                const literals = pathDecorated.filter(token => token.type === 'literal') as Literal[]
+                const pathSeps = pathDecorated.filter(
+                    token => token.type === 'metaPathSeparator'
+                ) as MetaPathSeparator[]
+                const revisionDecorated = literals.flatMap(token => mapRevisionMeta(token))
+                decorated.push(...pathSeps, ...revisionDecorated)
             } else if (token.value && token.value.type === 'literal' && hasRegexpValue(token.field.value)) {
                 // Highlight fields with regexp values.
                 decorated.push(
@@ -721,6 +790,14 @@ export const decorate = (token: Token): DecoratedToken[] => {
         default:
             decorated.push(token)
     }
+    // Tokens are not necessarily traversed in increasing range. We need
+    // to sort by increasing range because the ordering is significant to Monaco.
+    decorated.sort((left, right) => {
+        if (left.range.start < right.range.start) {
+            return -1
+        }
+        return 0
+    })
     return decorated
 }
 
@@ -733,6 +810,7 @@ const decoratedToMonaco = (token: DecoratedToken): Monaco.languages.IToken => {
         case 'openingParen':
         case 'closingParen':
         case 'metaRepoRevisionSeparator':
+        case 'metaPathSeparator':
             return {
                 startIndex: token.range.start,
                 scopes: token.type,

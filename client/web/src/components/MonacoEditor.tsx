@@ -41,6 +41,7 @@ monaco.editor.defineTheme(SOURCEGRAPH_DARK, {
         { token: 'comment', foreground: '#ffa94d' },
         // Sourcegraph decorated language tokens
         { token: 'metaRepoRevisionSeparator', foreground: '#569cd9' },
+        { token: 'metaPathSeparator', foreground: '#868e96' },
         // Regexp pattern highlighting
         { token: 'metaRegexpDelimited', foreground: '#ff6b6b' },
         { token: 'metaRegexpAssertion', foreground: '#ff6b6b' },
@@ -98,6 +99,7 @@ monaco.editor.defineTheme(SOURCEGRAPH_LIGHT, {
         { token: 'comment', foreground: '#d9480f' },
         // Sourcegraph decorated language tokens
         { token: 'metaRepoRevisionSeparator', foreground: '#268bd2' },
+        { token: 'metaPathSeparator', foreground: '#868e96' },
         // Regexp pattern highlighting
         { token: 'metaRegexpDelimited', foreground: '#c92a2a' },
         { token: 'metaRegexpAssertion', foreground: '#c92a2a' },
