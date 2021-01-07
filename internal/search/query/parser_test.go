@@ -40,7 +40,7 @@ func TestParseParameterList(t *testing.T) {
 		WantRange  string
 	}
 
-	test := func(input string) value {
+	test := func(input string) string {
 		parser := &parser{buf: []byte(input), heuristics: parensAsPatterns | allowDanglingParens}
 		result, err := parser.parseLeaves(Regexp)
 		if err != nil {
@@ -62,124 +62,53 @@ func TestParseParameterList(t *testing.T) {
 			gotLabels = patternNode.Annotation.Labels
 		}
 
-		return value{
+		vv, _ := json.Marshal(value{
 			Want:       string(got),
 			WantLabels: gotLabels,
 			WantRange:  gotRange,
-		}
+		})
+
+		return string(vv)
 	}
 
-	autogold.Want("Normal field:value", value{
-		Want:      "{\"field\":\"file\",\"value\":\"README.md\",\"negated\":false}",
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":14}}",
-	}).Equal(t, test(`file:README.md`))
+	autogold.Want("Normal field:value", "{\"Want\":\"{\\\"field\\\":\\\"file\\\",\\\"value\\\":\\\"README.md\\\",\\\"negated\\\":false}\",\"WantLabels\":0,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":14}}\"}").Equal(t, test(`file:README.md`))
 
-	autogold.Want("Normal field:value with trailing space", value{
-		Want:      "{\"field\":\"file\",\"value\":\"README.md\",\"negated\":false}",
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":14}}",
-	}).Equal(t, test(`file:README.md    `))
+	autogold.Want("Normal field:value with trailing space", "{\"Want\":\"{\\\"field\\\":\\\"file\\\",\\\"value\\\":\\\"README.md\\\",\\\"negated\\\":false}\",\"WantLabels\":0,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":14}}\"}").Equal(t, test(`file:README.md    `))
 
-	autogold.Want("First char is colon", value{
-		Want:       "{\"value\":\":foo\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":4}}",
-	}).Equal(t, test(`:foo`))
+	autogold.Want("First char is colon", "{\"Want\":\"{\\\"value\\\":\\\":foo\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":4}}\"}").Equal(t, test(`:foo`))
 
-	autogold.Want("Last char is colon", value{
-		Want:       "{\"value\":\"foo:\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":4}}",
-	}).Equal(t, test(`foo:`))
+	autogold.Want("Last char is colon", "{\"Want\":\"{\\\"value\\\":\\\"foo:\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":4}}\"}").Equal(t, test(`foo:`))
 
-	autogold.Want("Match first colon", value{
-		Want:      "{\"field\":\"file\",\"value\":\"bar:baz\",\"negated\":false}",
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":12}}",
-	}).Equal(t, test(`file:bar:baz`))
+	autogold.Want("Match first colon", "{\"Want\":\"{\\\"field\\\":\\\"file\\\",\\\"value\\\":\\\"bar:baz\\\",\\\"negated\\\":false}\",\"WantLabels\":0,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":12}}\"}").Equal(t, test(`file:bar:baz`))
 
-	autogold.Want("No field, start with minus", value{
-		Want:       "{\"value\":\"-:foo\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":5}}",
-	}).Equal(t, test(`-:foo`))
+	autogold.Want("No field, start with minus", "{\"Want\":\"{\\\"value\\\":\\\"-:foo\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":5}}\"}").Equal(t, test(`-:foo`))
 
-	autogold.Want("Minus prefix on field", value{
-		Want:      "{\"field\":\"file\",\"value\":\"README.md\",\"negated\":true}",
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":15}}",
-	}).Equal(t, test(`-file:README.md`))
+	autogold.Want("Minus prefix on field", "{\"Want\":\"{\\\"field\\\":\\\"file\\\",\\\"value\\\":\\\"README.md\\\",\\\"negated\\\":true}\",\"WantLabels\":0,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":15}}\"}").Equal(t, test(`-file:README.md`))
 
-	autogold.Want("NOT prefix on file", value{
-		Want:      "{\"field\":\"file\",\"value\":\"README.md\",\"negated\":true}",
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":18}}",
-	}).Equal(t, test(`NOT file:README.md`))
+	autogold.Want("NOT prefix on file", "{\"Want\":\"{\\\"field\\\":\\\"file\\\",\\\"value\\\":\\\"README.md\\\",\\\"negated\\\":true}\",\"WantLabels\":0,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":18}}\"}").Equal(t, test(`NOT file:README.md`))
 
-	autogold.Want("NOT prefix on unsupported key-value pair", value{
-		Want:       "{\"value\":\"foo:bar\",\"negated\":true}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":11}}",
-	}).Equal(t, test(`NOT foo:bar`))
-	autogold.Want("NOT prefix on content", value{
-		Want:      "{\"field\":\"content\",\"value\":\"bar\",\"negated\":true}",
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":15}}",
-	}).Equal(t, test(`NOT content:bar`))
+	autogold.Want("NOT prefix on unsupported key-value pair", "{\"Want\":\"{\\\"value\\\":\\\"foo:bar\\\",\\\"negated\\\":true}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":11}}\"}").Equal(t, test(`NOT foo:bar`))
+	autogold.Want("NOT prefix on content", "{\"Want\":\"{\\\"field\\\":\\\"content\\\",\\\"value\\\":\\\"bar\\\",\\\"negated\\\":true}\",\"WantLabels\":0,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":15}}\"}").Equal(t, test(`NOT content:bar`))
 
-	autogold.Want("Double NOT", value{
-		Want:       "{\"value\":\"NOT\",\"negated\":true}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":7}}",
-	}).Equal(t, test(`NOT NOT`))
+	autogold.Want("Double NOT", "{\"Want\":\"{\\\"value\\\":\\\"NOT\\\",\\\"negated\\\":true}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":7}}\"}").Equal(t, test(`NOT NOT`))
 
-	autogold.Want("Double minus prefix on field", value{
-		Want:       "{\"value\":\"--foo:bar\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":9}}",
-	}).Equal(t, test(`--foo:bar`))
+	autogold.Want("Double minus prefix on field", "{\"Want\":\"{\\\"value\\\":\\\"--foo:bar\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":9}}\"}").Equal(t, test(`--foo:bar`))
 
-	autogold.Want("Minus in the middle is not a valid field", value{
-		Want:       "{\"value\":\"fie-ld:bar\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":10}}",
-	}).Equal(t, test(`fie-ld:bar`))
+	autogold.Want("Minus in the middle is not a valid field", "{\"Want\":\"{\\\"value\\\":\\\"fie-ld:bar\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":10}}\"}").Equal(t, test(`fie-ld:bar`))
 
-	autogold.Want("Preserve escaped whitespace", value{
-		Want:       "{\"value\":\"a\\\\ pattern\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":10}}",
-	}).Equal(t, test(`a\ pattern`))
+	autogold.Want("Preserve escaped whitespace", "{\"Want\":\"{\\\"value\\\":\\\"a\\\\\\\\ pattern\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":10}}\"}").Equal(t, test(`a\ pattern`))
 
-	autogold.Want("415a8b8a8ee5", value{
-		Want:       "{\"value\":\"quoted\",\"negated\":false}",
-		WantLabels: labels(10),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":8}}",
-	}).Equal(t, test(`"quoted"`))
+	autogold.Want("415a8b8a8ee5", "{\"Want\":\"{\\\"value\\\":\\\"quoted\\\",\\\"negated\\\":false}\",\"WantLabels\":10,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":8}}\"}").Equal(t, test(`"quoted"`))
 
-	autogold.Want("911d89f74e70", value{
-		Want: "{\"value\":\"'\",\"negated\":false}", WantLabels: labels(10),
-		WantRange: "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":4}}",
-	}).Equal(t, test(`'\''`))
+	autogold.Want("911d89f74e70", "{\"Want\":\"{\\\"value\\\":\\\"'\\\",\\\"negated\\\":false}\",\"WantLabels\":10,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":4}}\"}").Equal(t, test(`'\''`))
 
-	autogold.Want("b58bf1c4c1dc", value{
-		Want:       "{\"value\":\"foo.*bar(\",\"negated\":false}",
-		WantLabels: labels(36),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":9}}",
-	}).Equal(t, test(`foo.*bar(`))
+	autogold.Want("b58bf1c4c1dc", "{\"Want\":\"{\\\"value\\\":\\\"foo.*bar(\\\",\\\"negated\\\":false}\",\"WantLabels\":36,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":9}}\"}").Equal(t, test(`foo.*bar(`))
 
-	autogold.Want("94fe96d247ad", value{
-		Want:       "{\"value\":\"a regex pattern\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":17}}",
-	}).Equal(t, test(`/a regex pattern/`))
+	autogold.Want("94fe96d247ad", "{\"Want\":\"{\\\"value\\\":\\\"a regex pattern\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":17}}\"}").Equal(t, test(`/a regex pattern/`))
 
-	autogold.Want("72bf243727bb", value{
-		Want:       "{\"value\":\"Search()\\\\(\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":10}}",
-	}).Equal(t, test(`Search()\(`))
+	autogold.Want("72bf243727bb", "{\"Want\":\"{\\\"value\\\":\\\"Search()\\\\\\\\(\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":10}}\"}").Equal(t, test(`Search()\(`))
 
-	autogold.Want("8c9c0f656e93", value{
-		Want:       "{\"value\":\"Search(xxx)\\\\(\",\"negated\":false}",
-		WantLabels: labels(4),
-		WantRange:  "{\"start\":{\"line\":0,\"column\":0},\"end\":{\"line\":0,\"column\":13}}",
-	}).Equal(t, test(`Search(xxx)\(`))
+	autogold.Want("8c9c0f656e93", "{\"Want\":\"{\\\"value\\\":\\\"Search(xxx)\\\\\\\\(\\\",\\\"negated\\\":false}\",\"WantLabels\":4,\"WantRange\":\"{\\\"start\\\":{\\\"line\\\":0,\\\"column\\\":0},\\\"end\\\":{\\\"line\\\":0,\\\"column\\\":13}}\"}").Equal(t, test(`Search(xxx)\(`))
 }
 
 func TestScanField(t *testing.T) {
