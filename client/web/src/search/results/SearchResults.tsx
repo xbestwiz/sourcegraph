@@ -64,7 +64,7 @@ export interface SearchResultsProps
     ) => Observable<GQL.ISearchResults | ErrorLike>
     isSourcegraphDotCom: boolean
     deployType: DeployType
-    setVersionContext: (versionContext: string | undefined) => void
+    setVersionContext: (versionContext: string | undefined) => Promise<void>
     availableVersionContexts: VersionContext[] | undefined
     previousVersionContext: string | null
 }
@@ -200,7 +200,12 @@ export class SearchResults extends React.Component<SearchResultsProps, SearchRes
                                                 this.props.setCaseSensitivity(caseSensitive)
                                             }
 
-                                            this.props.setVersionContext(versionContext)
+                                            this.props.setVersionContext(versionContext).catch(error => {
+                                                console.error(
+                                                    'Error sending initial versionContext to extensions',
+                                                    error
+                                                )
+                                            })
                                         },
                                         error => {
                                             this.props.telemetryService.log('SearchResultsFetchFailed', {

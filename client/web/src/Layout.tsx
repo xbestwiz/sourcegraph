@@ -124,7 +124,7 @@ export interface LayoutProps
         versionContext: string | undefined,
         extensionHostPromise: Promise<Remote<FlatExtensionHostAPI>>
     ) => Observable<GQL.ISearchResults | ErrorLike>
-    setVersionContext: (versionContext: string | undefined) => void
+    setVersionContext: (versionContext: string | undefined) => Promise<void>
     availableVersionContexts: VersionContext[] | undefined
     previousVersionContext: string | null
     globbing: boolean
