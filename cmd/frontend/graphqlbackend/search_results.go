@@ -1793,6 +1793,16 @@ func (a *aggregator) doFilePathSearch(ctx context.Context, args *search.TextPara
 	a.collect(ctx, results, fileCommon, errors.Wrap(err, "text search failed"))
 }
 
+func (a *aggregator) doStructuralSearch(ctx context.Context, args *search.TextParameters) {
+	tr, ctx := trace.New(ctx, "doStructuralSearch", "")
+	defer func() {
+		tr.Finish()
+	}()
+	matches, common, err := searchSymbols(ctx, args, 0) // FIXME
+	results := make([]SearchResultResolver, len(matches))
+	a.report(ctx, results, common, errors.Wrap(err, "structural search failed"))
+}
+
 func (a *aggregator) doDiffSearch(ctx context.Context, tp *search.TextParameters) {
 	err := checkDiffCommitSearchLimits(ctx, tp, "diff")
 	if err != nil {
@@ -2026,6 +2036,13 @@ func (r *searchResolver) doResults(ctx context.Context, forceOnlyResultType stri
 			goroutine.Go(func() {
 				defer wg.Done()
 				agg.doFilePathSearch(ctx, &args)
+			})
+		case "structural":
+			wg := waitGroup(true)
+			wg.Add(1)
+			goroutine.Go(func() {
+				defer wg.Done()
+				agg.doStructuralSearch(ctx, &args)
 			})
 		case "diff":
 			wg := waitGroup(len(resultTypes) == 1)
