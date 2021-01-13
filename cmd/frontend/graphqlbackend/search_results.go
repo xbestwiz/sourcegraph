@@ -38,6 +38,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/rcache"
 	"github.com/sourcegraph/sourcegraph/internal/search"
 	"github.com/sourcegraph/sourcegraph/internal/search/query"
+	"github.com/sourcegraph/sourcegraph/internal/search/searcher"
 	"github.com/sourcegraph/sourcegraph/internal/trace"
 	"github.com/sourcegraph/sourcegraph/internal/trace/ot"
 	"github.com/sourcegraph/sourcegraph/internal/types"
@@ -1793,12 +1794,71 @@ func (a *aggregator) doFilePathSearch(ctx context.Context, args *search.TextPara
 	a.collect(ctx, results, fileCommon, errors.Wrap(err, "text search failed"))
 }
 
+// searchStructural routes structural searches to searcher.
+func searchStructural(ctx context.Context, args *search.TextParameters) (res []*FileMatchResolver, common *searchResultsCommon, err error) {
+	// In searcher, we will ask Zoekt for repos with type:repo All we need
+	// is a handle to Zoekt:
+	// https://github.com/sourcegraph/sourcegraph/commit/d41de9b366d27ed1df362d3a8be200012182d9d2#diff-d5122973571c265302bf88eac5ae4531ad90bd42fe83864eae88138f1cb9e902R396
+
+	// And I'm trying to find how to call a searcher. searcher.Search call is here: https://github.com/sourcegraph/sourcegraph/blob/d41de9b366d27ed1df362d3a8be200012182d9d2/cmd/frontend/graphqlbackend/textsearch.go#L172:6
+
+	repo := api.RepoName("fake")
+	commit := api.CommitID("fake")
+
+	// see how we actually compute timeout: https://github.com/sourcegraph/sourcegraph/commit/d41de9b366d27ed1df362d3a8be200012182d9d2#diff-d5122973571c265302bf88eac5ae4531ad90bd42fe83864eae88138f1cb9e902R500-R514
+	fetchTimeout := 500 * time.Millisecond
+
+	matches, _, err := searcher.Search(ctx, args.SearcherURLs, repo, commit, args.PatternInfo, fetchTimeout)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// convert to file matches, complete copy-pasta of
+	// https://github.com/sourcegraph/sourcegraph/blob/d41de9b366d27ed1df362d3a8be200012182d9d2/cmd/frontend/graphqlbackend/textsearch.go#L199
+
+	rev := "fake"
+
+	workspace := fileMatchURI(repo, rev, "")
+	// repoResolver := &RepositoryResolver{repo: repo}
+	var repoResolver *RepositoryResolver
+	resolvers := make([]*FileMatchResolver, 0, len(matches))
+	for _, fm := range matches {
+		lineMatches := make([]*lineMatch, 0, len(fm.LineMatches))
+		for _, lm := range fm.LineMatches {
+			ranges := make([][2]int32, 0, len(lm.OffsetAndLengths))
+			for _, ol := range lm.OffsetAndLengths {
+				ranges = append(ranges, [2]int32{int32(ol[0]), int32(ol[1])})
+			}
+			lineMatches = append(lineMatches, &lineMatch{
+				JPreview:          lm.Preview,
+				JOffsetAndLengths: ranges,
+				JLineNumber:       int32(lm.LineNumber),
+				JLimitHit:         lm.LimitHit,
+			})
+		}
+
+		resolvers = append(resolvers, &FileMatchResolver{
+			JPath:        fm.Path,
+			JLineMatches: lineMatches,
+			JLimitHit:    fm.LimitHit,
+			MatchCount:   fm.MatchCount,
+
+			uri:      workspace + fm.Path,
+			Repo:     repoResolver,
+			CommitID: commit,
+			InputRev: &rev,
+		})
+	}
+
+	return nil, nil, nil
+}
+
 func (a *aggregator) doStructuralSearch(ctx context.Context, args *search.TextParameters) {
 	tr, ctx := trace.New(ctx, "doStructuralSearch", "")
 	defer func() {
 		tr.Finish()
 	}()
-	matches, common, err := searchSymbols(ctx, args, 0) // FIXME
+	matches, common, err := searchStructural(ctx, args)
 	results := make([]SearchResultResolver, len(matches))
 	a.report(ctx, results, common, errors.Wrap(err, "structural search failed"))
 }
