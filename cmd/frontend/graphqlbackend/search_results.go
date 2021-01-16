@@ -1214,44 +1214,40 @@ func (r *searchResolver) Results(ctx context.Context) (srr *SearchResultsResolve
 		tr.SetError(err)
 		tr.Finish()
 	}()
-	switch q := r.query.(type) {
-	case *query.OrdinaryQuery:
-		srr, err = r.evaluateLeaf(ctx)
-	case *query.AndOrQuery:
-		var countStr string
-		wantCount := defaultMaxSearchResults
-		query.VisitField(q.Query, "count", func(value string, _ bool, _ query.Annotation) {
-			countStr = value
-		})
-		if countStr != "" {
-			wantCount, _ = strconv.Atoi(countStr) // Invariant: count is validated.
-		}
+	var countStr string
+	wantCount := defaultMaxSearchResults
 
-		if invalidateRepoCache(q.Query) {
-			r.invalidateRepoCache = true
-		}
-		for _, disjunct := range query.Dnf(q.Query) {
-			disjunct = query.ConcatRevFilters(disjunct)
-			newResult, err := r.evaluate(ctx, disjunct)
-			if err != nil {
-				// Fail if any subquery fails.
-				return nil, err
-			}
-			if newResult != nil {
-				srr = union(srr, newResult)
-				if len(srr.SearchResults) > wantCount {
-					srr.SearchResults = srr.SearchResults[:wantCount]
-					break
-				}
+	q := r.query.(*query.AndOrQuery)
+	query.VisitField(q.Query, "count", func(value string, _ bool, _ query.Annotation) {
+		countStr = value
+	})
+	if countStr != "" {
+		wantCount, _ = strconv.Atoi(countStr) // Invariant: count is validated.
+	}
 
+	if invalidateRepoCache(q.Query) {
+		r.invalidateRepoCache = true
+	}
+
+	for _, disjunct := range query.Dnf(q.Query) {
+		disjunct = query.ConcatRevFilters(disjunct)
+		newResult, err := r.evaluate(ctx, disjunct)
+		if err != nil {
+			// Fail if any subquery fails.
+			return nil, err
+		}
+		if newResult != nil {
+			srr = union(srr, newResult)
+			if len(srr.SearchResults) > wantCount {
+				srr.SearchResults = srr.SearchResults[:wantCount]
+				break
 			}
+
 		}
-		if srr != nil {
-			r.sortResults(ctx, srr.SearchResults)
-		}
-	default:
-		// Unreachable.
-		return nil, fmt.Errorf("unrecognized type %s in searchResolver Results", reflect.TypeOf(r.query).String())
+	}
+
+	if srr != nil {
+		r.sortResults(ctx, srr.SearchResults)
 	}
 	// copy userSettings from searchResolver to SearchResultsResolver
 	if srr != nil {
@@ -1957,11 +1953,6 @@ func (r *searchResolver) doResults(ctx context.Context, forceOnlyResultType stri
 		return nil, &badRequestError{err}
 	}
 
-	err = validateRepoHasFileUsage(r.query)
-	if err != nil {
-		return nil, err
-	}
-
 	resultTypes := r.determineResultTypes(args, forceOnlyResultType)
 	tr.LazyPrintf("resultTypes: %v", resultTypes)
 	var (
@@ -2276,15 +2267,6 @@ func orderedFuzzyRegexp(pieces []string) string {
 		return pieces[0]
 	}
 	return "(" + strings.Join(pieces, ").*?(") + ")"
-}
-
-// Validates usage of the `repohasfile` filter
-func validateRepoHasFileUsage(q query.QueryInfo) error {
-	// Query only contains "repohasfile:" and "type:symbol"
-	if len(q.Fields()) == 2 && q.Fields()["repohasfile"] != nil && q.Fields()["type"] != nil && len(q.Fields()["type"]) == 1 && q.Fields()["type"][0].Value() == "symbol" {
-		return errors.New("repohasfile does not currently return symbol results. Support for symbol results is coming soon. Subscribe to https://github.com/sourcegraph/sourcegraph/issues/4610 for updates")
-	}
-	return nil
 }
 
 // logSlowSearchesThreshold returns the minimum duration configured in site

@@ -35,9 +35,8 @@ const (
 	SearchTypeStructural
 )
 
-// QueryInfo is an intermediate type for an interface of both ordinary queries
-// and and/or query processing. The and/or query processing will become the
-// canonical query form and the QueryInfo type will be removed.
+// QueryInfo is an intermediate interface that satisfies the requirements of our
+// internal functions, providing methods to access validated fields and values.
 type QueryInfo interface {
 	RegexpPatterns(field string) (values, negatedValues []string)
 	StringValues(field string) (values, negatedValues []string)
@@ -49,43 +48,12 @@ type QueryInfo interface {
 	ParseTree() syntax.ParseTree
 }
 
-// An ordinary query (not containing and/or expressions).
-type OrdinaryQuery struct {
-	Query     *Query           // the validated search query
-	parseTree syntax.ParseTree // the parsed search query
-}
-
 // A query containing and/or expressions.
 type AndOrQuery struct {
 	Query []Node
 }
 
-func (q OrdinaryQuery) RegexpPatterns(field string) (values, negatedValues []string) {
-	return q.Query.RegexpPatterns(field)
-}
-func (q OrdinaryQuery) StringValues(field string) (values, negatedValues []string) {
-	return q.Query.StringValues(field)
-}
-func (q OrdinaryQuery) StringValue(field string) (value, negatedValue string) {
-	return q.Query.StringValue(field)
-}
-func (q OrdinaryQuery) Values(field string) []*types.Value {
-	return q.Query.Values(field)
-}
-func (q OrdinaryQuery) Fields() map[string][]*types.Value {
-	return q.Query.Fields
-}
-func (q OrdinaryQuery) ParseTree() syntax.ParseTree {
-	return q.parseTree
-}
-func (q OrdinaryQuery) BoolValue(field string) bool {
-	return q.Query.BoolValue(field)
-}
-func (q OrdinaryQuery) IsCaseSensitive() bool {
-	return q.Query.IsCaseSensitive()
-}
-
-// AndOrQuery satisfies the interface for QueryInfo close to that of OrdinaryQuery.
+// AndOrQuery satisfies the interface for QueryInfo.
 func (q AndOrQuery) RegexpPatterns(field string) (values, negatedValues []string) {
 	VisitField(q.Query, field, func(visitedValue string, negated bool, _ Annotation) {
 		if negated {
@@ -188,9 +156,7 @@ func parseRegexpOrPanic(field, value string) *regexp.Regexp {
 	return r
 }
 
-// valueToTypedValue approximately preserves the field validation for
-// OrdinaryQuery processing. It does not check the validity of field negation or
-// if the same field is specified more than once.
+// valueToTypedValue converts syntax to internal values after valudation.
 func (q AndOrQuery) valueToTypedValue(field, value string, label labels) []*types.Value {
 	switch field {
 	case

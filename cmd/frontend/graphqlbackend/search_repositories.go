@@ -167,7 +167,8 @@ func reposToAdd(ctx context.Context, args *search.TextParameters, repos []*searc
 			// len(repos) could mean we miss some repos since there could be for example len(repos) file matches in
 			// the first repo and some more in other repos.
 			p := search.TextPatternInfo{IsRegExp: true, FileMatchLimit: math.MaxInt32, IncludePatterns: []string{pattern}, PathPatternsAreCaseSensitive: false, PatternMatchesContent: true, PatternMatchesPath: true}
-			q, err := query.ParseAndCheck("file:" + pattern)
+			q, err := query.ProcessAndOr("file:"+pattern, query.ParserOptions{SearchType: query.SearchTypeLiteral})
+
 			if err != nil {
 				return nil, err
 			}
@@ -194,7 +195,7 @@ func reposToAdd(ctx context.Context, args *search.TextParameters, repos []*searc
 	if len(args.PatternInfo.FilePatternsReposMustExclude) > 0 {
 		for _, pattern := range args.PatternInfo.FilePatternsReposMustExclude {
 			p := search.TextPatternInfo{IsRegExp: true, FileMatchLimit: math.MaxInt32, IncludePatterns: []string{pattern}, PathPatternsAreCaseSensitive: false, PatternMatchesContent: true, PatternMatchesPath: true}
-			q, err := query.ParseAndCheck("file:" + pattern)
+			q, err := query.ProcessAndOr("file:"+pattern, query.ParserOptions{SearchType: query.SearchTypeLiteral})
 			if err != nil {
 				return nil, err
 			}

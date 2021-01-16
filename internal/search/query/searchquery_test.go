@@ -1,13 +1,6 @@
 package query
 
-import (
-	"reflect"
-	"testing"
-
-	"github.com/google/go-cmp/cmp"
-	"github.com/sourcegraph/sourcegraph/internal/search/query/types"
-)
-
+/*
 func TestQuery_IsCaseSensitive(t *testing.T) {
 	conf := types.Config{
 		FieldTypes: map[string]types.FieldType{
@@ -204,3 +197,4 @@ func checkPanic(t *testing.T, msg string, f func()) {
 	}()
 	f()
 }
+*/

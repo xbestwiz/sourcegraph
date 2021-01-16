@@ -89,7 +89,7 @@ func TestSearchRepositories(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			q, err := query.ParseAndCheck(tc.q)
+			q, err := query.ProcessAndOr(tc.q, query.ParserOptions{SearchType: query.SearchTypeLiteral})
 			if err != nil {
 				t.Fatal(err)
 			}
