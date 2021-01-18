@@ -46,7 +46,7 @@ func TestZoektAddr(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := zoektAddr(tc.environ)
+			got := ZoektAddr(tc.environ)
 			if got != tc.want {
 				t.Errorf("mismatch (-want +got):\n%s", cmp.Diff(tc.want, got))
 			}

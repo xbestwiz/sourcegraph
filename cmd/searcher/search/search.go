@@ -22,10 +22,14 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/google/zoekt"
 	"github.com/inconshreveable/log15"
 
+	zoektrpc "github.com/google/zoekt/rpc"
 	"github.com/sourcegraph/sourcegraph/cmd/searcher/protocol"
+	"github.com/sourcegraph/sourcegraph/internal/endpoint"
 	"github.com/sourcegraph/sourcegraph/internal/search"
+	"github.com/sourcegraph/sourcegraph/internal/search/backend"
 	"github.com/sourcegraph/sourcegraph/internal/store"
 	"github.com/sourcegraph/sourcegraph/internal/trace/ot"
 	nettrace "golang.org/x/net/trace"
@@ -135,6 +139,29 @@ func (s *Service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 const maxFileMatchLimit = 100
 
+func newZoektClient(zoektAddrs string) *backend.Zoekt {
+	// Concern (0): think we need to have DoOnce logic here, similar to
+	// https://sourcegraph.com/github.com/sourcegraph/sourcegraph@HEAD/-/blob/internal/search/env.go#L45
+	dial := func(endpoint string) zoekt.Searcher {
+		return backend.NewMeteredSearcher(endpoint, zoektrpc.Client(endpoint))
+	}
+
+	client := backend.NewMeteredSearcher(
+		"", // no hostname means its the aggregator
+		&backend.HorizontalSearcher{
+			// Concern (1): endpoint.New has a stateful side effect loadClient. Are we OK?
+			//  https://sourcegraph.com/github.com/sourcegraph/sourcegraph@HEAD/-/blob/internal/endpoint/endpoint.go#L70
+			// https://sourcegraph.com/github.com/sourcegraph/sourcegraph@f682e2e73de0f95ceb49b7558692458e0f413ffd/-/blob/internal/endpoint/endpoint.go#L271:6
+			Map:  endpoint.New(zoektAddrs),
+			Dial: dial,
+		},
+	)
+
+	// Concern (2): We don't deal with conf.Watch. We should probably rely on frontend to make sure of this for us and communicate enabled/disabled, but where?
+	// https://sourcegraph.com/github.com/sourcegraph/sourcegraph@HEAD/-/blob/internal/search/env.go#L64
+	return &backend.Zoekt{Client: client}
+}
+
 func (s *Service) search(ctx context.Context, p *protocol.Request) (matches []protocol.FileMatch, limitHit, deadlineHit bool, err error) {
 	tr := nettrace.New("search", fmt.Sprintf("%s@%s", p.Repo, p.Commit))
 	tr.LazyPrintf("%s", p.Pattern)
@@ -156,6 +183,7 @@ func (s *Service) search(ctx context.Context, p *protocol.Request) (matches []pr
 	span.SetTag("patternMatchesContent", p.PatternMatchesContent)
 	span.SetTag("patternMatchesPath", p.PatternMatchesPath)
 	span.SetTag("deadline", p.Deadline)
+	span.SetTag("zoektAddrs", p.ZoektAddrs)
 	defer func(start time.Time) {
 		code := "200"
 		// We often have canceled and timed out requests. We do not want to
@@ -194,7 +222,6 @@ func (s *Service) search(ctx context.Context, p *protocol.Request) (matches []pr
 	}(time.Now())
 
 	if p.IsStructuralPat && p.CombyRule == `where "zoekt" == "zoekt"` {
-
 		// Since we are returning file content, limit the number of file matches until streaming from Zoekt is implemented
 		fileMatchLimit := p.FileMatchLimit
 		if fileMatchLimit > maxFileMatchLimit {
@@ -218,7 +245,7 @@ func (s *Service) search(ctx context.Context, p *protocol.Request) (matches []pr
 				PatternMatchesPath:           p.PatternMatchesPath,
 				Languages:                    p.Languages,
 			},
-			Zoekt: search.Indexed(),
+			Zoekt: newZoektClient(p.ZoektAddrs),
 		}
 
 		zoektMatches, limitHit, _, err := zoektSearch(ctx, args, repoBranches, time.Since, nil)

@@ -55,7 +55,7 @@ func Indexed() *backend.Zoekt {
 					Map:  indexers.Map,
 					Dial: dial,
 				})
-		} else if addr := zoektAddr(os.Environ()); addr != "" {
+		} else if addr := ZoektAddr(os.Environ()); addr != "" {
 			client = dial(addr)
 		}
 
@@ -70,7 +70,7 @@ func Indexed() *backend.Zoekt {
 
 func Indexers() *backend.Indexers {
 	indexersOnce.Do(func() {
-		if addr := zoektAddr(os.Environ()); addr != "" && !disableHorizontalSearch() {
+		if addr := ZoektAddr(os.Environ()); addr != "" && !disableHorizontalSearch() {
 			indexers = &backend.Indexers{
 				Map:     endpoint.New(addr),
 				Indexed: reposAtEndpoint,
@@ -90,7 +90,7 @@ func disableHorizontalSearch() bool {
 	return v
 }
 
-func zoektAddr(environ []string) string {
+func ZoektAddr(environ []string) string {
 	if addr, ok := getEnv(environ, "INDEXED_SEARCH_SERVERS"); ok {
 		return addr
 	}
