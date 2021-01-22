@@ -7,7 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/inconshreveable/log15"
 	"github.com/opentracing/opentracing-go/log"
+	"github.com/pkg/errors"
+
 	codeintelapi "github.com/sourcegraph/sourcegraph/enterprise/cmd/frontend/internal/codeintel/api"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
@@ -110,6 +113,38 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 	})
 	defer endObservation()
 
+	Ranges := func(ctx context.Context, file string, startLine, endLine, uploadID int) (_ []codeintelapi.ResolvedCodeIntelligenceRange, err error) {
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
+		if err != nil {
+			return nil, errors.Wrap(err, "store.GetDumpByID")
+		}
+		if !exists {
+			return nil, codeintelapi.ErrMissingDump
+		}
+
+		pathInBundle := strings.TrimPrefix(file, dump.Root)
+		ranges, err := r.lsifStore.Ranges(ctx, dump.ID, pathInBundle, startLine, endLine)
+		if err != nil {
+			if err == lsifstore.ErrNotFound {
+				log15.Warn("Bundle does not exist")
+				return nil, nil
+			}
+			return nil, errors.Wrap(err, "bundleClient.Ranges")
+		}
+
+		var codeintelRanges []codeintelapi.ResolvedCodeIntelligenceRange
+		for _, r := range ranges {
+			codeintelRanges = append(codeintelRanges, codeintelapi.ResolvedCodeIntelligenceRange{
+				Range:       r.Range,
+				Definitions: resolveLocationsWithDump(dump, r.Definitions),
+				References:  resolveLocationsWithDump(dump, r.References),
+				HoverText:   r.HoverText,
+			})
+		}
+
+		return codeintelRanges, nil
+	}
+
 	var adjustedRanges []AdjustedCodeIntelligenceRange
 	for i := range r.uploads {
 		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, r.uploads[i].Commit, r.path, false)
@@ -121,7 +156,7 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 		}
 
 		// TODO(efritz) - determine how to do best-effort line adjustments for this case
-		ranges, err := r.codeIntelAPI.Ranges(ctx, adjustedPath, startLine, endLine, r.uploads[i].ID)
+		ranges, err := Ranges(ctx, adjustedPath, startLine, endLine, r.uploads[i].ID)
 		if err != nil {
 			return nil, err
 		}
@@ -472,4 +507,17 @@ func makeCursor(cursors map[int]string) (string, error) {
 		return "", err
 	}
 	return string(encoded), nil
+}
+
+func resolveLocationsWithDump(dump store.Dump, locations []lsifstore.Location) []codeintelapi.ResolvedLocation {
+	var resolvedLocations []codeintelapi.ResolvedLocation
+	for _, location := range locations {
+		resolvedLocations = append(resolvedLocations, codeintelapi.ResolvedLocation{
+			Dump:  dump,
+			Path:  dump.Root + location.Path,
+			Range: location.Range,
+		})
+	}
+
+	return resolvedLocations
 }
