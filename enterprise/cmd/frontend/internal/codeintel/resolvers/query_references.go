@@ -3,14 +3,115 @@ package resolvers
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/inconshreveable/log15"
+	"github.com/opentracing/opentracing-go/log"
+	"github.com/pkg/errors"
 	pkgerrors "github.com/pkg/errors"
 
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/bloomfilter"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
+	"github.com/sourcegraph/sourcegraph/internal/observation"
 )
+
+const slowReferencesRequestThreshold = time.Second
+
+// ErrIllegalLimit occurs when a zero-length page of references is requested
+var ErrIllegalLimit = errors.New("limit must be positive")
+
+// remoteDumpLimit is the limit for fetching batches of remote dumps.
+const remoteDumpLimit = 20
+
+// References returns the list of source locations that reference the symbol at the given position.
+// This may include references from other dumps and repositories. If there are multiple bundles
+// associated with this resolver, results from all bundles will be concatenated and returned.
+func (r *queryResolver) References(ctx context.Context, line, character, limit int, rawCursor string) (_ []AdjustedLocation, _ string, err error) {
+	ctx, endObservation := observeResolver(ctx, &err, "References", r.operations.references, slowReferencesRequestThreshold, observation.Args{
+		LogFields: []log.Field{
+			log.Int("repositoryID", r.repositoryID),
+			log.String("commit", r.commit),
+			log.String("path", r.path),
+			log.String("uploadIDs", strings.Join(r.uploadIDs(), ", ")),
+			log.Int("line", line),
+			log.Int("character", character),
+		},
+	})
+	defer endObservation()
+
+	position := lsifstore.Position{
+		Line:      line,
+		Character: character,
+	}
+
+	// Decode a map of upload ids to the next url that serves
+	// the new page of results. This may not include an entry
+	// for every upload if their result sets have already been
+	// exhausted.
+	cursors, err := readCursor(rawCursor)
+	if err != nil {
+		return nil, "", err
+	}
+
+	// We need to maintain a symmetric map for the next page
+	// of results that we can encode into the endCursor of
+	// this request.
+	newCursors := map[int]string{}
+
+	var allLocations []ResolvedLocation
+	for _, upload := range r.uploads {
+		rawCursor := ""
+		if cursor, ok := cursors[upload.ID]; ok {
+			rawCursor = cursor
+		} else if len(cursors) != 0 {
+			// Result set is exhausted or newer than the first page
+			// of results. Skip anything from this upload as it will
+			// have duplicate results, or it will be out of order.
+			continue
+		}
+
+		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, upload.Commit, r.path, position, false)
+		if err != nil {
+			return nil, "", err
+		}
+		if !ok {
+			continue
+		}
+
+		cursor, err := DecodeOrCreateCursor(ctx, adjustedPath, adjustedPosition.Line, adjustedPosition.Character, upload.ID, rawCursor, r.dbStore, r.lsifStore)
+		if err != nil {
+			return nil, "", err
+		}
+
+		if limit <= 0 {
+			return nil, "", ErrIllegalLimit
+		}
+
+		locations, newCursor, hasNewCursor, err := NewReferencePageResolver(r.dbStore, r.lsifStore, r.gitserverClient, r.repositoryID, r.commit, remoteDumpLimit, limit).ResolvePage(ctx, cursor)
+		if err != nil {
+			return nil, "", err
+		}
+
+		allLocations = append(allLocations, locations...)
+		if hasNewCursor {
+			newCursors[upload.ID] = EncodeCursor(newCursor)
+		}
+	}
+
+	endCursor, err := makeCursor(newCursors)
+	if err != nil {
+		return nil, "", err
+	}
+
+	adjustedLocations, err := r.adjustLocations(ctx, allLocations)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return adjustedLocations, endCursor, nil
+}
 
 type ReferencePageResolver struct {
 	dbStore         DBStore
