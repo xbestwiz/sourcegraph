@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
 )
@@ -364,7 +365,7 @@ func TestHandleSameRepoCursor(t *testing.T) {
 			limit:           5,
 		}
 
-		references, newCursor, hasNewCursor, err := rpr.resolvePage(context.Background(), Cursor{
+		references, newCursor, hasNewCursor, err := rpr.ResolvePage(context.Background(), Cursor{
 			Phase:      "same-repo",
 			DumpID:     42,
 			Scheme:     "gomod",
@@ -445,7 +446,7 @@ func TestHandleSameRepoCursor(t *testing.T) {
 			limit:           5,
 		}
 
-		references, newCursor, hasNewCursor, err := rpr.resolvePage(context.Background(), Cursor{
+		references, newCursor, hasNewCursor, err := rpr.ResolvePage(context.Background(), Cursor{
 			Phase:      "same-repo",
 			DumpID:     42,
 			Scheme:     "gomod",
@@ -590,7 +591,7 @@ func TestHandleRemoteRepoCursor(t *testing.T) {
 			limit:           5,
 		}
 
-		references, newCursor, hasNewCursor, err := rpr.resolvePage(context.Background(), Cursor{
+		references, newCursor, hasNewCursor, err := rpr.ResolvePage(context.Background(), Cursor{
 			Phase:      "remote-repo",
 			DumpID:     42,
 			Scheme:     "gomod",
@@ -671,7 +672,7 @@ func TestHandleRemoteRepoCursor(t *testing.T) {
 			limit:           5,
 		}
 
-		references, _, hasNewCursor, err := rpr.resolvePage(context.Background(), Cursor{
+		references, _, hasNewCursor, err := rpr.ResolvePage(context.Background(), Cursor{
 			Phase:      "remote-repo",
 			DumpID:     42,
 			Scheme:     "gomod",

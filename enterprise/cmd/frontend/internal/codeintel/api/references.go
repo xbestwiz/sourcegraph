@@ -8,6 +8,7 @@ import (
 	"github.com/inconshreveable/log15"
 	"github.com/opentracing/opentracing-go/log"
 	pkgerrors "github.com/pkg/errors"
+
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/bloomfilter"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
@@ -34,16 +35,14 @@ func (api *CodeIntelAPI) References(ctx context.Context, repositoryID int, commi
 		return nil, Cursor{}, false, ErrIllegalLimit
 	}
 
-	rpr := &ReferencePageResolver{
-		dbStore:         api.dbStore,
-		lsifStore:       api.lsifStore,
-		repositoryID:    repositoryID,
-		commit:          commit,
-		remoteDumpLimit: RemoteDumpLimit,
-		limit:           limit,
-	}
-
-	return rpr.resolvePage(ctx, cursor)
+	return NewReferencePageResolver(
+		api.dbStore,
+		api.lsifStore,
+		repositoryID,
+		commit,
+		RemoteDumpLimit,
+		limit,
+	).ResolvePage(ctx, cursor)
 }
 
 type ReferencePageResolver struct {
@@ -55,7 +54,25 @@ type ReferencePageResolver struct {
 	limit           int
 }
 
-func (s *ReferencePageResolver) resolvePage(ctx context.Context, cursor Cursor) ([]ResolvedLocation, Cursor, bool, error) {
+func NewReferencePageResolver(
+	dbStore DBStore,
+	lsifStore LSIFStore,
+	repositoryID int,
+	commit string,
+	remoteDumpLimit int,
+	limit int,
+) *ReferencePageResolver {
+	return &ReferencePageResolver{
+		dbStore:         dbStore,
+		lsifStore:       lsifStore,
+		repositoryID:    repositoryID,
+		commit:          commit,
+		remoteDumpLimit: remoteDumpLimit,
+		limit:           limit,
+	}
+}
+
+func (s *ReferencePageResolver) ResolvePage(ctx context.Context, cursor Cursor) ([]ResolvedLocation, Cursor, bool, error) {
 	var allLocations []ResolvedLocation
 
 	for {

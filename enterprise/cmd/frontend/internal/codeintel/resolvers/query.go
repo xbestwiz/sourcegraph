@@ -317,6 +317,26 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 	})
 	defer endObservation()
 
+	// ErrIllegalLimit occurs when a zero-length page of references is requested
+	var ErrIllegalLimit = errors.New("limit must be positive")
+
+	// RemoteDumpLimit is the limit for fetching batches of remote dumps.
+	const RemoteDumpLimit = 20
+
+	References := func(ctx context.Context, repositoryID int, commit string, limit int, cursor codeintelapi.Cursor) (_ []codeintelapi.ResolvedLocation, _ codeintelapi.Cursor, _ bool, err error) {
+		if limit <= 0 {
+			return nil, codeintelapi.Cursor{}, false, ErrIllegalLimit
+		}
+
+		return codeintelapi.NewReferencePageResolver(
+			r.dbStore,
+			r.lsifStore,
+			repositoryID,
+			commit,
+			RemoteDumpLimit,
+			limit).ResolvePage(ctx, cursor)
+	}
+
 	position := lsifstore.Position{Line: line, Character: character}
 
 	// Decode a map of upload ids to the next url that serves
@@ -358,7 +378,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 			return nil, "", err
 		}
 
-		locations, newCursor, hasNewCursor, err := r.codeIntelAPI.References(ctx, r.repositoryID, r.commit, limit, cursor)
+		locations, newCursor, hasNewCursor, err := References(ctx, r.repositoryID, r.commit, limit, cursor)
 		if err != nil {
 			return nil, "", err
 		}
