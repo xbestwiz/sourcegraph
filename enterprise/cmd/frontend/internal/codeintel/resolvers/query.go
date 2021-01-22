@@ -400,6 +400,111 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 	})
 	defer endObservation()
 
+	definitionsRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) ([]codeintelapi.ResolvedLocation, error) {
+		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
+		if err != nil {
+			if err == lsifstore.ErrNotFound {
+				log15.Warn("Bundle does not exist")
+				return nil, nil
+			}
+			return nil, errors.Wrap(err, "bundleClient.Definitions")
+		}
+		if len(locations) > 0 {
+			return resolveLocationsWithDump(dump, locations), nil
+		}
+
+		rangeMonikers, err := r.lsifStore.MonikersByPosition(context.Background(), dump.ID, pathInBundle, line, character)
+		if err != nil {
+			if err == lsifstore.ErrNotFound {
+				log15.Warn("Bundle does not exist")
+				return nil, nil
+			}
+			return nil, errors.Wrap(err, "bundleClient.MonikersByPosition")
+		}
+
+		for _, monikers := range rangeMonikers {
+			for _, moniker := range monikers {
+				if moniker.Kind == "import" {
+					locations, _, err := lookupMoniker(r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, codeintelapi.DefintionMonikersLimit)
+					if err != nil {
+						return nil, err
+					}
+					if len(locations) > 0 {
+						return locations, nil
+					}
+				} else {
+					// This symbol was not imported from another bundle. We search the definitions
+					// of our own bundle in case there was a definition that wasn't properly attached
+					// to a result set but did have the correct monikers attached.
+
+					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, codeintelapi.DefintionMonikersLimit)
+					if err != nil {
+						if err == lsifstore.ErrNotFound {
+							log15.Warn("Bundle does not exist")
+							return nil, nil
+						}
+						return nil, errors.Wrap(err, "bundleClient.MonikerResults")
+					}
+					if len(locations) > 0 {
+						return resolveLocationsWithDump(dump, locations), nil
+					}
+				}
+			}
+		}
+
+		return nil, nil
+	}
+
+	definitionRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) (codeintelapi.ResolvedLocation, bool, error) {
+		resolved, err := definitionsRaw(ctx, dump, pathInBundle, line, character)
+		if err != nil || len(resolved) == 0 {
+			return codeintelapi.ResolvedLocation{}, false, errors.Wrap(err, "api.definitionsRaw")
+		}
+
+		return resolved[0], true, nil
+	}
+
+	Hover := func(ctx context.Context, file string, line, character, uploadID int) (_ string, _ lsifstore.Range, _ bool, err error) {
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
+		if err != nil {
+			return "", lsifstore.Range{}, false, errors.Wrap(err, "store.GetDumpByID")
+		}
+		if !exists {
+			return "", lsifstore.Range{}, false, codeintelapi.ErrMissingDump
+		}
+
+		pathInBundle := strings.TrimPrefix(file, dump.Root)
+		text, rn, exists, err := r.lsifStore.Hover(ctx, dump.ID, pathInBundle, line, character)
+		if err != nil {
+			if err == lsifstore.ErrNotFound {
+				log15.Warn("Bundle does not exist")
+				return "", lsifstore.Range{}, false, nil
+			}
+			return "", lsifstore.Range{}, false, errors.Wrap(err, "bundleClient.Hover")
+		}
+		if exists {
+			return text, rn, true, nil
+		}
+
+		definition, exists, err := definitionRaw(ctx, dump, pathInBundle, line, character)
+		if err != nil || !exists {
+			return "", lsifstore.Range{}, false, errors.Wrap(err, "api.definitionRaw")
+		}
+
+		pathInDefinitionBundle := strings.TrimPrefix(definition.Path, definition.Dump.Root)
+
+		text, rn, exists, err = r.lsifStore.Hover(ctx, definition.Dump.ID, pathInDefinitionBundle, definition.Range.Start.Line, definition.Range.Start.Character)
+		if err != nil {
+			if err == lsifstore.ErrNotFound {
+				log15.Warn("Bundle does not exist")
+				return "", lsifstore.Range{}, false, nil
+			}
+			return "", lsifstore.Range{}, false, errors.Wrap(err, "definitionBundleClient.Hover")
+		}
+
+		return text, rn, exists, nil
+	}
+
 	position := lsifstore.Position{Line: line, Character: character}
 
 	for i := range r.uploads {
@@ -411,7 +516,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 			continue
 		}
 
-		text, rn, exists, err := r.codeIntelAPI.Hover(ctx, adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID)
+		text, rn, exists, err := Hover(ctx, adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID)
 		if err != nil {
 			return "", lsifstore.Range{}, false, err
 		}
