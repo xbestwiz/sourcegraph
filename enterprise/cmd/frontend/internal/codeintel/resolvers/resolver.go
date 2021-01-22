@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/inconshreveable/log15"
 	"github.com/opentracing/opentracing-go/log"
 	"github.com/pkg/errors"
 
@@ -13,7 +12,6 @@ import (
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/autoindex/config"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/gitserver"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
-	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
 	"github.com/sourcegraph/sourcegraph/internal/observation"
 )
 
@@ -110,6 +108,14 @@ func (r *resolver) QueueAutoIndexJobForRepo(ctx context.Context, repositoryID in
 	return r.indexEnqueuer.ForceQueueIndex(ctx, repositoryID)
 }
 
+// numAncestors is the number of ancestors to query from gitserver when trying to find the closest
+// ancestor we have data for. Setting this value too low (relative to a repository's commit rate)
+// will cause requests for an unknown commit return too few results; setting this value too high
+// will raise the latency of requests for an unknown commit.
+//
+// TODO(efritz) - make adjustable
+const numAncestors = 100
+
 const slowQueryResolverRequestThreshold = time.Second
 
 // QueryResolver determines the set of dumps that can answer code intel queries for the
@@ -127,53 +133,27 @@ func (r *resolver) QueryResolver(ctx context.Context, args *gql.GitBlobLSIFDataA
 	})
 	defer endObservation()
 
-	// NumAncestors is the number of ancestors to query from gitserver when trying to find the closest
-	// ancestor we have data for. Setting this value too low (relative to a repository's commit rate)
-	// will cause requests for an unknown commit return too few results; setting this value too high
-	// will raise the latency of requests for an unknown commit.
-	//
-	// TODO(efritz) - make adjustable
-	const NumAncestors = 100
-
-	FindClosestDumps := func(ctx context.Context, repositoryID int, commit, path string, exactPath bool, indexer string) (_ []store.Dump, err error) {
-		candidates, err := r.inferClosestUploads(ctx, repositoryID, commit, path, exactPath, indexer)
-		if err != nil {
-			return nil, err
-		}
-
-		var dumps []store.Dump
-		for _, dump := range candidates {
-			// TODO(efritz) - ensure there's a valid document path
-			// for the other condition. This should probably look like
-			// an additional parameter on the following exists query.
-			if exactPath {
-				exists, err := r.lsifStore.Exists(ctx, dump.ID, strings.TrimPrefix(path, dump.Root))
-				if err != nil {
-					if err == lsifstore.ErrNotFound {
-						log15.Warn("Bundle does not exist")
-						return nil, nil
-					}
-					return nil, errors.Wrap(err, "lsifStore.BundleClient")
-				}
-				if !exists {
-					continue
-				}
-			}
-
-			dumps = append(dumps, dump)
-		}
-
-		return dumps, nil
+	candidates, err := r.inferClosestUploads(ctx, int(args.Repo.ID), string(args.Commit), args.Path, args.ExactPath, args.ToolName)
+	if err != nil {
+		return nil, err
 	}
 
-	dumps, err := FindClosestDumps(
-		ctx,
-		int(args.Repo.ID),
-		string(args.Commit),
-		args.Path,
-		args.ExactPath,
-		args.ToolName,
-	)
+	var dumps []store.Dump
+	for _, dump := range candidates {
+		if args.ExactPath {
+			exists, err := r.lsifStore.Exists(ctx, dump.ID, strings.TrimPrefix(args.Path, dump.Root))
+			if err != nil {
+				return nil, err
+			}
+			if !exists {
+				continue
+			}
+		} else {
+			// TODO(efritz) - add a check for this case
+		}
+
+		dumps = append(dumps, dump)
+	}
 	if err != nil || len(dumps) == 0 {
 		return nil, err
 	}

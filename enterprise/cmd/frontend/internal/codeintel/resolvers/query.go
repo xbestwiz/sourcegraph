@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/inconshreveable/log15"
 	"github.com/opentracing/opentracing-go/log"
 	"github.com/pkg/errors"
 
@@ -129,38 +128,6 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 	})
 	defer endObservation()
 
-	Ranges := func(ctx context.Context, file string, startLine, endLine, uploadID int) (_ []ResolvedCodeIntelligenceRange, err error) {
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
-		if err != nil {
-			return nil, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			return nil, ErrMissingDump
-		}
-
-		pathInBundle := strings.TrimPrefix(file, dump.Root)
-		ranges, err := r.lsifStore.Ranges(ctx, dump.ID, pathInBundle, startLine, endLine)
-		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return nil, nil
-			}
-			return nil, errors.Wrap(err, "bundleClient.Ranges")
-		}
-
-		var codeintelRanges []ResolvedCodeIntelligenceRange
-		for _, r := range ranges {
-			codeintelRanges = append(codeintelRanges, ResolvedCodeIntelligenceRange{
-				Range:       r.Range,
-				Definitions: resolveLocationsWithDump(dump, r.Definitions),
-				References:  resolveLocationsWithDump(dump, r.References),
-				HoverText:   r.HoverText,
-			})
-		}
-
-		return codeintelRanges, nil
-	}
-
 	var adjustedRanges []AdjustedCodeIntelligenceRange
 	for i := range r.uploads {
 		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, r.uploads[i].Commit, r.path, false)
@@ -171,13 +138,31 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 			continue
 		}
 
-		// TODO(efritz) - determine how to do best-effort line adjustments for this case
-		ranges, err := Ranges(ctx, adjustedPath, startLine, endLine, r.uploads[i].ID)
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
+		if err != nil {
+			return nil, errors.Wrap(err, "store.GetDumpByID")
+		}
+		if !exists {
+			continue
+		}
+
+		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
+		ranges, err := r.lsifStore.Ranges(ctx, dump.ID, pathInBundle, startLine, endLine)
 		if err != nil {
 			return nil, err
 		}
 
-		for _, rn := range ranges {
+		var codeIntelRanges []ResolvedCodeIntelligenceRange
+		for _, r := range ranges {
+			codeIntelRanges = append(codeIntelRanges, ResolvedCodeIntelligenceRange{
+				Range:       r.Range,
+				Definitions: resolveLocationsWithDump(dump, r.Definitions),
+				References:  resolveLocationsWithDump(dump, r.References),
+				HoverText:   r.HoverText,
+			})
+		}
+
+		for _, rn := range codeIntelRanges {
 			adjustedDefinitions, err := r.adjustLocations(ctx, rn.Definitions)
 			if err != nil {
 				return nil, err
@@ -226,70 +211,6 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 
 	const defintionMonikersLimit = 100
 
-	Definitions := func(ctx context.Context, file string, line, character, uploadID int) (_ []ResolvedLocation, err error) {
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
-		if err != nil {
-			return nil, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			return nil, ErrMissingDump
-		}
-
-		pathInBundle := strings.TrimPrefix(file, dump.Root)
-		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
-		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return nil, nil
-			}
-			return nil, errors.Wrap(err, "bundleClient.Definitions")
-		}
-		if len(locations) > 0 {
-			return resolveLocationsWithDump(dump, locations), nil
-		}
-
-		rangeMonikers, err := r.lsifStore.MonikersByPosition(context.Background(), dump.ID, pathInBundle, line, character)
-		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return nil, nil
-			}
-			return nil, errors.Wrap(err, "bundleClient.MonikersByPosition")
-		}
-
-		for _, monikers := range rangeMonikers {
-			for _, moniker := range monikers {
-				if moniker.Kind == "import" {
-					locations, _, err := lookupMoniker(ctx, r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
-					if err != nil {
-						return nil, err
-					}
-					if len(locations) > 0 {
-						return locations, nil
-					}
-				} else {
-					// This symbol was not imported from another bundle. We search the definitions
-					// of our own bundle in case there was a definition that wasn't properly attached
-					// to a result set but did have the correct monikers attached.
-
-					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
-					if err != nil {
-						if err == lsifstore.ErrNotFound {
-							log15.Warn("Bundle does not exist")
-							return nil, nil
-						}
-						return nil, errors.Wrap(err, "bundleClient.MonikerResults")
-					}
-					if len(locations) > 0 {
-						return resolveLocationsWithDump(dump, locations), nil
-					}
-				}
-			}
-		}
-
-		return nil, nil
-	}
-
 	position := lsifstore.Position{Line: line, Character: character}
 
 	for i := range r.uploads {
@@ -301,19 +222,63 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 			continue
 		}
 
-		locations, err := Definitions(ctx, adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID)
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "store.GetDumpByID")
 		}
-		if len(locations) == 0 {
+		if !exists {
 			continue
 		}
 
-		return r.adjustLocations(ctx, locations)
+		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
+		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
+		if err != nil {
+			return nil, err
+		}
+		if len(locations) > 0 {
+			return r.adjustLocations(ctx, resolveLocationsWithDump(dump, locations))
+		}
+
+		rangeMonikers, err := r.lsifStore.MonikersByPosition(context.Background(), dump.ID, pathInBundle, adjustedPosition.Line, adjustedPosition.Character)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, monikers := range rangeMonikers {
+			for _, moniker := range monikers {
+				if moniker.Kind == "import" {
+					locations, _, err := lookupMoniker(ctx, r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
+					if err != nil {
+						return nil, err
+					}
+					if len(locations) > 0 {
+						return r.adjustLocations(ctx, locations)
+					}
+				} else {
+					// This symbol was not imported from another bundle. We search the definitions
+					// of our own bundle in case there was a definition that wasn't properly attached
+					// to a result set but did have the correct monikers attached.
+
+					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
+					if err != nil {
+						return nil, err
+					}
+					if len(locations) > 0 {
+						return r.adjustLocations(ctx, resolveLocationsWithDump(dump, locations))
+					}
+				}
+			}
+		}
 	}
 
 	return nil, nil
 }
+
+// ErrIllegalLimit occurs when a zero-length page of references is requested
+var ErrIllegalLimit = errors.New("limit must be positive")
+
+// remoteDumpLimit is the limit for fetching batches of remote dumps.
+const remoteDumpLimit = 20
 
 const slowReferencesRequestThreshold = time.Second
 
@@ -332,26 +297,6 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 		},
 	})
 	defer endObservation()
-
-	// ErrIllegalLimit occurs when a zero-length page of references is requested
-	var ErrIllegalLimit = errors.New("limit must be positive")
-
-	// RemoteDumpLimit is the limit for fetching batches of remote dumps.
-	const RemoteDumpLimit = 20
-
-	References := func(ctx context.Context, repositoryID int, commit string, limit int, cursor Cursor) (_ []ResolvedLocation, _ Cursor, _ bool, err error) {
-		if limit <= 0 {
-			return nil, Cursor{}, false, ErrIllegalLimit
-		}
-
-		return NewReferencePageResolver(
-			r.dbStore,
-			r.lsifStore,
-			repositoryID,
-			commit,
-			RemoteDumpLimit,
-			limit).ResolvePage(ctx, cursor)
-	}
 
 	position := lsifstore.Position{Line: line, Character: character}
 
@@ -394,7 +339,11 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 			return nil, "", err
 		}
 
-		locations, newCursor, hasNewCursor, err := References(ctx, r.repositoryID, r.commit, limit, cursor)
+		if limit <= 0 {
+			return nil, "", ErrIllegalLimit
+		}
+
+		locations, newCursor, hasNewCursor, err := NewReferencePageResolver(r.dbStore, r.lsifStore, r.repositoryID, r.commit, remoteDumpLimit, limit).ResolvePage(ctx, cursor)
 		if err != nil {
 			return nil, "", err
 		}
@@ -441,11 +390,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 	definitionsRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) ([]ResolvedLocation, error) {
 		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
 		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return nil, nil
-			}
-			return nil, errors.Wrap(err, "bundleClient.Definitions")
+			return nil, err
 		}
 		if len(locations) > 0 {
 			return resolveLocationsWithDump(dump, locations), nil
@@ -453,11 +398,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 
 		rangeMonikers, err := r.lsifStore.MonikersByPosition(context.Background(), dump.ID, pathInBundle, line, character)
 		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return nil, nil
-			}
-			return nil, errors.Wrap(err, "bundleClient.MonikersByPosition")
+			return nil, err
 		}
 
 		for _, monikers := range rangeMonikers {
@@ -477,11 +418,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 
 					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
 					if err != nil {
-						if err == lsifstore.ErrNotFound {
-							log15.Warn("Bundle does not exist")
-							return nil, nil
-						}
-						return nil, errors.Wrap(err, "bundleClient.MonikerResults")
+						return nil, err
 					}
 					if len(locations) > 0 {
 						return resolveLocationsWithDump(dump, locations), nil
@@ -496,51 +433,10 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 	definitionRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) (ResolvedLocation, bool, error) {
 		resolved, err := definitionsRaw(ctx, dump, pathInBundle, line, character)
 		if err != nil || len(resolved) == 0 {
-			return ResolvedLocation{}, false, errors.Wrap(err, "api.definitionsRaw")
+			return ResolvedLocation{}, false, err
 		}
 
 		return resolved[0], true, nil
-	}
-
-	Hover := func(ctx context.Context, file string, line, character, uploadID int) (_ string, _ lsifstore.Range, _ bool, err error) {
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
-		if err != nil {
-			return "", lsifstore.Range{}, false, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			return "", lsifstore.Range{}, false, ErrMissingDump
-		}
-
-		pathInBundle := strings.TrimPrefix(file, dump.Root)
-		text, rn, exists, err := r.lsifStore.Hover(ctx, dump.ID, pathInBundle, line, character)
-		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return "", lsifstore.Range{}, false, nil
-			}
-			return "", lsifstore.Range{}, false, errors.Wrap(err, "bundleClient.Hover")
-		}
-		if exists {
-			return text, rn, true, nil
-		}
-
-		definition, exists, err := definitionRaw(ctx, dump, pathInBundle, line, character)
-		if err != nil || !exists {
-			return "", lsifstore.Range{}, false, errors.Wrap(err, "api.definitionRaw")
-		}
-
-		pathInDefinitionBundle := strings.TrimPrefix(definition.Path, definition.Dump.Root)
-
-		text, rn, exists, err = r.lsifStore.Hover(ctx, definition.Dump.ID, pathInDefinitionBundle, definition.Range.Start.Line, definition.Range.Start.Character)
-		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return "", lsifstore.Range{}, false, nil
-			}
-			return "", lsifstore.Range{}, false, errors.Wrap(err, "definitionBundleClient.Hover")
-		}
-
-		return text, rn, exists, nil
 	}
 
 	position := lsifstore.Position{Line: line, Character: character}
@@ -554,7 +450,31 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 			continue
 		}
 
-		text, rn, exists, err := Hover(ctx, adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID)
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
+		if err != nil {
+			return "", lsifstore.Range{}, false, err
+		}
+		if !exists {
+			continue
+		}
+
+		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
+		text, rn, exists, err := r.lsifStore.Hover(ctx, dump.ID, pathInBundle, adjustedPosition.Line, adjustedPosition.Character)
+		if err != nil {
+			return "", lsifstore.Range{}, false, err
+		}
+		if exists {
+			return text, rn, true, nil
+		}
+
+		definition, exists, err := definitionRaw(ctx, dump, pathInBundle, adjustedPosition.Line, adjustedPosition.Character)
+		if err != nil || !exists {
+			return "", lsifstore.Range{}, false, err
+		}
+
+		pathInDefinitionBundle := strings.TrimPrefix(definition.Path, definition.Dump.Root)
+
+		text, rn, exists, err = r.lsifStore.Hover(ctx, definition.Dump.ID, pathInDefinitionBundle, definition.Range.Start.Line, definition.Range.Start.Character)
 		if err != nil {
 			return "", lsifstore.Range{}, false, err
 		}
@@ -596,28 +516,6 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 	})
 	defer endObservation()
 
-	Diagnostics := func(ctx context.Context, prefix string, uploadID, limit, offset int) (_ []ResolvedDiagnostic, _ int, err error) {
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
-		if err != nil {
-			return nil, 0, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			return nil, 0, ErrMissingDump
-		}
-
-		pathInBundle := strings.TrimPrefix(prefix, dump.Root)
-		diagnostics, totalCount, err := r.lsifStore.Diagnostics(ctx, dump.ID, pathInBundle, offset, limit)
-		if err != nil {
-			if err == lsifstore.ErrNotFound {
-				log15.Warn("Bundle does not exist")
-				return nil, 0, nil
-			}
-			return nil, 0, errors.Wrap(err, "bundleClient.Diagnostics")
-		}
-
-		return resolveDiagnosticsWithDump(dump, diagnostics), totalCount, nil
-	}
-
 	totalCount := 0
 	var allDiagnostics []ResolvedDiagnostic
 	for i := range r.uploads {
@@ -629,18 +527,27 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 			continue
 		}
 
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
+		if err != nil {
+			return nil, 0, errors.Wrap(err, "store.GetDumpByID")
+		}
+		if !exists {
+			continue
+		}
+
 		l := limit - len(allDiagnostics)
 		if l < 0 {
 			l = 0
 		}
 
-		diagnostics, count, err := Diagnostics(ctx, adjustedPath, r.uploads[i].ID, l, 0)
+		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
+		diagnostics, count, err := r.lsifStore.Diagnostics(ctx, dump.ID, pathInBundle, 0, l)
 		if err != nil {
 			return nil, 0, err
 		}
 
 		totalCount += count
-		allDiagnostics = append(allDiagnostics, diagnostics...)
+		allDiagnostics = append(allDiagnostics, resolveDiagnosticsWithDump(dump, diagnostics)...)
 	}
 
 	adjustedDiagnostics := make([]AdjustedDiagnostic, 0, len(allDiagnostics))
@@ -770,25 +677,17 @@ func lookupMoniker(
 
 	pid, _, err := lsifStore.PackageInformation(ctx, dumpID, path, string(moniker.PackageInformationID))
 	if err != nil {
-		if err == lsifstore.ErrNotFound {
-			log15.Warn("Bundle does not exist")
-			return nil, 0, nil
-		}
-		return nil, 0, errors.Wrap(err, "lsifStore.BundleClient")
+		return nil, 0, err
 	}
 
 	dump, exists, err := dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
 	if err != nil || !exists {
-		return nil, 0, errors.Wrap(err, "store.GetPackage")
+		return nil, 0, err
 	}
 
 	locations, count, err := lsifStore.MonikerResults(ctx, dump.ID, modelType, moniker.Scheme, moniker.Identifier, skip, take)
 	if err != nil {
-		if err == lsifstore.ErrNotFound {
-			log15.Warn("Bundle does not exist")
-			return nil, 0, nil
-		}
-		return nil, 0, errors.Wrap(err, "lsifStore.BundleClient")
+		return nil, 0, err
 	}
 
 	return resolveLocationsWithDump(dump, locations), count, nil
