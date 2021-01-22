@@ -558,6 +558,28 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 	})
 	defer endObservation()
 
+	Diagnostics := func(ctx context.Context, prefix string, uploadID, limit, offset int) (_ []codeintelapi.ResolvedDiagnostic, _ int, err error) {
+		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
+		if err != nil {
+			return nil, 0, errors.Wrap(err, "store.GetDumpByID")
+		}
+		if !exists {
+			return nil, 0, codeintelapi.ErrMissingDump
+		}
+
+		pathInBundle := strings.TrimPrefix(prefix, dump.Root)
+		diagnostics, totalCount, err := r.lsifStore.Diagnostics(ctx, dump.ID, pathInBundle, offset, limit)
+		if err != nil {
+			if err == lsifstore.ErrNotFound {
+				log15.Warn("Bundle does not exist")
+				return nil, 0, nil
+			}
+			return nil, 0, errors.Wrap(err, "bundleClient.Diagnostics")
+		}
+
+		return resolveDiagnosticsWithDump(dump, diagnostics), totalCount, nil
+	}
+
 	totalCount := 0
 	var allDiagnostics []codeintelapi.ResolvedDiagnostic
 	for i := range r.uploads {
@@ -574,7 +596,7 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 			l = 0
 		}
 
-		diagnostics, count, err := r.codeIntelAPI.Diagnostics(ctx, adjustedPath, r.uploads[i].ID, l, 0)
+		diagnostics, count, err := Diagnostics(ctx, adjustedPath, r.uploads[i].ID, l, 0)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -731,4 +753,17 @@ func lookupMoniker(
 	}
 
 	return resolveLocationsWithDump(dump, locations), count, nil
+}
+
+func resolveDiagnosticsWithDump(dump store.Dump, diagnostics []lsifstore.Diagnostic) []codeintelapi.ResolvedDiagnostic {
+	var resolvedDiagnostics []codeintelapi.ResolvedDiagnostic
+	for _, diagnostic := range diagnostics {
+		diagnostic.Path = dump.Root + diagnostic.Path
+		resolvedDiagnostics = append(resolvedDiagnostics, codeintelapi.ResolvedDiagnostic{
+			Dump:       dump,
+			Diagnostic: diagnostic,
+		})
+	}
+
+	return resolvedDiagnostics
 }
