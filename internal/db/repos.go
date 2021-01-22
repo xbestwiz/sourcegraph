@@ -56,13 +56,13 @@ type RepoStore struct {
 	once sync.Once
 }
 
-// NewRepoStoreWithDB instantiates and returns a new RepoStore with prepared statements.
-func NewRepoStoreWithDB(db dbutil.DB) *RepoStore {
+// Repos instantiates and returns a new RepoStore with prepared statements.
+func Repos(db dbutil.DB) *RepoStore {
 	return &RepoStore{Store: basestore.NewWithDB(db, sql.TxOptions{})}
 }
 
 // NewRepoStoreWithDB instantiates and returns a new RepoStore using the other store handle.
-func NewRepoStoreWith(other basestore.ShareableStore) *RepoStore {
+func ReposWith(other basestore.ShareableStore) *RepoStore {
 	return &RepoStore{Store: basestore.NewWithHandle(other.Handle())}
 }
 
@@ -186,7 +186,6 @@ func (s *RepoStore) GetReposSetByIDs(ctx context.Context, ids ...api.RepoID) (ma
 	if err != nil {
 		return nil, err
 	}
-	s.ensureStore()
 
 	repoMap := make(map[api.RepoID]*types.Repo, len(repos))
 	for _, r := range repos {
@@ -321,7 +320,7 @@ func (s *RepoStore) getReposBySQL(ctx context.Context, minimal bool, fromClause,
 		querySuffix = sqlf.Sprintf("")
 	}
 
-	authzConds, err := authzQueryConds(ctx)
+	authzConds, err := AuthzQueryConds(ctx, s.Handle().DB())
 	if err != nil {
 		return err
 	}
@@ -655,6 +654,8 @@ func (s *RepoStore) list(ctx context.Context, tr *trace.Trace, minimal bool, opt
 type ListDefaultReposOptions struct {
 	Limit   int
 	AfterID int32
+	// If true, will only include uncloned default repos
+	OnlyUncloned bool
 }
 
 // ListAllDefaultRepos returns a list of all default repos. Default repos are a union of
@@ -695,7 +696,12 @@ func (s *RepoStore) ListDefaultRepos(ctx context.Context, opts ListDefaultReposO
 	}()
 	s.ensureStore()
 
-	var q = sqlf.Sprintf(`
+	cloneClause := sqlf.Sprintf("TRUE")
+	if opts.OnlyUncloned {
+		cloneClause = sqlf.Sprintf("NOT r.cloned")
+	}
+
+	q := sqlf.Sprintf(`
 -- source: internal/db/default_repos.go:defaultRepos.List
 SELECT
     id,
@@ -714,6 +720,7 @@ WHERE
 			AND s.deleted_at IS NULL
 			AND r.id = sr.repo_id
             AND r.deleted_at IS NULL
+            AND %s
     )
 UNION
     SELECT
@@ -725,9 +732,10 @@ UNION
 	WHERE
 		r.deleted_at IS NULL
 		AND r.id > %s
+		AND %s
 
 	ORDER BY id ASC
-	LIMIT %s`, opts.AfterID, opts.AfterID, opts.Limit)
+	LIMIT %s`, opts.AfterID, cloneClause, opts.AfterID, cloneClause, opts.Limit)
 
 	var repos []*types.RepoName
 
@@ -1199,7 +1207,7 @@ func (*RepoStore) listSQL(opt ReposListOptions) (conds []*sqlf.Query, err error)
 func (s *RepoStore) GetUserAddedRepoNames(ctx context.Context, userID int32) ([]api.RepoName, error) {
 	s.ensureStore()
 
-	authzConds, err := authzQueryConds(ctx)
+	authzConds, err := AuthzQueryConds(ctx, s.Handle().DB())
 	if err != nil {
 		return nil, err
 	}

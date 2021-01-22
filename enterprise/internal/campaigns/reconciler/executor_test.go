@@ -658,7 +658,7 @@ func TestExecutor_LoadAuthenticator(t *testing.T) {
 
 	t.Run("owned by admin user with credential", func(t *testing.T) {
 		token := &auth.OAuthBearerToken{Token: "abcdef"}
-		if _, err := db.UserCredentials.Create(ctx, db.UserCredentialScope{
+		if _, err := db.GlobalUserCredentials.Create(ctx, db.UserCredentialScope{
 			Domain:              db.UserCredentialDomainCampaigns,
 			UserID:              admin.ID,
 			ExternalServiceType: repo.ExternalRepo.ServiceType,
@@ -684,7 +684,7 @@ func TestExecutor_LoadAuthenticator(t *testing.T) {
 
 	t.Run("owned by normal user with credential", func(t *testing.T) {
 		token := &auth.OAuthBearerToken{Token: "abcdef"}
-		if _, err := db.UserCredentials.Create(ctx, db.UserCredentialScope{
+		if _, err := db.GlobalUserCredentials.Create(ctx, db.UserCredentialScope{
 			Domain:              db.UserCredentialDomainCampaigns,
 			UserID:              user.ID,
 			ExternalServiceType: repo.ExternalRepo.ServiceType,
@@ -729,6 +729,9 @@ func TestExecutor_UserCredentialsForGitserver(t *testing.T) {
 	bbsRepos, bbsExtSvc := ct.CreateBbsTestRepos(t, ctx, dbconn.Global, 1)
 	bbsRepo := bbsRepos[0]
 	bbsRepoCloneURL := bbsRepo.Sources[bbsExtSvc.URN()].CloneURL
+
+	bbsSSHRepos, _ := ct.CreateBbsSSHTestRepos(t, ctx, dbconn.Global, 1)
+	bbsSSHRepo := bbsSSHRepos[0]
 
 	gitClient := &ct.FakeGitserverClient{ResponseErr: nil}
 	fakeSource := &ct.FakeChangesetSource{Svc: extSvc}
@@ -814,12 +817,18 @@ func TestExecutor_UserCredentialsForGitserver(t *testing.T) {
 				RemoteURL: bbsRepoCloneURL,
 			},
 		},
+		{
+			name:    "ssh clone URL",
+			user:    admin,
+			repo:    bbsSSHRepo,
+			wantErr: true,
+		},
 	}
 
 	for i, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if tt.credentials != nil {
-				cred, err := db.UserCredentials.Create(ctx, db.UserCredentialScope{
+				cred, err := db.GlobalUserCredentials.Create(ctx, db.UserCredentialScope{
 					Domain:              db.UserCredentialDomainCampaigns,
 					UserID:              tt.user.ID,
 					ExternalServiceType: tt.repo.ExternalRepo.ServiceType,
@@ -828,7 +837,7 @@ func TestExecutor_UserCredentialsForGitserver(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				defer func() { db.UserCredentials.Delete(ctx, cred.ID) }()
+				defer func() { db.GlobalUserCredentials.Delete(ctx, cred.ID) }()
 			}
 
 			campaignSpec := ct.CreateCampaignSpec(t, ctx, store, fmt.Sprintf("reconciler-credentials-%d", i), tt.user.ID)

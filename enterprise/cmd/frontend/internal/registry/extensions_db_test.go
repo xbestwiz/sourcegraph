@@ -7,7 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/lib/pq"
+	"github.com/jackc/pgconn"
+
 	"github.com/sourcegraph/sourcegraph/internal/db"
 	"github.com/sourcegraph/sourcegraph/internal/db/dbtesting"
 	"github.com/sourcegraph/sourcegraph/internal/errcode"
@@ -43,7 +44,7 @@ func TestRegistryExtensions_validNames(t *testing.T) {
 	dbtesting.SetupGlobalTestDB(t)
 	ctx := context.Background()
 
-	user, err := db.Users.Create(ctx, db.NewUser{Username: "u"})
+	user, err := db.GlobalUsers.Create(ctx, db.NewUser{Username: "u"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,7 +53,7 @@ func TestRegistryExtensions_validNames(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			valid := true
 			if _, err := (dbExtensions{}).Create(ctx, user.ID, 0, test.name); err != nil {
-				if e, ok := err.(*pq.Error); ok && (e.Constraint == "registry_extensions_name_valid_chars" || e.Constraint == "registry_extensions_name_length") {
+				if e, ok := err.(*pgconn.PgError); ok && (e.ConstraintName == "registry_extensions_name_valid_chars" || e.ConstraintName == "registry_extensions_name_length") {
 					valid = false
 				} else {
 					t.Fatal(err)
@@ -116,11 +117,11 @@ func TestRegistryExtensions(t *testing.T) {
 		}
 	}
 
-	user, err := db.Users.Create(ctx, db.NewUser{Username: "u"})
+	user, err := db.GlobalUsers.Create(ctx, db.NewUser{Username: "u"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	org, err := db.Orgs.Create(ctx, "o", nil)
+	org, err := db.GlobalOrgs.Create(ctx, "o", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -358,7 +359,7 @@ func TestRegistryExtensions_ListCount(t *testing.T) {
 		}
 	}
 
-	user, err := db.Users.Create(ctx, db.NewUser{Username: "u"})
+	user, err := db.GlobalUsers.Create(ctx, db.NewUser{Username: "u"})
 	if err != nil {
 		t.Fatal(err)
 	}

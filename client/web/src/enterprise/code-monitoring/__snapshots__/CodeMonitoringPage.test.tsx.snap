@@ -203,7 +203,7 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
             useURLQuery={true}
           >
             <div
-              className="filtered-connection test-filtered-connection filtered-connection--noncompact "
+              className="filtered-connection test-filtered-connection filtered-connection--noncompact"
             >
               <ConnectionNodes
                 connection={
@@ -501,7 +501,7 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                 query=""
               >
                 <ul
-                  className="filtered-connection__nodes "
+                  className="filtered-connection__nodes"
                 >
                   <CodeMonitorNode
                     authentictedUser={
@@ -544,40 +544,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo0"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo0"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -601,19 +603,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo0"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo0"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -656,40 +655,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo1"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo1"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Second test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Second test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -713,19 +714,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo1"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo1"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -768,40 +766,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo2"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo2"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Third test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Third test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -825,19 +825,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo2"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo2"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -880,40 +877,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo3"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo3"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Fourth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Fourth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -937,19 +936,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo3"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo3"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -992,40 +988,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo4"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo4"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Fifth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Fifth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -1049,19 +1047,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo4"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo4"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -1104,40 +1099,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo5"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo5"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Sixth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Sixth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -1161,19 +1158,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo5"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo5"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -1216,40 +1210,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo6"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo6"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Seventh test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Seventh test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -1273,19 +1269,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo6"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo6"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -1328,40 +1321,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo7"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo7"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Eighth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Eighth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -1385,19 +1380,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo7"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo7"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -1440,40 +1432,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo9"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo9"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Ninth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Ninth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -1497,19 +1491,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo9"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo9"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -1552,40 +1543,42 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo10"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo10"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Tenth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Tenth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -1609,19 +1602,16 @@ exports[`CodeMonitoringListPage Code monitoring page with 10 results 1`] = `
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo10"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo10"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                 </ul>
               </ConnectionNodes>
@@ -1848,7 +1838,7 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
             useURLQuery={true}
           >
             <div
-              className="filtered-connection test-filtered-connection filtered-connection--noncompact "
+              className="filtered-connection test-filtered-connection filtered-connection--noncompact"
             >
               <ConnectionNodes
                 connection={
@@ -1964,7 +1954,7 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                 query=""
               >
                 <ul
-                  className="filtered-connection__nodes "
+                  className="filtered-connection__nodes"
                 >
                   <CodeMonitorNode
                     authentictedUser={
@@ -2007,40 +1997,42 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo0"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo0"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -2064,19 +2056,16 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo0"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo0"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -2119,40 +2108,42 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo1"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo1"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Second test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Second test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -2176,19 +2167,16 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo1"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo1"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -2231,40 +2219,42 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo2"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo2"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Third test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Third test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -2288,19 +2278,16 @@ exports[`CodeMonitoringListPage Code monitoring page with less than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo2"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo2"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                 </ul>
               </ConnectionNodes>
@@ -2527,7 +2514,7 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
             useURLQuery={true}
           >
             <div
-              className="filtered-connection test-filtered-connection filtered-connection--noncompact "
+              className="filtered-connection test-filtered-connection filtered-connection--noncompact"
             >
               <ConnectionNodes
                 connection={
@@ -2877,7 +2864,7 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                 query=""
               >
                 <ul
-                  className="filtered-connection__nodes "
+                  className="filtered-connection__nodes"
                 >
                   <CodeMonitorNode
                     authentictedUser={
@@ -2920,40 +2907,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo0"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo0"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -2977,19 +2966,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo0"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo0"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3032,40 +3018,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo1"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo1"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Second test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Second test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3089,19 +3077,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo1"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo1"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3144,40 +3129,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo2"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo2"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Third test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Third test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3201,19 +3188,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo2"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo2"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3256,40 +3240,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo3"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo3"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Fourth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Fourth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3313,19 +3299,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo3"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo3"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3368,40 +3351,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo4"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo4"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Fifth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Fifth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3425,19 +3410,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo4"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo4"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3480,40 +3462,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo5"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo5"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Sixth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Sixth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3537,19 +3521,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo5"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo5"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3592,40 +3573,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo6"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo6"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Seventh test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Seventh test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3649,19 +3632,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo6"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo6"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3704,40 +3684,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo7"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo7"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Eighth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Eighth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3761,19 +3743,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo7"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo7"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3816,40 +3795,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo9"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo9"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Ninth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Ninth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3873,19 +3854,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo9"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo9"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -3928,40 +3906,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo10"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo10"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Tenth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Tenth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -3985,19 +3965,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo10"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo10"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -4040,40 +4017,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo11"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo11"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Eleventh test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Eleventh test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -4097,19 +4076,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo11"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo11"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                   <CodeMonitorNode
                     authentictedUser={
@@ -4152,40 +4128,42 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                     showCodeMonitoringTestEmailButton={false}
                     toggleCodeMonitorEnabled={[Function]}
                   >
-                    <div
-                      className="card p-3 mb-2"
+                    <AnchorLink
+                      className="code-monitoring-node card p-3"
+                      to="/code-monitoring/foo12"
                     >
-                      <div
-                        className="d-flex justify-content-between align-items-center"
+                      <a
+                        className="code-monitoring-node card p-3"
+                        href="/code-monitoring/foo12"
                       >
                         <div
-                          className="d-flex flex-column"
+                          className="d-flex justify-content-between align-items-center"
                         >
                           <div
-                            className="font-weight-bold"
+                            className="d-flex flex-column"
                           >
-                            Twelfth test code monitor
+                            <div
+                              className="font-weight-bold"
+                            >
+                              Twelfth test code monitor
+                            </div>
+                            <div
+                              className="d-flex text-muted"
+                            >
+                              New search result → Sends email notifications
+                               
+                            </div>
                           </div>
-                          <div
-                            className="d-flex text-muted"
-                          >
-                            New search result → Sends email notifications
-                             
-                          </div>
-                        </div>
-                        <div
-                          className="d-flex flex-column"
-                        >
                           <div
                             className="d-flex"
                           >
                             <div
-                              className="test-toggle-monitor-enabled"
-                              onClick={[Function]}
+                              className="code-monitoring-node__toggle-wrapper test-toggle-monitor-enabled"
                             >
                               <Toggle
                                 className="mr-3"
                                 disabled={false}
+                                onClick={[Function]}
                                 value={true}
                               >
                                 <button
@@ -4209,19 +4187,16 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                                 </button>
                               </Toggle>
                             </div>
-                            <AnchorLink
-                              to="/code-monitoring/foo12"
+                            <button
+                              className="btn btn-link code-monitoring-node__edit-button"
+                              type="button"
                             >
-                              <a
-                                href="/code-monitoring/foo12"
-                              >
-                                Edit
-                              </a>
-                            </AnchorLink>
+                              Edit
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </a>
+                    </AnchorLink>
                   </CodeMonitorNode>
                 </ul>
                 <p
@@ -4239,7 +4214,7 @@ exports[`CodeMonitoringListPage Code monitoring page with more than 10 results 1
                   </small>
                 </p>
                 <button
-                  className="btn btn-secondary btn-sm filtered-connection__show-more "
+                  className="btn btn-secondary btn-sm filtered-connection__show-more"
                   onClick={[Function]}
                   type="button"
                 >

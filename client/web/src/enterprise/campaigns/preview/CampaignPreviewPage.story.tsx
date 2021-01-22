@@ -61,6 +61,23 @@ const campaignSpec = (): CampaignSpecFields => ({
         totalCount: 0,
         nodes: [],
     },
+    applyPreview: {
+        stats: {
+            close: 10,
+            detach: 10,
+            import: 10,
+            publish: 10,
+            publishDraft: 10,
+            push: 10,
+            reopen: 10,
+            undraft: 10,
+            update: 10,
+
+            added: 5,
+            modified: 10,
+            removed: 3,
+        },
+    },
 })
 
 const fetchCampaignSpecCreate: typeof fetchCampaignSpecById = () => of(campaignSpec())
@@ -123,9 +140,14 @@ add('Create', () => (
                 expandChangesetDescriptions={true}
                 campaignSpecID="123123"
                 fetchCampaignSpecById={fetchCampaignSpecCreate}
-                queryChangesetApplyPreview={queryEmptyChangesetApplyPreview}
+                queryChangesetApplyPreview={queryChangesetApplyPreview}
                 queryChangesetSpecFileDiffs={queryEmptyFileDiffs}
-                authenticatedUser={{ url: '/users/alice' }}
+                authenticatedUser={{
+                    url: '/users/alice',
+                    displayName: 'Alice',
+                    username: 'alice',
+                    email: 'alice@email.test',
+                }}
             />
         )}
     </EnterpriseWebStory>
@@ -141,7 +163,12 @@ add('Update', () => (
                 fetchCampaignSpecById={fetchCampaignSpecUpdate}
                 queryChangesetApplyPreview={queryChangesetApplyPreview}
                 queryChangesetSpecFileDiffs={queryEmptyFileDiffs}
-                authenticatedUser={{ url: '/users/alice' }}
+                authenticatedUser={{
+                    url: '/users/alice',
+                    displayName: 'Alice',
+                    username: 'alice',
+                    email: 'alice@email.test',
+                }}
             />
         )}
     </EnterpriseWebStory>
@@ -157,7 +184,12 @@ add('Missing credentials', () => (
                 fetchCampaignSpecById={fetchCampaignSpecMissingCredentials}
                 queryChangesetApplyPreview={queryChangesetApplyPreview}
                 queryChangesetSpecFileDiffs={queryEmptyFileDiffs}
-                authenticatedUser={{ url: '/users/alice' }}
+                authenticatedUser={{
+                    url: '/users/alice',
+                    displayName: 'Alice',
+                    username: 'alice',
+                    email: 'alice@email.test',
+                }}
             />
         )}
     </EnterpriseWebStory>
@@ -173,7 +205,12 @@ add('No changesets', () => (
                 fetchCampaignSpecById={fetchCampaignSpecCreate}
                 queryChangesetApplyPreview={queryEmptyChangesetApplyPreview}
                 queryChangesetSpecFileDiffs={queryEmptyFileDiffs}
-                authenticatedUser={{ url: '/users/alice' }}
+                authenticatedUser={{
+                    url: '/users/alice',
+                    displayName: 'Alice',
+                    username: 'alice',
+                    email: 'alice@email.test',
+                }}
             />
         )}
     </EnterpriseWebStory>

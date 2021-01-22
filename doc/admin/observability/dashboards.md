@@ -14,65 +14,81 @@ To learn more about Sourcegraph's metrics and how to view these dashboards, see 
 
 #### frontend: 99th_percentile_search_request_duration
 
-This search panel indicates 99th percentile successful search request duration over 5m.
+This panel indicates 99th percentile successful search request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-search-request-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-search-request-duration).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: 90th_percentile_search_request_duration
 
-This search panel indicates 90th percentile successful search request duration over 5m.
+This panel indicates 90th percentile successful search request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-90th-percentile-search-request-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-90th-percentile-search-request-duration).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: hard_timeout_search_responses
 
-This search panel indicates hard timeout search responses every 5m.
+This panel indicates hard timeout search responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-hard-timeout-search-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-hard-timeout-search-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: hard_error_search_responses
 
-This search panel indicates hard error search responses every 5m.
+This panel indicates hard error search responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-hard-error-search-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-hard-error-search-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: partial_timeout_search_responses
 
-This search panel indicates partial timeout search responses every 5m.
+This panel indicates partial timeout search responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-partial-timeout-search-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-partial-timeout-search-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: search_alert_user_suggestions
 
-This search panel indicates search alert user suggestions shown every 5m.
+This panel indicates search alert user suggestions shown every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-search-alert-user-suggestions) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-search-alert-user-suggestions).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: page_load_latency
 
-This cloud panel indicates 90th percentile page load latency over all routes over 10m.
+This panel indicates 90th percentile page load latency over all routes over 10m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-page-load-latency) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-page-load-latency).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: blob_load_latency
 
-This cloud panel indicates 90th percentile blob load latency over 10m.
+This panel indicates 90th percentile blob load latency over 10m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-blob-load-latency) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-blob-load-latency).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -80,49 +96,61 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-blob-load
 
 #### frontend: 99th_percentile_search_codeintel_request_duration
 
-This code-intel panel indicates 99th percentile code-intel successful search request duration over 5m.
+This panel indicates 99th percentile code-intel successful search request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-search-codeintel-request-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-search-codeintel-request-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: 90th_percentile_search_codeintel_request_duration
 
-This code-intel panel indicates 90th percentile code-intel successful search request duration over 5m.
+This panel indicates 90th percentile code-intel successful search request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-90th-percentile-search-codeintel-request-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-90th-percentile-search-codeintel-request-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: hard_timeout_search_codeintel_responses
 
-This code-intel panel indicates hard timeout search code-intel responses every 5m.
+This panel indicates hard timeout search code-intel responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-hard-timeout-search-codeintel-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-hard-timeout-search-codeintel-responses).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: hard_error_search_codeintel_responses
 
-This code-intel panel indicates hard error search code-intel responses every 5m.
+This panel indicates hard error search code-intel responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-hard-error-search-codeintel-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-hard-error-search-codeintel-responses).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: partial_timeout_search_codeintel_responses
 
-This code-intel panel indicates partial timeout search code-intel responses every 5m.
+This panel indicates partial timeout search code-intel responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-partial-timeout-search-codeintel-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-partial-timeout-search-codeintel-responses).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: search_codeintel_alert_user_suggestions
 
-This code-intel panel indicates search code-intel alert user suggestions shown every 5m.
+This panel indicates search code-intel alert user suggestions shown every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-search-codeintel-alert-user-suggestions) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-search-codeintel-alert-user-suggestions).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -130,49 +158,61 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-search-co
 
 #### frontend: 99th_percentile_search_api_request_duration
 
-This search panel indicates 99th percentile successful search API request duration over 5m.
+This panel indicates 99th percentile successful search API request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-search-api-request-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-search-api-request-duration).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: 90th_percentile_search_api_request_duration
 
-This search panel indicates 90th percentile successful search API request duration over 5m.
+This panel indicates 90th percentile successful search API request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-90th-percentile-search-api-request-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-90th-percentile-search-api-request-duration).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: hard_timeout_search_api_responses
 
-This search panel indicates hard timeout search API responses every 5m.
+This panel indicates hard timeout search API responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-hard-timeout-search-api-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-hard-timeout-search-api-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: hard_error_search_api_responses
 
-This search panel indicates hard error search API responses every 5m.
+This panel indicates hard error search API responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-hard-error-search-api-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-hard-error-search-api-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: partial_timeout_search_api_responses
 
-This search panel indicates partial timeout search API responses every 5m.
+This panel indicates partial timeout search API responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-partial-timeout-search-api-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-partial-timeout-search-api-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: search_api_alert_user_suggestions
 
-This search panel indicates search API alert user suggestions shown every 5m.
+This panel indicates search API alert user suggestions shown every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-search-api-alert-user-suggestions) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-search-api-alert-user-suggestions).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -180,33 +220,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-search-ap
 
 #### frontend: codeintel_resolvers_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful resolver duration over 5m.
+This panel indicates 99th percentile successful resolver duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-resolvers-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-resolvers-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_resolvers_errors
 
-This code-intel panel indicates resolver errors every 5m.
+This panel indicates resolver errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-resolvers-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-resolvers-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_api_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful codeintel API operation duration over 5m.
+This panel indicates 99th percentile successful codeintel API operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-api-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-api-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_api_errors
 
-This code-intel panel indicates code intel API errors every 5m.
+This panel indicates code intel API errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-api-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-api-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -214,97 +262,121 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel
 
 #### frontend: codeintel_dbstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful database store operation duration over 5m.
+This panel indicates 99th percentile successful database store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-dbstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-dbstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_dbstore_errors
 
-This code-intel panel indicates database store errors every 5m.
+This panel indicates database store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-dbstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-dbstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_upload_workerstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful upload worker store operation duration over 5m.
+This panel indicates 99th percentile successful upload worker store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-upload-workerstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-upload-workerstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_upload_workerstore_errors
 
-This code-intel panel indicates upload worker store errors every 5m.
+This panel indicates upload worker store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-upload-workerstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-upload-workerstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_index_workerstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful index worker store operation duration over 5m.
+This panel indicates 99th percentile successful index worker store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-index-workerstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-index-workerstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_index_workerstore_errors
 
-This code-intel panel indicates index worker store errors every 5m.
+This panel indicates index worker store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-index-workerstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-index-workerstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_lsifstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful LSIF store operation duration over 5m.
+This panel indicates 99th percentile successful LSIF store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-lsifstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-lsifstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_lsifstore_errors
 
-This code-intel panel indicates lSIF store errors every 5m.
+This panel indicates lSIF store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-lsifstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-lsifstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_uploadstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful upload store operation duration over 5m.
+This panel indicates 99th percentile successful upload store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-uploadstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-uploadstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_uploadstore_errors
 
-This code-intel panel indicates upload store errors every 5m.
+This panel indicates upload store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-uploadstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-uploadstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_gitserverclient_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful gitserver client operation duration over 5m.
+This panel indicates 99th percentile successful gitserver client operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-gitserverclient-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-gitserverclient-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_gitserverclient_errors
 
-This code-intel panel indicates gitserver client errors every 5m.
+This panel indicates gitserver client errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-gitserverclient-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-gitserverclient-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -312,33 +384,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel
 
 #### frontend: codeintel_commit_graph_queue_size
 
-This code-intel panel indicates commit graph queue size.
+This panel indicates commit graph queue size.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-queue-size).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_commit_graph_queue_growth_rate
 
-This code-intel panel indicates commit graph queue growth rate over 30m.
+This panel indicates commit graph queue growth rate over 30m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-queue-growth-rate) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-queue-growth-rate).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_commit_graph_updater_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful commit graph updater operation duration over 5m.
+This panel indicates 99th percentile successful commit graph updater operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-updater-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-updater-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_commit_graph_updater_errors
 
-This code-intel panel indicates commit graph updater errors every 5m.
+This panel indicates commit graph updater errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-updater-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-commit-graph-updater-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -346,62 +426,75 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel
 
 #### frontend: codeintel_janitor_errors
 
-This code-intel panel indicates janitor errors every 5m.
+This panel indicates janitor errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-janitor-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-janitor-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_upload_records_removed
 
-This code-intel panel indicates upload records expired or deleted every 5m.
+This panel indicates upload records expired or deleted every 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_index_records_removed
 
-This code-intel panel indicates index records expired or deleted every 5m.
+This panel indicates index records expired or deleted every 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_lsif_data_removed
 
-This code-intel panel indicates data for unreferenced upload records removed every 5m.
+This panel indicates data for unreferenced upload records removed every 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_background_upload_resets
 
-This code-intel panel indicates upload records re-queued (due to unresponsive worker) every 5m.
+This panel indicates upload records re-queued (due to unresponsive worker) every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-upload-resets) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-upload-resets).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_background_upload_reset_failures
 
-This code-intel panel indicates upload records errored due to repeated reset every 5m.
+This panel indicates upload records errored due to repeated reset every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-upload-reset-failures) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-upload-reset-failures).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_background_index_resets
 
-This code-intel panel indicates index records re-queued (due to unresponsive indexer) every 5m.
+This panel indicates index records re-queued (due to unresponsive indexer) every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-index-resets) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-index-resets).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_background_index_reset_failures
 
-This code-intel panel indicates index records errored due to repeated reset every 5m.
+This panel indicates index records errored due to repeated reset every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-index-reset-failures) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-background-index-reset-failures).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -409,31 +502,37 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel
 
 #### frontend: codeintel_indexing_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful indexing operation duration over 5m.
+This panel indicates 99th percentile successful indexing operation duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_indexing_errors
 
-This code-intel panel indicates indexing errors every 5m.
+This panel indicates indexing errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-indexing-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-indexing-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_autoindex_enqueuer_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful index enqueuer operation duration over 5m.
+This panel indicates 99th percentile successful index enqueuer operation duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### frontend: codeintel_autoindex_enqueuer_errors
 
-This code-intel panel indicates index enqueuer errors every 5m.
+This panel indicates index enqueuer errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel-autoindex-enqueuer-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-codeintel-autoindex-enqueuer-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -441,57 +540,71 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-codeintel
 
 #### frontend: internal_indexed_search_error_responses
 
-This search panel indicates internal indexed search error responses every 5m.
+This panel indicates internal indexed search error responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-internal-indexed-search-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-internal-indexed-search-error-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: internal_unindexed_search_error_responses
 
-This search panel indicates internal unindexed search error responses every 5m.
+This panel indicates internal unindexed search error responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-internal-unindexed-search-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-internal-unindexed-search-error-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### frontend: internal_api_error_responses
 
-This cloud panel indicates internal API error responses every 5m by route.
+This panel indicates internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: 99th_percentile_gitserver_duration
 
-This cloud panel indicates 99th percentile successful gitserver query duration over 5m.
+This panel indicates 99th percentile successful gitserver query duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-gitserver-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-99th-percentile-gitserver-duration).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: gitserver_error_responses
 
-This cloud panel indicates gitserver error responses every 5m.
+This panel indicates gitserver error responses every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-gitserver-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-gitserver-error-responses).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: observability_test_alert_warning
 
-This distribution panel indicates warning test alert metric.
+This panel indicates warning test alert metric.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-observability-test-alert-warning) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-observability-test-alert-warning).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
 #### frontend: observability_test_alert_critical
 
-This distribution panel indicates critical test alert metric.
+This panel indicates critical test alert metric.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-observability-test-alert-critical) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-observability-test-alert-critical).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
@@ -499,33 +612,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-observabi
 
 #### frontend: container_cpu_usage
 
-This cloud panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: container_memory_usage
 
-This cloud panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-container-memory-usage).
 
-<br />
-
-#### frontend: container_restarts
-
-This cloud panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-#### frontend: fs_inodes_used
+#### frontend: container_missing
 
-This cloud panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod (frontend|sourcegraph-frontend)` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p (frontend|sourcegraph-frontend)`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' (frontend|sourcegraph-frontend)` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the (frontend|sourcegraph-frontend) container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs (frontend|sourcegraph-frontend)` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -533,33 +652,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-fs-inodes
 
 #### frontend: provisioning_container_cpu_usage_long_term
 
-This cloud panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: provisioning_container_memory_usage_long_term
 
-This cloud panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: provisioning_container_cpu_usage_short_term
 
-This cloud panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: provisioning_container_memory_usage_short_term
 
-This cloud panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -567,27 +694,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-provision
 
 #### frontend: go_goroutines
 
-This cloud panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### frontend: go_gc_duration_seconds
 
-This cloud panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-### Frontend: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Frontend: Kubernetes monitoring (only available on Kubernetes)
 
 #### frontend: pods_available_percentage
 
-This cloud panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#frontend-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#frontend-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -597,41 +732,49 @@ Refer to the [alert solutions reference](./alert_solutions.md#frontend-pods-avai
 
 #### gitserver: disk_space_remaining
 
-This cloud panel indicates disk space remaining by instance.
+This panel indicates disk space remaining by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-disk-space-remaining) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-disk-space-remaining).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: running_git_commands
 
-This cloud panel indicates running git commands.
+This panel indicates running git commands.
 
 A high value signals load.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-running-git-commands) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-running-git-commands).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: repository_clone_queue_size
 
-This cloud panel indicates repository clone queue size.
+This panel indicates repository clone queue size.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-repository-clone-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-repository-clone-queue-size).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: repository_existence_check_queue_size
 
-This cloud panel indicates repository existence check queue size.
+This panel indicates repository existence check queue size.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-repository-existence-check-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-repository-existence-check-queue-size).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: echo_command_duration_test
 
-This cloud panel indicates echo test command duration.
+This panel indicates echo test command duration.
 
 A high value here likely indicates a problem, especially if consistently high.
 You can query for individual commands using `sum by (cmd)(src_gitserver_exec_running)` in Grafana (`/-/debug/grafana`) to see if a specific Git Server command might be spiking in frequency.
@@ -641,14 +784,17 @@ If this value is consistently high, consider the following:
 - **Single container deployments:** Upgrade to a [Docker Compose deployment](../install/docker-compose/migrate.md) which offers better scalability and resource isolation.
 - **Kubernetes and Docker Compose:** Check that you are running a similar number of git server replicas and that their CPU/memory limits are allocated according to what is shown in the [Sourcegraph resource estimator](../install/resource_estimator.md).
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: frontend_internal_api_error_responses
 
-This cloud panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -656,41 +802,50 @@ Refer to the [alert solutions reference](./alert_solutions.md#gitserver-frontend
 
 #### gitserver: container_cpu_usage
 
-This cloud panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: container_memory_usage
 
-This cloud panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-container-memory-usage).
 
-<br />
-
-#### gitserver: container_restarts
-
-This cloud panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-#### gitserver: fs_inodes_used
+#### gitserver: container_missing
 
-This cloud panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod gitserver` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p gitserver`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' gitserver` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the gitserver container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs gitserver` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: fs_io_operations
 
-This cloud panel indicates filesystem reads and writes rate by instance over 1h.
+This panel indicates filesystem reads and writes rate by instance over 1h.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-fs-io-operations) for relevant alerts.
+This value indicates the number of filesystem read and write operations by containers of this service.
+When extremely high, this can indicate a resource usage problem, or can cause problems with the service itself, especially if high values or spikes correlate with {{CONTAINER_NAME}} issues.
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -698,35 +853,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#gitserver-fs-io-op
 
 #### gitserver: provisioning_container_cpu_usage_long_term
 
-This cloud panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: provisioning_container_memory_usage_long_term
 
-This cloud panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
 Git Server is expected to use up all the memory it is provided.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: provisioning_container_cpu_usage_short_term
 
-This cloud panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: provisioning_container_memory_usage_short_term
 
-This cloud panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
 Git Server is expected to use up all the memory it is provided.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -734,17 +895,23 @@ Git Server is expected to use up all the memory it is provided.
 
 #### gitserver: go_goroutines
 
-This cloud panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### gitserver: go_gc_duration_seconds
 
-This cloud panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -752,9 +919,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#gitserver-go-gc-du
 
 #### gitserver: pods_available_percentage
 
-This cloud panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#gitserver-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#gitserver-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -766,9 +935,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#gitserver-pods-ava
 
 #### github-proxy: github_proxy_waiting_requests
 
-This cloud panel indicates number of requests waiting on the global mutex.
+This panel indicates number of requests waiting on the global mutex.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-github-proxy-waiting-requests) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-github-proxy-waiting-requests).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -776,33 +947,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-githu
 
 #### github-proxy: container_cpu_usage
 
-This cloud panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### github-proxy: container_memory_usage
 
-This cloud panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-container-memory-usage).
 
-<br />
-
-#### github-proxy: container_restarts
-
-This cloud panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-#### github-proxy: fs_inodes_used
+#### github-proxy: container_missing
 
-This cloud panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod github-proxy` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p github-proxy`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' github-proxy` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the github-proxy container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs github-proxy` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -810,33 +987,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-fs-in
 
 #### github-proxy: provisioning_container_cpu_usage_long_term
 
-This cloud panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### github-proxy: provisioning_container_memory_usage_long_term
 
-This cloud panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### github-proxy: provisioning_container_cpu_usage_short_term
 
-This cloud panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### github-proxy: provisioning_container_memory_usage_short_term
 
-This cloud panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -844,27 +1029,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-provi
 
 #### github-proxy: go_goroutines
 
-This cloud panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### github-proxy: go_gc_duration_seconds
 
-This cloud panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-### GitHub Proxy: Kubernetes monitoring (ignore if using Docker Compose or server)
+### GitHub Proxy: Kubernetes monitoring (only available on Kubernetes)
 
 #### github-proxy: pods_available_percentage
 
-This cloud panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#github-proxy-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -874,17 +1067,21 @@ Refer to the [alert solutions reference](./alert_solutions.md#github-proxy-pods-
 
 #### postgres: connections
 
-This cloud panel indicates active connections.
+This panel indicates active connections.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-connections) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-connections).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### postgres: transaction_durations
 
-This cloud panel indicates maximum transaction durations.
+This panel indicates maximum transaction durations.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-transaction-durations) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-transaction-durations).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -892,31 +1089,37 @@ Refer to the [alert solutions reference](./alert_solutions.md#postgres-transacti
 
 #### postgres: postgres_up
 
-This cloud panel indicates database availability.
+This panel indicates database availability.
 
 A non-zero value indicates the database is online.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-postgres-up) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-postgres-up).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### postgres: pg_exporter_err
 
-This cloud panel indicates errors scraping postgres exporter.
+This panel indicates errors scraping postgres exporter.
 
 This value indicates issues retrieving metrics from postgres_exporter.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-pg-exporter-err) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-pg-exporter-err).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### postgres: migration_in_progress
 
-This cloud panel indicates active schema migration.
+This panel indicates active schema migration.
 
 A 0 value indicates that no migration is in progress.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-migration-in-progress) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-migration-in-progress).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -924,43 +1127,53 @@ Refer to the [alert solutions reference](./alert_solutions.md#postgres-migration
 
 #### postgres: provisioning_container_cpu_usage_long_term
 
-This cloud panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### postgres: provisioning_container_memory_usage_long_term
 
-This cloud panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### postgres: provisioning_container_cpu_usage_short_term
 
-This cloud panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### postgres: provisioning_container_memory_usage_short_term
 
-This cloud panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-### Postgres: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Postgres: Kubernetes monitoring (only available on Kubernetes)
 
 #### postgres: pods_available_percentage
 
-This cloud panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#postgres-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#postgres-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -972,39 +1185,47 @@ Refer to the [alert solutions reference](./alert_solutions.md#postgres-pods-avai
 
 #### precise-code-intel-worker: upload_queue_size
 
-This code-intel panel indicates queue size.
+This panel indicates queue size.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-upload-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-upload-queue-size).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: upload_queue_growth_rate
 
-This code-intel panel indicates queue growth rate over 30m.
+This panel indicates queue growth rate over 30m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-upload-queue-growth-rate) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-upload-queue-growth-rate).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: job_errors
 
-This code-intel panel indicates job errors errors every 5m.
+This panel indicates job errors errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-job-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-job-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: active_workers
 
-This code-intel panel indicates active workers processing uploads.
+This panel indicates active workers processing uploads.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: active_jobs
 
-This code-intel panel indicates active jobs.
+This panel indicates active jobs.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1012,8 +1233,9 @@ This code-intel panel indicates active jobs.
 
 #### precise-code-intel-worker: job_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful job duration over 5m.
+This panel indicates 99th percentile successful job duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1021,81 +1243,101 @@ This code-intel panel indicates 99th percentile successful job duration over 5m.
 
 #### precise-code-intel-worker: codeintel_dbstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful database store operation duration over 5m.
+This panel indicates 99th percentile successful database store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-dbstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-dbstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_dbstore_errors
 
-This code-intel panel indicates database store errors every 5m.
+This panel indicates database store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-dbstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-dbstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_workerstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful worker store operation duration over 5m.
+This panel indicates 99th percentile successful worker store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-workerstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-workerstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_workerstore_errors
 
-This code-intel panel indicates worker store errors every 5m.
+This panel indicates worker store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-workerstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-workerstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_lsifstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful LSIF store operation duration over 5m.
+This panel indicates 99th percentile successful LSIF store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-lsifstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-lsifstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_lsifstore_errors
 
-This code-intel panel indicates lSIF store errors every 5m.
+This panel indicates lSIF store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-lsifstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-lsifstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_uploadstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful upload store operation duration over 5m.
+This panel indicates 99th percentile successful upload store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-uploadstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-uploadstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_uploadstore_errors
 
-This code-intel panel indicates upload store errors every 5m.
+This panel indicates upload store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-uploadstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-uploadstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_gitserverclient_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful gitserver client operation duration over 5m.
+This panel indicates 99th percentile successful gitserver client operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-gitserverclient-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-gitserverclient-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: codeintel_gitserverclient_errors
 
-This code-intel panel indicates gitserver client errors every 5m.
+This panel indicates gitserver client errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-gitserverclient-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-codeintel-gitserverclient-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1103,9 +1345,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-worker: frontend_internal_api_error_responses
 
-This code-intel panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1113,33 +1357,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-worker: container_cpu_usage
 
-This code-intel panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: container_memory_usage
 
-This code-intel panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-container-memory-usage).
 
-<br />
-
-#### precise-code-intel-worker: container_restarts
-
-This code-intel panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-#### precise-code-intel-worker: fs_inodes_used
+#### precise-code-intel-worker: container_missing
 
-This code-intel panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod precise-code-intel-worker` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p precise-code-intel-worker`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' precise-code-intel-worker` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the precise-code-intel-worker container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs precise-code-intel-worker` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1147,33 +1397,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-worker: provisioning_container_cpu_usage_long_term
 
-This code-intel panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: provisioning_container_memory_usage_long_term
 
-This code-intel panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: provisioning_container_cpu_usage_short_term
 
-This code-intel panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: provisioning_container_memory_usage_short_term
 
-This code-intel panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1181,27 +1439,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-worker: go_goroutines
 
-This code-intel panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-worker: go_gc_duration_seconds
 
-This code-intel panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-### Precise Code Intel Worker: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Precise Code Intel Worker: Kubernetes monitoring (only available on Kubernetes)
 
 #### precise-code-intel-worker: pods_available_percentage
 
-This code-intel panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-worker-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1211,9 +1477,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### query-runner: frontend_internal_api_error_responses
 
-This search panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1221,33 +1489,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#query-runner-front
 
 #### query-runner: container_memory_usage
 
-This search panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-container-memory-usage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### query-runner: container_cpu_usage
 
-This search panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-container-cpu-usage).
 
-<br />
-
-#### query-runner: container_restarts
-
-This search panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-#### query-runner: fs_inodes_used
+#### query-runner: container_missing
 
-This search panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod query-runner` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p query-runner`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' query-runner` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the query-runner container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs query-runner` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1255,33 +1529,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#query-runner-fs-in
 
 #### query-runner: provisioning_container_cpu_usage_long_term
 
-This search panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### query-runner: provisioning_container_memory_usage_long_term
 
-This search panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### query-runner: provisioning_container_cpu_usage_short_term
 
-This search panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### query-runner: provisioning_container_memory_usage_short_term
 
-This search panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1289,27 +1571,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#query-runner-provi
 
 #### query-runner: go_goroutines
 
-This search panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### query-runner: go_gc_duration_seconds
 
-This search panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-### Query Runner: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Query Runner: Kubernetes monitoring (only available on Kubernetes)
 
 #### query-runner: pods_available_percentage
 
-This search panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#query-runner-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#query-runner-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1319,9 +1609,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#query-runner-pods-
 
 #### repo-updater: frontend_internal_api_error_responses
 
-This cloud panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1329,133 +1621,163 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-front
 
 #### repo-updater: syncer_sync_last_time
 
-This cloud panel indicates time since last sync.
+This panel indicates time since last sync.
 
 A high value here indicates issues synchronizing repository permissions.
 If the value is persistently high, make sure all external services have valid tokens.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: src_repoupdater_max_sync_backoff
 
-This cloud panel indicates time since oldest sync.
+This panel indicates time since oldest sync.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-max-sync-backoff) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-max-sync-backoff).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: src_repoupdater_syncer_sync_errors_total
 
-This cloud panel indicates sync error rate.
+This panel indicates sync error rate.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-syncer-sync-errors-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-syncer-sync-errors-total).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: syncer_sync_start
 
-This cloud panel indicates sync was started.
+This panel indicates sync was started.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-syncer-sync-start) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-syncer-sync-start).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: syncer_sync_duration
 
-This cloud panel indicates 95th repositories sync duration.
+This panel indicates 95th repositories sync duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-syncer-sync-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-syncer-sync-duration).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: source_duration
 
-This cloud panel indicates 95th repositories source duration.
+This panel indicates 95th repositories source duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-source-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-source-duration).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: syncer_synced_repos
 
-This cloud panel indicates repositories synced.
+This panel indicates repositories synced.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-syncer-synced-repos) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-syncer-synced-repos).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sourced_repos
 
-This cloud panel indicates repositories sourced.
+This panel indicates repositories sourced.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sourced-repos) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-sourced-repos).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: user_added_repos
 
-This cloud panel indicates total number of user added repos.
+This panel indicates total number of user added repos.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-user-added-repos) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-user-added-repos).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: purge_failed
 
-This cloud panel indicates repositories purge failed.
+This panel indicates repositories purge failed.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-purge-failed) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-purge-failed).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sched_auto_fetch
 
-This cloud panel indicates repositories scheduled due to hitting a deadline.
+This panel indicates repositories scheduled due to hitting a deadline.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sched-auto-fetch) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-sched-auto-fetch).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sched_manual_fetch
 
-This cloud panel indicates repositories scheduled due to user traffic.
+This panel indicates repositories scheduled due to user traffic.
 
 Check repo-updater logs if this value is persistently high.
 This does not indicate anything if there are no user added code hosts.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sched_known_repos
 
-This cloud panel indicates repositories managed by the scheduler.
+This panel indicates repositories managed by the scheduler.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sched-known-repos) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-sched-known-repos).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sched_update_queue_length
 
-This cloud panel indicates rate of growth of update queue length over 5 minutes.
+This panel indicates rate of growth of update queue length over 5 minutes.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sched-update-queue-length) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-sched-update-queue-length).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sched_loops
 
-This cloud panel indicates scheduler loops.
+This panel indicates scheduler loops.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sched-loops) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-sched-loops).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: sched_error
 
-This cloud panel indicates repositories schedule error rate.
+This panel indicates repositories schedule error rate.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sched-error) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-sched-error).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1463,49 +1785,61 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-sched
 
 #### repo-updater: perms_syncer_perms
 
-This cloud panel indicates time gap between least and most up to date permissions.
+This panel indicates time gap between least and most up to date permissions.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-perms) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-perms).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: perms_syncer_stale_perms
 
-This cloud panel indicates number of entities with stale permissions.
+This panel indicates number of entities with stale permissions.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-stale-perms) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-stale-perms).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: perms_syncer_no_perms
 
-This cloud panel indicates number of entities with no permissions.
+This panel indicates number of entities with no permissions.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-no-perms) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-no-perms).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: perms_syncer_sync_duration
 
-This cloud panel indicates 95th permissions sync duration.
+This panel indicates 95th permissions sync duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-sync-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-sync-duration).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: perms_syncer_queue_size
 
-This cloud panel indicates permissions sync queued items.
+This panel indicates permissions sync queued items.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-queue-size).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: perms_syncer_sync_errors
 
-This cloud panel indicates permissions sync error rate.
+This panel indicates permissions sync error rate.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-sync-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-perms-syncer-sync-errors).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1513,73 +1847,91 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-perms
 
 #### repo-updater: src_repoupdater_external_services_total
 
-This cloud panel indicates the total number of external services.
+This panel indicates the total number of external services.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-external-services-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-external-services-total).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: src_repoupdater_user_external_services_total
 
-This cloud panel indicates the total number of user added external services.
+This panel indicates the total number of user added external services.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-user-external-services-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-src-repoupdater-user-external-services-total).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: repoupdater_queued_sync_jobs_total
 
-This cloud panel indicates the total number of queued sync jobs.
+This panel indicates the total number of queued sync jobs.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-repoupdater-queued-sync-jobs-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-repoupdater-queued-sync-jobs-total).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: repoupdater_completed_sync_jobs_total
 
-This cloud panel indicates the total number of completed sync jobs.
+This panel indicates the total number of completed sync jobs.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-repoupdater-completed-sync-jobs-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-repoupdater-completed-sync-jobs-total).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: repoupdater_errored_sync_jobs_total
 
-This cloud panel indicates the total number of errored sync jobs.
+This panel indicates the total number of errored sync jobs.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-repoupdater-errored-sync-jobs-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-repoupdater-errored-sync-jobs-total).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: github_graphql_rate_limit_remaining
 
-This cloud panel indicates remaining calls to GitHub graphql API before hitting the rate limit.
+This panel indicates remaining calls to GitHub graphql API before hitting the rate limit.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-github-graphql-rate-limit-remaining) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-github-graphql-rate-limit-remaining).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: github_rest_rate_limit_remaining
 
-This cloud panel indicates remaining calls to GitHub rest API before hitting the rate limit.
+This panel indicates remaining calls to GitHub rest API before hitting the rate limit.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-github-rest-rate-limit-remaining) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-github-rest-rate-limit-remaining).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: github_search_rate_limit_remaining
 
-This cloud panel indicates remaining calls to GitHub search API before hitting the rate limit.
+This panel indicates remaining calls to GitHub search API before hitting the rate limit.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-github-search-rate-limit-remaining) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-github-search-rate-limit-remaining).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: gitlab_rest_rate_limit_remaining
 
-This cloud panel indicates remaining calls to GitLab rest API before hitting the rate limit.
+This panel indicates remaining calls to GitLab rest API before hitting the rate limit.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-gitlab-rest-rate-limit-remaining) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-gitlab-rest-rate-limit-remaining).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1587,33 +1939,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-gitla
 
 #### repo-updater: container_cpu_usage
 
-This cloud panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: container_memory_usage
 
-This cloud panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-container-memory-usage).
 
-<br />
-
-#### repo-updater: container_restarts
-
-This cloud panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-#### repo-updater: fs_inodes_used
+#### repo-updater: container_missing
 
-This cloud panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod repo-updater` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p repo-updater`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' repo-updater` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the repo-updater container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs repo-updater` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1621,33 +1979,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-fs-in
 
 #### repo-updater: provisioning_container_cpu_usage_long_term
 
-This cloud panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: provisioning_container_memory_usage_long_term
 
-This cloud panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: provisioning_container_cpu_usage_short_term
 
-This cloud panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: provisioning_container_memory_usage_short_term
 
-This cloud panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1655,27 +2021,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-provi
 
 #### repo-updater: go_goroutines
 
-This cloud panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### repo-updater: go_gc_duration_seconds
 
-This cloud panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-### Repo Updater: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Repo Updater: Kubernetes monitoring (only available on Kubernetes)
 
 #### repo-updater: pods_available_percentage
 
-This cloud panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#repo-updater-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1685,25 +2059,31 @@ Refer to the [alert solutions reference](./alert_solutions.md#repo-updater-pods-
 
 #### searcher: unindexed_search_request_errors
 
-This search panel indicates unindexed search request errors every 5m by code.
+This panel indicates unindexed search request errors every 5m by code.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-unindexed-search-request-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-unindexed-search-request-errors).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: replica_traffic
 
-This search panel indicates requests per second over 10m.
+This panel indicates requests per second over 10m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-replica-traffic) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-replica-traffic).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: frontend_internal_api_error_responses
 
-This search panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1711,33 +2091,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#searcher-frontend-
 
 #### searcher: container_cpu_usage
 
-This search panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: container_memory_usage
 
-This search panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-container-memory-usage).
 
-<br />
-
-#### searcher: container_restarts
-
-This search panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-#### searcher: fs_inodes_used
+#### searcher: container_missing
 
-This search panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod searcher` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p searcher`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' searcher` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the searcher container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs searcher` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1745,33 +2131,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#searcher-fs-inodes
 
 #### searcher: provisioning_container_cpu_usage_long_term
 
-This search panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: provisioning_container_memory_usage_long_term
 
-This search panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: provisioning_container_cpu_usage_short_term
 
-This search panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: provisioning_container_memory_usage_short_term
 
-This search panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1779,27 +2173,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#searcher-provision
 
 #### searcher: go_goroutines
 
-This search panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### searcher: go_gc_duration_seconds
 
-This search panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-### Searcher: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Searcher: Kubernetes monitoring (only available on Kubernetes)
 
 #### searcher: pods_available_percentage
 
-This search panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#searcher-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#searcher-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -1809,25 +2211,31 @@ Refer to the [alert solutions reference](./alert_solutions.md#searcher-pods-avai
 
 #### symbols: store_fetch_failures
 
-This code-intel panel indicates store fetch failures every 5m.
+This panel indicates store fetch failures every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-store-fetch-failures) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-store-fetch-failures).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: current_fetch_queue_size
 
-This code-intel panel indicates current fetch queue size.
+This panel indicates current fetch queue size.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-current-fetch-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-current-fetch-queue-size).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: frontend_internal_api_error_responses
 
-This code-intel panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1835,33 +2243,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#symbols-frontend-i
 
 #### symbols: container_cpu_usage
 
-This code-intel panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: container_memory_usage
 
-This code-intel panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-container-memory-usage).
 
-<br />
-
-#### symbols: container_restarts
-
-This code-intel panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-#### symbols: fs_inodes_used
+#### symbols: container_missing
 
-This code-intel panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod symbols` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p symbols`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' symbols` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the symbols container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs symbols` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1869,33 +2283,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#symbols-fs-inodes-
 
 #### symbols: provisioning_container_cpu_usage_long_term
 
-This code-intel panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: provisioning_container_memory_usage_long_term
 
-This code-intel panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: provisioning_container_cpu_usage_short_term
 
-This code-intel panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: provisioning_container_memory_usage_short_term
 
-This code-intel panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1903,27 +2325,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#symbols-provisioni
 
 #### symbols: go_goroutines
 
-This code-intel panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### symbols: go_gc_duration_seconds
 
-This code-intel panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-### Symbols: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Symbols: Kubernetes monitoring (only available on Kubernetes)
 
 #### symbols: pods_available_percentage
 
-This code-intel panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#symbols-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#symbols-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -1933,29 +2363,33 @@ Refer to the [alert solutions reference](./alert_solutions.md#symbols-pods-avail
 
 #### syntect-server: syntax_highlighting_errors
 
-This cloud panel indicates syntax highlighting errors every 5m.
+This panel indicates syntax highlighting errors every 5m.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: syntax_highlighting_timeouts
 
-This cloud panel indicates syntax highlighting timeouts every 5m.
+This panel indicates syntax highlighting timeouts every 5m.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: syntax_highlighting_panics
 
-This cloud panel indicates syntax highlighting panics every 5m.
+This panel indicates syntax highlighting panics every 5m.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: syntax_highlighting_worker_deaths
 
-This cloud panel indicates syntax highlighter worker deaths every 5m.
+This panel indicates syntax highlighter worker deaths every 5m.
 
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1963,33 +2397,39 @@ This cloud panel indicates syntax highlighter worker deaths every 5m.
 
 #### syntect-server: container_cpu_usage
 
-This cloud panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: container_memory_usage
 
-This cloud panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-container-memory-usage).
 
-<br />
-
-#### syntect-server: container_restarts
-
-This cloud panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-#### syntect-server: fs_inodes_used
+#### syntect-server: container_missing
 
-This cloud panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod syntect-server` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p syntect-server`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' syntect-server` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the syntect-server container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs syntect-server` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -1997,43 +2437,53 @@ Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-fs-
 
 #### syntect-server: provisioning_container_cpu_usage_long_term
 
-This cloud panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: provisioning_container_memory_usage_long_term
 
-This cloud panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: provisioning_container_cpu_usage_short_term
 
-This cloud panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
 #### syntect-server: provisioning_container_memory_usage_short_term
 
-This cloud panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
-### Syntect Server: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Syntect Server: Kubernetes monitoring (only available on Kubernetes)
 
 #### syntect-server: pods_available_percentage
 
-This cloud panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#syntect-server-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -2043,9 +2493,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#syntect-server-pod
 
 #### zoekt-indexserver: average_resolve_revision_duration
 
-This search panel indicates average resolve revision duration over 5m.
+This panel indicates average resolve revision duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-average-resolve-revision-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-average-resolve-revision-duration).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -2053,41 +2505,50 @@ Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-
 
 #### zoekt-indexserver: container_cpu_usage
 
-This search panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-indexserver: container_memory_usage
 
-This search panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-container-memory-usage).
 
-<br />
-
-#### zoekt-indexserver: container_restarts
-
-This search panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-#### zoekt-indexserver: fs_inodes_used
+#### zoekt-indexserver: container_missing
 
-This search panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod zoekt-indexserver` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p zoekt-indexserver`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' zoekt-indexserver` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the zoekt-indexserver container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs zoekt-indexserver` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-indexserver: fs_io_operations
 
-This search panel indicates filesystem reads and writes rate by instance over 1h.
+This panel indicates filesystem reads and writes rate by instance over 1h.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-fs-io-operations) for relevant alerts.
+This value indicates the number of filesystem read and write operations by containers of this service.
+When extremely high, this can indicate a resource usage problem, or can cause problems with the service itself, especially if high values or spikes correlate with {{CONTAINER_NAME}} issues.
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -2095,43 +2556,53 @@ Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-
 
 #### zoekt-indexserver: provisioning_container_cpu_usage_long_term
 
-This search panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-indexserver: provisioning_container_memory_usage_long_term
 
-This search panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-indexserver: provisioning_container_cpu_usage_short_term
 
-This search panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-indexserver: provisioning_container_memory_usage_short_term
 
-This search panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-### Zoekt Index Server: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Zoekt Index Server: Kubernetes monitoring (only available on Kubernetes)
 
 #### zoekt-indexserver: pods_available_percentage
 
-This search panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -2141,9 +2612,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#zoekt-indexserver-
 
 #### zoekt-webserver: indexed_search_request_errors
 
-This search panel indicates indexed search request errors every 5m by code.
+This panel indicates indexed search request errors every 5m by code.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-indexed-search-request-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-indexed-search-request-errors).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -2151,41 +2624,50 @@ Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-in
 
 #### zoekt-webserver: container_cpu_usage
 
-This search panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-webserver: container_memory_usage
 
-This search panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-container-memory-usage).
 
-<br />
-
-#### zoekt-webserver: container_restarts
-
-This search panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
-#### zoekt-webserver: fs_inodes_used
+#### zoekt-webserver: container_missing
 
-This search panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod zoekt-webserver` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p zoekt-webserver`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' zoekt-webserver` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the zoekt-webserver container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs zoekt-webserver` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-webserver: fs_io_operations
 
-This search panel indicates filesystem reads and writes by instance rate over 1h.
+This panel indicates filesystem reads and writes rate by instance over 1h.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-fs-io-operations) for relevant alerts.
+This value indicates the number of filesystem read and write operations by containers of this service.
+When extremely high, this can indicate a resource usage problem, or can cause problems with the service itself, especially if high values or spikes correlate with {{CONTAINER_NAME}} issues.
+
+<sub>*Managed by the [Sourcegraph Cloud team](https://about.sourcegraph.com/handbook/engineering/cloud).*</sub>
 
 <br />
 
@@ -2193,33 +2675,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-fs
 
 #### zoekt-webserver: provisioning_container_cpu_usage_long_term
 
-This search panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-webserver: provisioning_container_memory_usage_long_term
 
-This search panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-webserver: provisioning_container_cpu_usage_short_term
 
-This search panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
 #### zoekt-webserver: provisioning_container_memory_usage_short_term
 
-This search panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#zoekt-webserver-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Search team](https://about.sourcegraph.com/handbook/engineering/search).*</sub>
 
 <br />
 
@@ -2229,11 +2719,16 @@ Refer to the [alert solutions reference](./alert_solutions.md#zoekt-webserver-pr
 
 ### Prometheus: Metrics
 
-#### prometheus: prometheus_metrics_bloat
+#### prometheus: prometheus_rule_group_evaluation
 
-This distribution panel indicates prometheus metrics payload size.
+This panel indicates average prometheus rule group evaluation duration over 10m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-prometheus-metrics-bloat) for relevant alerts.
+A high value here indicates Prometheus rule evaluation is taking longer than expected.
+It might indicate that certain rule groups are taking too long to evaluate, or Prometheus is underprovisioned.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-prometheus-rule-group-evaluation).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
@@ -2241,9 +2736,67 @@ Refer to the [alert solutions reference](./alert_solutions.md#prometheus-prometh
 
 #### prometheus: alertmanager_notifications_failed_total
 
-This distribution panel indicates failed alertmanager notifications over 1m.
+This panel indicates failed alertmanager notifications over 1m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-alertmanager-notifications-failed-total) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-alertmanager-notifications-failed-total).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
+
+<br />
+
+#### prometheus: alertmanager_config_status
+
+This panel indicates alertmanager configuration reload status.
+
+A `1` indicates Alertmanager reloaded its configuration successfully.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-alertmanager-config-status).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
+
+<br />
+
+### Prometheus: Prometheus internals
+
+#### prometheus: prometheus_tsdb_op_failure
+
+This panel indicates prometheus tsdb failures by operation over 1m.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-prometheus-tsdb-op-failure).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
+
+<br />
+
+#### prometheus: prometheus_config_status
+
+This panel indicates prometheus configuration reload status.
+
+A `1` indicates Prometheus reloaded its configuration successfully.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-prometheus-config-status).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
+
+<br />
+
+#### prometheus: prometheus_target_sample_exceeded
+
+This panel indicates prometheus scrapes that exceed the sample limit over 10m.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-prometheus-target-sample-exceeded).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
+
+<br />
+
+#### prometheus: prometheus_target_sample_duplicate
+
+This panel indicates prometheus scrapes rejected due to duplicate timestamps over 10m.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-prometheus-target-sample-duplicate).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
@@ -2251,33 +2804,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#prometheus-alertma
 
 #### prometheus: container_cpu_usage
 
-This distribution panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
 #### prometheus: container_memory_usage
 
-This distribution panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-container-memory-usage).
 
-<br />
-
-#### prometheus: container_restarts
-
-This distribution panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
-#### prometheus: fs_inodes_used
+#### prometheus: container_missing
 
-This distribution panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod prometheus` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p prometheus`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' prometheus` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the prometheus container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs prometheus` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
@@ -2285,43 +2844,53 @@ Refer to the [alert solutions reference](./alert_solutions.md#prometheus-fs-inod
 
 #### prometheus: provisioning_container_cpu_usage_long_term
 
-This distribution panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
 #### prometheus: provisioning_container_memory_usage_long_term
 
-This distribution panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
 #### prometheus: provisioning_container_cpu_usage_short_term
 
-This distribution panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
 #### prometheus: provisioning_container_memory_usage_short_term
 
-This distribution panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
-### Prometheus: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Prometheus: Kubernetes monitoring (only available on Kubernetes)
 
 #### prometheus: pods_available_percentage
 
-This distribution panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#prometheus-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#prometheus-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Distribution team](https://about.sourcegraph.com/handbook/engineering/distribution).*</sub>
 
 <br />
 
@@ -2333,39 +2902,47 @@ Refer to the [alert solutions reference](./alert_solutions.md#prometheus-pods-av
 
 #### executor-queue: codeintel_queue_size
 
-This code-intel panel indicates queue size.
+This panel indicates queue size.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-queue-size) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-queue-size).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: codeintel_queue_growth_rate
 
-This code-intel panel indicates queue growth rate over 30m.
+This panel indicates queue growth rate over 30m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-queue-growth-rate) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-queue-growth-rate).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: codeintel_job_errors
 
-This code-intel panel indicates job errors every 5m.
+This panel indicates job errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-job-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-job-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: codeintel_active_executors
 
-This code-intel panel indicates active executors processing codeintel jobs.
+This panel indicates active executors processing codeintel jobs.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: codeintel_active_jobs
 
-This code-intel panel indicates active jobs.
+This panel indicates active jobs.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2373,17 +2950,21 @@ This code-intel panel indicates active jobs.
 
 #### executor-queue: codeintel_workerstore_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful worker store operation duration over 5m.
+This panel indicates 99th percentile successful worker store operation duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-workerstore-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-workerstore-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: codeintel_workerstore_errors
 
-This code-intel panel indicates worker store errors every 5m.
+This panel indicates worker store errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-workerstore-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-codeintel-workerstore-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2391,9 +2972,11 @@ Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-cod
 
 #### executor-queue: frontend_internal_api_error_responses
 
-This code-intel panel indicates frontend-internal API error responses every 5m by route.
+This panel indicates frontend-internal API error responses every 5m by route.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-frontend-internal-api-error-responses) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-frontend-internal-api-error-responses).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2401,33 +2984,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-fro
 
 #### executor-queue: container_cpu_usage
 
-This code-intel panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: container_memory_usage
 
-This code-intel panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-container-memory-usage).
 
-<br />
-
-#### executor-queue: container_restarts
-
-This code-intel panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-#### executor-queue: fs_inodes_used
+#### executor-queue: container_missing
 
-This code-intel panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod executor-queue` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p executor-queue`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' executor-queue` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the executor-queue container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs executor-queue` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2435,33 +3024,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-fs-
 
 #### executor-queue: provisioning_container_cpu_usage_long_term
 
-This code-intel panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: provisioning_container_memory_usage_long_term
 
-This code-intel panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: provisioning_container_cpu_usage_short_term
 
-This code-intel panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: provisioning_container_memory_usage_short_term
 
-This code-intel panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2469,27 +3066,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-pro
 
 #### executor-queue: go_goroutines
 
-This code-intel panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### executor-queue: go_gc_duration_seconds
 
-This code-intel panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-### Executor Queue: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Executor Queue: Kubernetes monitoring (only available on Kubernetes)
 
 #### executor-queue: pods_available_percentage
 
-This code-intel panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#executor-queue-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2501,23 +3106,27 @@ Refer to the [alert solutions reference](./alert_solutions.md#executor-queue-pod
 
 #### precise-code-intel-indexer: codeintel_job_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful job duration over 5m.
+This panel indicates 99th percentile successful job duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: codeintel_active_handlers
 
-This code-intel panel indicates active handlers processing jobs.
+This panel indicates active handlers processing jobs.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: codeintel_job_errors
 
-This code-intel panel indicates job errors every 5m.
+This panel indicates job errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-codeintel-job-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-codeintel-job-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2525,17 +3134,21 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-indexer: executor_apiclient_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful API request duration over 5m.
+This panel indicates 99th percentile successful API request duration over 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-apiclient-99th-percentile-duration) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-apiclient-99th-percentile-duration).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: executor_apiclient_errors
 
-This code-intel panel indicates aPI errors every 5m.
+This panel indicates aPI errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-apiclient-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-apiclient-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2543,46 +3156,55 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-indexer: executor_setup_command_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful setup command duration over 5m.
+This panel indicates 99th percentile successful setup command duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: executor_setup_command_errors
 
-This code-intel panel indicates setup command errors every 5m.
+This panel indicates setup command errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-setup-command-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-setup-command-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: executor_exec_command_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful exec command duration over 5m.
+This panel indicates 99th percentile successful exec command duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: executor_exec_command_errors
 
-This code-intel panel indicates exec command errors every 5m.
+This panel indicates exec command errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-exec-command-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-exec-command-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: executor_teardown_command_99th_percentile_duration
 
-This code-intel panel indicates 99th percentile successful teardown command duration over 5m.
+This panel indicates 99th percentile successful teardown command duration over 5m.
 
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: executor_teardown_command_errors
 
-This code-intel panel indicates teardown command errors every 5m.
+This panel indicates teardown command errors every 5m.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-teardown-command-errors) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-executor-teardown-command-errors).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2590,33 +3212,39 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-indexer: container_cpu_usage
 
-This code-intel panel indicates container cpu usage total (1m average) across all cores by instance.
+This panel indicates container cpu usage total (1m average) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-container-cpu-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-container-cpu-usage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: container_memory_usage
 
-This code-intel panel indicates container memory usage by instance.
+This panel indicates container memory usage by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-container-memory-usage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-container-memory-usage).
 
-<br />
-
-#### precise-code-intel-indexer: container_restarts
-
-This code-intel panel indicates container restarts every 5m by instance.
-
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-container-restarts) for relevant alerts.
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-#### precise-code-intel-indexer: fs_inodes_used
+#### precise-code-intel-indexer: container_missing
 
-This code-intel panel indicates fs inodes in use by instance.
+This panel indicates container missing.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-fs-inodes-used) for relevant alerts.
+This value is the number of times a container has not been seen for more than one minute. If you observe this
+value change independent of deployment events (such as an upgrade), it could indicate pods are being OOM killed or terminated for some other reasons.
+
+- **Kubernetes:**
+	- Determine if the pod was OOM killed using `kubectl describe pod precise-code-intel-worker` (look for `OOMKilled: true`) and, if so, consider increasing the memory limit in the relevant `Deployment.yaml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `kubectl logs -p precise-code-intel-worker`.
+- **Docker Compose:**
+	- Determine if the pod was OOM killed using `docker inspect -f '{{json .State}}' precise-code-intel-worker` (look for `"OOMKilled":true`) and, if so, consider increasing the memory limit of the precise-code-intel-worker container in `docker-compose.yml`.
+	- Check the logs before the container restarted to see if there are `panic:` messages or similar using `docker logs precise-code-intel-worker` (note this will include logs from the previous and currently running container).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2624,33 +3252,41 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-indexer: provisioning_container_cpu_usage_long_term
 
-This code-intel panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
+This panel indicates container cpu usage total (90th percentile over 1d) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-cpu-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-cpu-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: provisioning_container_memory_usage_long_term
 
-This code-intel panel indicates container memory usage (1d maximum) by instance.
+This panel indicates container memory usage (1d maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-memory-usage-long-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-memory-usage-long-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: provisioning_container_cpu_usage_short_term
 
-This code-intel panel indicates container cpu usage total (5m maximum) across all cores by instance.
+This panel indicates container cpu usage total (5m maximum) across all cores by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-cpu-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-cpu-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: provisioning_container_memory_usage_short_term
 
-This code-intel panel indicates container memory usage (5m maximum) by instance.
+This panel indicates container memory usage (5m maximum) by instance.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-memory-usage-short-term) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-provisioning-container-memory-usage-short-term).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
@@ -2658,27 +3294,35 @@ Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel
 
 #### precise-code-intel-indexer: go_goroutines
 
-This code-intel panel indicates maximum active goroutines.
+This panel indicates maximum active goroutines.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-go-goroutines) for relevant alerts.
+A high value here indicates a possible goroutine leak.
+
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-go-goroutines).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
 #### precise-code-intel-indexer: go_gc_duration_seconds
 
-This code-intel panel indicates maximum go garbage collection duration.
+This panel indicates maximum go garbage collection duration.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-go-gc-duration-seconds) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-go-gc-duration-seconds).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 
-### Precise Code Intel Indexer: Kubernetes monitoring (ignore if using Docker Compose or server)
+### Precise Code Intel Indexer: Kubernetes monitoring (only available on Kubernetes)
 
 #### precise-code-intel-indexer: pods_available_percentage
 
-This code-intel panel indicates percentage pods available.
+This panel indicates percentage pods available.
 
-Refer to the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-pods-available-percentage) for relevant alerts.
+> NOTE: Alerts related to this panel are documented in the [alert solutions reference](./alert_solutions.md#precise-code-intel-indexer-pods-available-percentage).
+
+<sub>*Managed by the [Sourcegraph Code-intelligence team](https://about.sourcegraph.com/handbook/engineering/code-intelligence).*</sub>
 
 <br />
 

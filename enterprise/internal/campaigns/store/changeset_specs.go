@@ -10,6 +10,7 @@ import (
 	"github.com/keegancsmith/sqlf"
 	"github.com/pkg/errors"
 
+	"github.com/sourcegraph/sourcegraph/enterprise/internal/campaigns/search"
 	"github.com/sourcegraph/sourcegraph/internal/api"
 	"github.com/sourcegraph/sourcegraph/internal/campaigns"
 	"github.com/sourcegraph/sourcegraph/internal/db"
@@ -413,29 +414,36 @@ type RewirerMapping struct {
 type RewirerMappings []*RewirerMapping
 
 func (rm RewirerMappings) Hydrate(ctx context.Context, store *Store) error {
-	changesetSpecs, _, err := store.ListChangesetSpecs(ctx, ListChangesetSpecsOpts{
-		IDs: rm.ChangesetSpecIDs(),
-	})
-	if err != nil {
-		return err
-	}
-	changesets, _, err := store.ListChangesets(ctx, ListChangesetsOpts{IDs: rm.ChangesetIDs()})
-	if err != nil {
-		return err
-	}
-	accessibleReposByID, err := db.Repos.GetReposSetByIDs(ctx, rm.RepoIDs()...)
-	if err != nil {
-		return err
-	}
-
 	changesetsByID := map[int64]*campaigns.Changeset{}
 	changesetSpecsByID := map[int64]*campaigns.ChangesetSpec{}
 
-	for _, c := range changesets {
-		changesetsByID[c.ID] = c
+	changesetSpecIDs := rm.ChangesetSpecIDs()
+	if len(changesetSpecIDs) > 0 {
+		changesetSpecs, _, err := store.ListChangesetSpecs(ctx, ListChangesetSpecsOpts{
+			IDs: changesetSpecIDs,
+		})
+		if err != nil {
+			return err
+		}
+		for _, c := range changesetSpecs {
+			changesetSpecsByID[c.ID] = c
+		}
 	}
-	for _, c := range changesetSpecs {
-		changesetSpecsByID[c.ID] = c
+
+	changesetIDs := rm.ChangesetIDs()
+	if len(changesetIDs) > 0 {
+		changesets, _, err := store.ListChangesets(ctx, ListChangesetsOpts{IDs: changesetIDs})
+		if err != nil {
+			return err
+		}
+		for _, c := range changesets {
+			changesetsByID[c.ID] = c
+		}
+	}
+
+	accessibleReposByID, err := db.GlobalRepos.GetReposSetByIDs(ctx, rm.RepoIDs()...)
+	if err != nil {
+		return err
 	}
 
 	for _, m := range rm {
@@ -504,6 +512,7 @@ type GetRewirerMappingsOpts struct {
 	CampaignID     int64
 
 	LimitOffset *db.LimitOffset
+	TextSearch  []search.TextSearchTerm
 }
 
 // GetRewirerMappings returns RewirerMappings between changeset specs and changesets.
@@ -571,15 +580,55 @@ func (s *Store) GetRewirerMappings(ctx context.Context, opts GetRewirerMappingsO
 }
 
 func getRewirerMappingsQuery(opts GetRewirerMappingsOpts) *sqlf.Query {
+	// If there's a text search, we want to add the appropriate WHERE clauses to
+	// the query.
+	//
+	// This gets a little tricky: we want to search both the changeset name and
+	// the repository name. These are exposed somewhat differently depending on
+	// which subquery we're adding the clause to in the big UNION query that's
+	// going to get run: the two views expose changeset_name and repo_name
+	// fields, whereas the detached changeset subquery has to query the fields
+	// directly, since it's just a simple JOIN. As a result, we need two sets of
+	// everything.
+	var detachTextSearch *sqlf.Query
+	var viewTextSearch *sqlf.Query
+	if len(opts.TextSearch) > 0 {
+		detachSearches := make([]*sqlf.Query, len(opts.TextSearch))
+		viewSearches := make([]*sqlf.Query, len(opts.TextSearch))
+
+		for i, term := range opts.TextSearch {
+			detachSearches[i] = textSearchTermToClause(
+				term,
+				sqlf.Sprintf("COALESCE(changesets.metadata->>'Title', changesets.metadata->>'title')"),
+				sqlf.Sprintf("repo.name"),
+			)
+
+			viewSearches[i] = textSearchTermToClause(
+				term,
+				sqlf.Sprintf("changeset_name"),
+				sqlf.Sprintf("repo_name"),
+			)
+		}
+
+		detachTextSearch = sqlf.Sprintf("AND %s", sqlf.Join(detachSearches, " AND "))
+		viewTextSearch = sqlf.Sprintf("AND %s", sqlf.Join(viewSearches, " AND "))
+	} else {
+		detachTextSearch = sqlf.Sprintf("")
+		viewTextSearch = sqlf.Sprintf("")
+	}
+
 	return sqlf.Sprintf(
 		getRewirerMappingsQueryFmtstr,
 		opts.CampaignSpecID,
+		viewTextSearch,
 		opts.CampaignID,
 		opts.CampaignSpecID,
+		viewTextSearch,
 		opts.CampaignSpecID,
 		opts.CampaignID,
 		opts.CampaignSpecID,
-		opts.CampaignID,
+		strconv.Itoa(int(opts.CampaignID)),
+		detachTextSearch,
 		opts.LimitOffset.SQL(),
 	)
 }
@@ -596,6 +645,7 @@ SELECT mappings.changeset_spec_id, mappings.changeset_id, mappings.repo_id FROM 
 		tracking_changeset_specs_and_changesets
 	WHERE
 		campaign_spec_id = %s
+		%s -- text search query, if provided
 
 	UNION ALL
 
@@ -607,6 +657,7 @@ SELECT mappings.changeset_spec_id, mappings.changeset_id, mappings.repo_id FROM 
 		branch_changeset_specs_and_changesets
 	WHERE
 		campaign_spec_id = %s
+		%s -- text search query, if provided
 	GROUP BY changeset_spec_id, repo_id
 
 	UNION ALL
@@ -634,6 +685,7 @@ SELECT mappings.changeset_spec_id, mappings.changeset_id, mappings.repo_id FROM 
 				GROUP BY changeset_spec_id, repo_id
 		) AND
 		changesets.campaign_ids ? %s
+		%s -- text search query, if provided
 ) AS mappings
 ORDER BY mappings.changeset_spec_id ASC, mappings.changeset_id ASC
 -- LIMIT, OFFSET

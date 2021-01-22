@@ -1,4 +1,5 @@
 import React, { FormEvent, useCallback, useEffect, useState } from 'react'
+import classNames from 'classnames'
 import { TelemetryProps } from '../../../../../shared/src/telemetry/telemetryService'
 import { RouteComponentProps } from 'react-router'
 import { PageTitle } from '../../../components/PageTitle'
@@ -14,6 +15,8 @@ import {
 import { ErrorAlert } from '../../../components/alerts'
 import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon'
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon'
+import { repeatUntil } from '../../../../../shared/src/util/rxjs/repeatUntil'
+import { LoaderButton } from '../../../components/LoaderButton'
 
 interface Props extends RouteComponentProps, TelemetryProps {
     userID: string
@@ -44,6 +47,10 @@ const initialCodeHostState = {
     loaded: false,
     configuredRepos: emptyRepoNames,
 }
+const initialFetchingReposState = {
+    loading: false,
+    slow: false,
+}
 
 /**
  * A page to manage the repositories a user syncs from their connected code hosts.
@@ -65,6 +72,7 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
     const [query, setQuery] = useState('')
     const [codeHostFilter, setCodeHostFilter] = useState('')
     const [codeHosts, setCodeHosts] = useState(initialCodeHostState)
+    const [fetchingRepos, setFetchingRepos] = useState(initialFetchingReposState)
 
     useCallback(() => {
         // first we should load code hosts
@@ -182,6 +190,7 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
             pages.push(
                 (page !== currentPage && (
                     <a
+                        key="prev"
                         className="btn px-0 text-primary user-settings-repos__pageend"
                         onClick={() => setPage(currentPage - 1)}
                     >
@@ -189,7 +198,7 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                         Previous
                     </a>
                 )) || (
-                    <span className="px-0 text-muted user-settings-repos__pageend">
+                    <span key="prev" className="px-0 text-muted user-settings-repos__pageend">
                         <ChevronLeftIcon className="icon-inline fill-border-color-2" />
                         Previous
                     </span>
@@ -198,19 +207,29 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
         }
         pages.push(
             <a
-                className={
-                    'btn user-settings-repos__page ' +
-                    String(currentPage === page && 'user-settings-repos__page--active')
-                }
+                key={page}
+                className={classNames({
+                    'btn user-settings-repos__page': true,
+                    'user-settings-repos__page--active': currentPage === page,
+                })}
                 onClick={() => setPage(page)}
             >
-                <p className={'mb-0 ' + String((currentPage === page && 'text-muted') || 'text-primary')}>{page}</p>
+                <p
+                    className={classNames({
+                        'mb-0': true,
+                        'text-muted': currentPage === page,
+                        'text-primary': currentPage !== page,
+                    })}
+                >
+                    {page}
+                </p>
             </a>
         )
         if (page === Math.ceil(filteredRepos.length / PER_PAGE)) {
             pages.push(
                 (page !== currentPage && (
                     <a
+                        key="next"
                         className="btn px-0 text-primary user-settings-repos__pageend"
                         onClick={() => setPage(currentPage + 1)}
                     >
@@ -218,9 +237,9 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                         <ChevronRightIcon className="icon-inline fill-primary" />
                     </a>
                 )) || (
-                    <span className="px-0 text-muted user-settings-repos__pageend">
+                    <span key="next" className="px-0 text-muted user-settings-repos__pageend">
                         Next
-                        <ChevronRightIcon className="icon-inline fill-border-color-2" />
+                        <ChevronRightIcon className="icon-inline user-settings-repos__chevron--inactive" />
                     </span>
                 )
             )
@@ -231,8 +250,10 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
     const submit = useCallback(
         (event: FormEvent<HTMLFormElement>): void => {
             event.preventDefault()
+            const syncTimes = new Map<string, string>()
             for (const host of codeHosts.hosts) {
                 const repos: string[] = []
+                syncTimes.set(host.id, host.lastSyncAt)
                 for (const repo of selectionState.repos.values()) {
                     if (repo.codeHost!.id !== host.id) {
                         continue
@@ -247,9 +268,47 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                     setRepoState({ ...repoState, error: String(error) })
                 })
             }
-            history.push(routingPrefix + '/repositories')
+            setFetchingRepos({ loading: true, slow: false })
+            const started = new Date().getTime()
+
+            const externalServiceSubscription = queryExternalServices({
+                first: null,
+                after: null,
+                namespace: userID,
+            })
+                .pipe(
+                    repeatUntil(
+                        result => {
+                            // if the background job takes too long we should update the button
+                            // text to indicate we're still working on it
+                            if (new Date().getTime() - started >= 15000) {
+                                setFetchingRepos({ loading: true, slow: true })
+                            }
+
+                            // if the lastSyncAt has changed for all hosts then we're done
+                            if (result.nodes.every(codeHost => codeHost.lastSyncAt !== syncTimes.get(codeHost.id))) {
+                                // push the user back to the repo list page
+                                history.push(routingPrefix + '/repositories')
+                                // cancel the repeatUntil
+                                return true
+                            }
+                            // keep repeating
+                            return false
+                        },
+                        { delay: 2000 }
+                    )
+                )
+                .subscribe(
+                    () => {},
+                    error => {
+                        setRepoState({ ...repoState, error: String(error) })
+                    },
+                    () => {
+                        externalServiceSubscription.unsubscribe()
+                    }
+                )
         },
-        [codeHosts.hosts, history, repoState, routingPrefix, selectionState.radio, selectionState.repos]
+        [codeHosts.hosts, history, repoState, routingPrefix, selectionState.radio, selectionState.repos, userID]
     )
 
     const handleRadioSelect = (changeEvent: React.ChangeEvent<HTMLInputElement>): void => {
@@ -284,7 +343,7 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
     )
 
     const filterControls: JSX.Element = (
-        <Form className="w-100 d-inline-flex justify-content-between flex-row filtered-connection__form mt-3">
+        <Form className="w-100 d-inline-flex justify-content-between flex-row mt-3">
             <div className="d-inline-flex flex-row mr-3 align-items-baseline">
                 <p className="text-xl-center text-nowrap mr-2">Code Host:</p>
                 <select
@@ -301,7 +360,7 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                 </select>
             </div>
             <input
-                className="form-control filtered-connection__filter"
+                className="form-control user-settings-repos__filter-input"
                 type="search"
                 placeholder="Search repositories..."
                 name="query"
@@ -353,12 +412,12 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
             <tr className="align-items-baseline d-flex" key="header">
                 <td
                     onClick={selectAll}
-                    className="user-settings-repos__repositorynode p-2 w-100 d-flex align-items-center border-top-0 border-bottom border-color-2"
+                    className="user-settings-repos__repositorynode p-2 w-100 d-flex align-items-center border-top-0 border-bottom"
                 >
                     <input
                         className="mr-3"
                         type="checkbox"
-                        checked={selectionState.repos.size === filteredRepos.length}
+                        checked={selectionState.repos.size !== 0 && selectionState.repos.size === filteredRepos.length}
                         onChange={selectAll}
                     />
                     <span
@@ -391,17 +450,17 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
     )
 
     const loadingAnimation: JSX.Element = (
-        <tbody>
-            <tr className="mt-2 align-items-baseline d-flex w-80">
-                <td className="user-settings-repos__shimmer w-100 h-100 p-3 border-top-0" />
-            </tr>
-            <tr className="mt-2 align-items-baseline d-flex w-30">
-                <td className="user-settings-repos__shimmer w-100 h-100 p-3 border-top-0" />
-            </tr>
-            <tr className="mt-2 align-items-baseline d-flex w-70">
-                <td className="user-settings-repos__shimmer w-100 h-100 p-3 border-top-0" />
-            </tr>
-        </tbody>
+        <div className="container">
+            <div className="mt-2 align-items-baseline row">
+                <td className="user-settings-repos__shimmer p-3 border-top-0 col-sm-9" />
+            </div>
+            <div className="mt-2 align-items-baseline row">
+                <td className="user-settings-repos__shimmer p-3 border-top-0 col-sm-4" />
+            </div>
+            <div className="mt-2 align-items-baseline row">
+                <td className="user-settings-repos__shimmer p-3 border-top-0 col-sm-7" />
+            </div>
+        </div>
     )
     return (
         <div className="p-2">
@@ -411,7 +470,7 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                 Choose which repositories to sync with Sourcegraph so you can search all your code in one place.
             </p>
             <ul className="list-group">
-                <li className="list-group-item p-0 border-color-2" key="body">
+                <li className="list-group-item p-0 user-settings-repos__container" key="body">
                     <div className="p-4" key="description">
                         <h3>Your repositories</h3>
                         <p className="text-muted">
@@ -427,10 +486,10 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                         {
                             // if we're in 'selected' mode, show a list of all the repos on the code hosts to select from
                             selectionState.radio === 'selected' && (
-                                <div className="filtered-connection ml-4">
+                                <div className="ml-4">
                                     {filterControls}
                                     {repoState.error !== '' && <ErrorAlert error={repoState.error} history={history} />}
-                                    <table className="filtered-connection test-filtered-connection filtered-connection--noncompact table">
+                                    <table className="table">
                                         {
                                             // if we're selecting repos, and the repos are still loading, display the loading animation
                                             selectionState.radio === 'selected' &&
@@ -456,9 +515,18 @@ export const UserSettingsManageRepositoriesPage: React.FunctionComponent<Props> 
                 </li>
             </ul>
             <Form className="mt-4 d-flex" onSubmit={submit}>
-                <button type="submit" className="btn btn-primary test-goto-add-external-service-page mr-2">
-                    Save changes
-                </button>
+                <LoaderButton
+                    loading={fetchingRepos.loading}
+                    className="btn btn-primary test-goto-add-external-service-page mr-2"
+                    alwaysShowLabel={true}
+                    type="submit"
+                    label={
+                        (!fetchingRepos.loading && 'Save changes') ||
+                        (!fetchingRepos.slow && 'Fetching repositories...') ||
+                        'Still working...'
+                    }
+                    disabled={fetchingRepos.loading}
+                />
 
                 <Link
                     className="btn btn-secondary test-goto-add-external-service-page"

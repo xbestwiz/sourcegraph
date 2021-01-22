@@ -10,8 +10,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/go-multierror"
 	"github.com/kylelemons/godebug/pretty"
+
 	"github.com/sourcegraph/sourcegraph/internal/conf"
 	"github.com/sourcegraph/sourcegraph/internal/db"
+	"github.com/sourcegraph/sourcegraph/internal/db/dbtesting"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc"
 	"github.com/sourcegraph/sourcegraph/schema"
 )
@@ -19,6 +21,8 @@ import (
 // This test lives in cmd/enterprise because it tests a proprietary
 // super-set of the validation performed by the OSS version.
 func TestExternalServices_ValidateConfig(t *testing.T) {
+	d := dbtesting.GetDB(t)
+
 	// Assertion helpers
 	equals := func(want ...string) func(testing.TB, []string) {
 		sort.Strings(want)
@@ -1139,6 +1143,32 @@ func TestExternalServices_ValidateConfig(t *testing.T) {
 			assert: equals("<nil>"),
 		},
 		{
+			kind:   extsvc.KindPerforce,
+			desc:   "without p4.port, p4.user, p4.passwd",
+			config: `{}`,
+			assert: includes(
+				`p4.port is required`,
+				`p4.user is required`,
+				`p4.passwd is required`,
+			),
+		},
+		{
+			kind: extsvc.KindPerforce,
+			desc: "invalid depot path",
+			config: `
+			{
+				"p4.port": "ssl:111.222.333.444:1666",
+				"p4.user": "admin",
+				"p4.passwd": "<secure password>",
+				"depots": ["//abc", "abc/", "//abc/"]
+			}
+`,
+			assert: includes(
+				`depots.0: Does not match pattern '^\/[\/\w]+/$'`,
+				`depots.1: Does not match pattern '^\/[\/\w]+/$'`,
+			),
+		},
+		{
 			kind:   extsvc.KindPhabricator,
 			desc:   "without repos nor token",
 			config: `{}`,
@@ -1257,7 +1287,7 @@ func TestExternalServices_ValidateConfig(t *testing.T) {
 				tc.ps = conf.Get().AuthProviders
 			}
 
-			s := NewExternalServicesStore()
+			s := NewExternalServicesStore(d)
 			_, err := s.ValidateConfig(context.Background(), db.ValidateExternalServiceConfigOptions{
 				Kind:          tc.kind,
 				Config:        tc.config,

@@ -65,6 +65,10 @@ func (h *streamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	resultsStream, resultsStreamDone := newResultsStream(ctx, search)
 
+	progress := progressAggregator{
+		Start: time.Now(),
+	}
+
 	const matchesChunk = 1000
 	matchesBuf := make([]interface{}, 0, matchesChunk)
 	flushMatchesBuf := func() {
@@ -74,17 +78,21 @@ func (h *streamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			matchesBuf = matchesBuf[:0]
+
+			_ = eventWriter.Event("progress", progress.Build())
 		}
 	}
 
 	flushTicker := time.NewTicker(100 * time.Millisecond)
 	defer flushTicker.Stop()
 
+	first := true
+
 	for {
-		var results []graphqlbackend.SearchResultResolver
+		var event graphqlbackend.SearchEvent
 		var ok bool
 		select {
-		case results, ok = <-resultsStream:
+		case event, ok = <-resultsStream:
 		case <-flushTicker.C:
 			ok = true
 			flushMatchesBuf()
@@ -94,7 +102,9 @@ func (h *streamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		for _, result := range results {
+		progress.Update(event)
+
+		for _, result := range event.Results {
 			if fm, ok := result.ToFileMatch(); ok {
 				if syms := fm.Symbols(); len(syms) > 0 {
 					// Inlining to avoid exporting a bunch of stuff from
@@ -126,6 +136,12 @@ func (h *streamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if len(matchesBuf) == cap(matchesBuf) {
 				flushMatchesBuf()
 			}
+		}
+
+		// Instantly send results if we have not sent any yet.
+		if first && len(matchesBuf) > 0 {
+			first = false
+			flushMatchesBuf()
 		}
 	}
 
@@ -175,7 +191,7 @@ func (h *streamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
-	pr := resultsResolver.Progress()
+	pr := progress.Build()
 	pr.Done = true
 	_ = eventWriter.Event("progress", pr)
 
@@ -185,7 +201,7 @@ func (h *streamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 type searchResolver interface {
 	Results(context.Context) (*graphqlbackend.SearchResultsResolver, error)
-	SetResultChannel(c chan<- []graphqlbackend.SearchResultResolver)
+	SetStream(c graphqlbackend.SearchStream)
 }
 
 func defaultNewSearchResolver(ctx context.Context, args *graphqlbackend.SearchArgs) (searchResolver, error) {
@@ -256,14 +272,14 @@ type finalResult struct {
 //
 //   - results is written to 0 or more times before closing.
 //   - final is written to once.
-func newResultsStream(ctx context.Context, search searchResolver) (results <-chan []graphqlbackend.SearchResultResolver, final <-chan finalResult) {
-	resultsC := make(chan []graphqlbackend.SearchResultResolver)
+func newResultsStream(ctx context.Context, search searchResolver) (results <-chan graphqlbackend.SearchEvent, final <-chan finalResult) {
+	resultsC := make(chan graphqlbackend.SearchEvent)
 	finalC := make(chan finalResult, 1)
 	go func() {
 		defer close(finalC)
 		defer close(resultsC)
 
-		search.SetResultChannel(resultsC)
+		search.SetStream(resultsC)
 
 		r, err := search.Results(ctx)
 		finalC <- finalResult{resultsResolver: r, err: err}

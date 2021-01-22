@@ -23,7 +23,6 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/api"
 	idb "github.com/sourcegraph/sourcegraph/internal/db"
 	"github.com/sourcegraph/sourcegraph/internal/db/dbtest"
-	"github.com/sourcegraph/sourcegraph/internal/db/dbtesting"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/awscodecommit"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/bitbucketserver"
@@ -33,6 +32,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/repos"
 	"github.com/sourcegraph/sourcegraph/internal/repoupdater"
 	"github.com/sourcegraph/sourcegraph/internal/repoupdater/protocol"
+	"github.com/sourcegraph/sourcegraph/internal/timeutil"
 	"github.com/sourcegraph/sourcegraph/internal/trace"
 	"github.com/sourcegraph/sourcegraph/internal/types"
 )
@@ -389,8 +389,8 @@ func testServerSetRepoEnabled(t *testing.T, store *repos.Store) func(t *testing.
 				}
 
 				have, want := apiExternalServices(svcs...), res.ExternalServices
-				if !reflect.DeepEqual(have, want) {
-					t.Errorf("stored external services:\n%s", cmp.Diff(have, want))
+				if diff := cmp.Diff(have, want); diff != "" {
+					t.Errorf("stored external services:\n%s", diff)
 				}
 			})
 		}
@@ -593,7 +593,8 @@ func testServerRepoExternalServices(t *testing.T, store *repos.Store) func(t *te
 					t.Errorf("have err: %q, want: %q", have, want)
 				}
 
-				if have, want := res, tc.svcs; !reflect.DeepEqual(have, want) {
+				have, want := res, tc.svcs
+				if diff := cmp.Diff(have, want); diff != "" {
 					t.Errorf("response:\n%s", cmp.Diff(have, want))
 				}
 			})
@@ -770,7 +771,7 @@ func testServerStatusMessages(t *testing.T, store *repos.Store) func(t *testing.
 					t.Fatal(err)
 				}
 
-				clock := dbtesting.NewFakeClock(time.Now(), 0)
+				clock := timeutil.NewFakeClock(time.Now(), 0)
 				syncer := &repos.Syncer{
 					Store: store,
 					Now:   clock.Now,
@@ -846,7 +847,7 @@ func testRepoLookup(db *sql.DB) func(t *testing.T, repoStore *repos.Store) func(
 	return func(t *testing.T, store *repos.Store) func(t *testing.T) {
 		return func(t *testing.T) {
 			ctx := context.Background()
-			clock := dbtesting.NewFakeClock(time.Now(), 0)
+			clock := timeutil.NewFakeClock(time.Now(), 0)
 			now := clock.Now()
 
 			githubSource := types.ExternalService{

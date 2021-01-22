@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/inconshreveable/log15"
+
 	"github.com/sourcegraph/sourcegraph/cmd/frontend/auth"
 	"github.com/sourcegraph/sourcegraph/cmd/frontend/internal/session"
 	"github.com/sourcegraph/sourcegraph/internal/actor"
@@ -55,14 +56,21 @@ func OverrideAuthMiddleware(next http.Handler) http.Handler {
 
 			// Make the user a site admin because that is more useful for e2e tests and local dev
 			// scripting (which are the use cases of this override auth provider).
-			if err := db.Users.SetIsSiteAdmin(r.Context(), userID, true); err != nil {
+			if err := db.GlobalUsers.SetIsSiteAdmin(r.Context(), userID, true); err != nil {
 				log15.Error("Error setting auth-override user as site admin.", "error", err)
 				http.Error(w, "", http.StatusInternalServerError)
 				return
 			}
 
+			user, err := db.GlobalUsers.GetByID(r.Context(), userID)
+			if err != nil {
+				log15.Error("Error retrieving user from database.", "error", err)
+				http.Error(w, "", http.StatusInternalServerError)
+				return
+			}
+
 			a := actor.FromUser(userID)
-			if err := session.SetActor(w, r, a, 0); err != nil {
+			if err := session.SetActor(w, r, a, 0, user.CreatedAt); err != nil {
 				log15.Error("Error starting auth-override session.", "error", err)
 				http.Error(w, "error starting auth-override session", http.StatusInternalServerError)
 				return

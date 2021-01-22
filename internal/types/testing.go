@@ -1,7 +1,6 @@
 package types
 
 import (
-	"reflect"
 	"sort"
 	"strconv"
 	"testing"
@@ -10,17 +9,17 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/sourcegraph/sourcegraph/internal/api"
-	"github.com/sourcegraph/sourcegraph/internal/db/dbtesting"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/awscodecommit"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/bitbucketserver"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/github"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/gitlab"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/gitolite"
+	"github.com/sourcegraph/sourcegraph/internal/timeutil"
 )
 
 func MakeRepo(name, serviceID, serviceType string, services ...*ExternalService) *Repo {
-	clock := dbtesting.NewFakeClock(time.Now(), 0)
+	clock := timeutil.NewFakeClock(time.Now(), 0)
 	now := clock.Now()
 
 	repo := Repo{
@@ -105,7 +104,7 @@ func GenerateRepos(n int, base ...*Repo) Repos {
 
 // MakeExternalServices creates one configured external service per kind and returns the list.
 func MakeExternalServices() ExternalServices {
-	clock := dbtesting.NewFakeClock(time.Now(), 0)
+	clock := timeutil.NewFakeClock(time.Now(), 0)
 	now := clock.Now()
 
 	githubSvc := ExternalService{
@@ -311,8 +310,8 @@ var Assert = struct {
 			t.Helper()
 			// Exclude auto-generated IDs from equality tests
 			have = append(Repos{}, have...).With(Opt.RepoID(0))
-			if !reflect.DeepEqual(have, want) {
-				t.Errorf("repos (-want +got): %s", cmp.Diff(want, have))
+			if diff := cmp.Diff(want, have); diff != "" {
+				t.Errorf("repos (-want +got): %s", diff)
 			}
 		}
 	},
@@ -323,7 +322,7 @@ var Assert = struct {
 			sort.Slice(want, func(i, j int) bool {
 				return ord(want[i], want[j])
 			})
-			if !reflect.DeepEqual(have, want) {
+			if diff := cmp.Diff(want, have); diff != "" {
 				t.Errorf("repos (-want +got): %s", cmp.Diff(want, have))
 			}
 		}
@@ -334,7 +333,7 @@ var Assert = struct {
 			t.Helper()
 			// Exclude auto-generated IDs from equality tests
 			have = append(ExternalServices{}, have...).With(Opt.ExternalServiceID(0))
-			if !reflect.DeepEqual(have, want) {
+			if diff := cmp.Diff(want, have); diff != "" {
 				t.Errorf("external services (-want +got): %s", cmp.Diff(want, have))
 			}
 		}
@@ -346,7 +345,7 @@ var Assert = struct {
 			sort.Slice(want, func(i, j int) bool {
 				return ord(want[i], want[j])
 			})
-			if !reflect.DeepEqual(have, want) {
+			if diff := cmp.Diff(want, have); diff != "" {
 				t.Errorf("external services (-want +got): %s", cmp.Diff(want, have))
 			}
 		}

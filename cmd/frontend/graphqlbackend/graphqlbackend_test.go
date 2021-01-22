@@ -108,6 +108,7 @@ func TestMain(m *testing.M) {
 
 func TestAffiliatedRepositories(t *testing.T) {
 	resetMocks()
+	db.Mocks.Users.HasTag = func(ctx context.Context, userID int32, tag string) (bool, error) { return true, nil }
 	db.Mocks.ExternalServices.List = func(opt db.ExternalServicesListOptions) ([]*types.ExternalService, error) {
 		return []*types.ExternalService{
 			{
@@ -148,6 +149,9 @@ func TestAffiliatedRepositories(t *testing.T) {
 			ID:        userID,
 			SiteAdmin: userID == 1,
 		}, nil
+	}
+	db.Mocks.Users.GetByCurrentAuthUser = func(ctx context.Context) (*types.User, error) {
+		return &types.User{ID: 1, SiteAdmin: true}, nil
 	}
 	cf = httpcli.NewFactory(
 		nil,

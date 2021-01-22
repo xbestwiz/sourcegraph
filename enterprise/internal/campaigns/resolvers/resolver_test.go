@@ -16,6 +16,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/cmd/frontend/backend"
 	"github.com/sourcegraph/sourcegraph/cmd/frontend/graphqlbackend"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/campaigns/resolvers/apitest"
+	"github.com/sourcegraph/sourcegraph/enterprise/internal/campaigns/search"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/campaigns/service"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/campaigns/store"
 	ct "github.com/sourcegraph/sourcegraph/enterprise/internal/campaigns/testing"
@@ -33,7 +34,7 @@ import (
 func TestNullIDResilience(t *testing.T) {
 	sr := &Resolver{store: store.New(dbconn.Global)}
 
-	s, err := graphqlbackend.NewSchema(sr, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, sr, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,8 +94,8 @@ func TestCreateCampaignSpec(t *testing.T) {
 	userID := user.ID
 
 	cstore := store.New(dbconn.Global)
-	repoStore := db.NewRepoStoreWith(cstore)
-	esStore := db.NewExternalServicesStoreWith(cstore)
+	repoStore := db.ReposWith(cstore)
+	esStore := db.ExternalServicesWith(cstore)
 
 	repo := newGitHubTestRepo("github.com/sourcegraph/create-campaign-spec-test", newGitHubExternalService(t, esStore))
 	if err := repoStore.Create(ctx, repo); err != nil {
@@ -117,7 +118,7 @@ func TestCreateCampaignSpec(t *testing.T) {
 	}
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -266,8 +267,8 @@ func TestCreateChangesetSpec(t *testing.T) {
 	userID := ct.CreateTestUser(t, true).ID
 
 	cstore := store.New(dbconn.Global)
-	repoStore := db.NewRepoStoreWith(cstore)
-	esStore := db.NewExternalServicesStoreWith(cstore)
+	repoStore := db.ReposWith(cstore)
+	esStore := db.ExternalServicesWith(cstore)
 
 	repo := newGitHubTestRepo("github.com/sourcegraph/create-changeset-spec-test", newGitHubExternalService(t, esStore))
 	if err := repoStore.Create(ctx, repo); err != nil {
@@ -275,7 +276,7 @@ func TestCreateChangesetSpec(t *testing.T) {
 	}
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -341,8 +342,8 @@ func TestApplyCampaign(t *testing.T) {
 	now := timeutil.Now()
 	clock := func() time.Time { return now }
 	cstore := store.NewWithClock(dbconn.Global, clock)
-	repoStore := db.NewRepoStoreWith(cstore)
-	esStore := db.NewExternalServicesStoreWith(cstore)
+	repoStore := db.ReposWith(cstore)
+	esStore := db.ExternalServicesWith(cstore)
 
 	repo := newGitHubTestRepo("github.com/sourcegraph/apply-campaign-test", newGitHubExternalService(t, esStore))
 	if err := repoStore.Create(ctx, repo); err != nil {
@@ -386,7 +387,7 @@ func TestApplyCampaign(t *testing.T) {
 	}
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -511,7 +512,7 @@ func TestCreateCampaign(t *testing.T) {
 	}
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -585,7 +586,7 @@ func TestMoveCampaign(t *testing.T) {
 	}
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -659,7 +660,7 @@ func TestListChangesetOptsFromArgs(t *testing.T) {
 	wantReviewStates := []campaigns.ChangesetReviewState{"APPROVED", "INVALID"}
 	wantCheckStates := []campaigns.ChangesetCheckState{"PENDING", "INVALID"}
 	wantOnlyPublishedByThisCampaign := []bool{true}
-	wantSearches := []store.ListChangesetsTextSearchExpr{{Term: "foo"}, {Term: "bar", Not: true}}
+	wantSearches := []search.TextSearchTerm{{Term: "foo"}, {Term: "bar", Not: true}}
 	var campaignID int64 = 1
 
 	tcs := []struct {
@@ -802,7 +803,7 @@ func TestCreateCampaignsCredential(t *testing.T) {
 	cstore := store.New(dbconn.Global)
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -853,7 +854,7 @@ func TestDeleteCampaignsCredential(t *testing.T) {
 
 	userID := ct.CreateTestUser(t, true).ID
 
-	cred, err := db.UserCredentials.Create(ctx, db.UserCredentialScope{
+	cred, err := db.GlobalUserCredentials.Create(ctx, db.UserCredentialScope{
 		Domain:              db.UserCredentialDomainCampaigns,
 		ExternalServiceType: extsvc.TypeGitHub,
 		ExternalServiceID:   "https://github.com/",
@@ -866,7 +867,7 @@ func TestDeleteCampaignsCredential(t *testing.T) {
 	cstore := store.New(dbconn.Global)
 
 	r := &Resolver{store: cstore}
-	s, err := graphqlbackend.NewSchema(r, nil, nil, nil, nil)
+	s, err := graphqlbackend.NewSchema(dbconn.Global, r, nil, nil, nil, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

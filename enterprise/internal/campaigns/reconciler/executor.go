@@ -63,14 +63,14 @@ func (e *executor) Run(ctx context.Context, plan *Plan) (err error) {
 		return nil
 	}
 
-	reposStore := db.NewRepoStoreWith(e.tx)
+	reposStore := db.ReposWith(e.tx)
 
 	e.repo, err = loadRepo(ctx, reposStore, e.ch.RepoID)
 	if err != nil {
 		return errors.Wrap(err, "failed to load repository")
 	}
 
-	esStore := db.NewExternalServicesStoreWith(e.tx)
+	esStore := db.ExternalServicesWith(e.tx)
 
 	e.extSvc, err = loadExternalService(ctx, esStore, e.repo)
 	if err != nil {
@@ -535,10 +535,24 @@ func buildCommitOpts(repo *types.Repo, extSvc *types.ExternalService, spec *camp
 	return opts, nil
 }
 
+// ErrNoSSHPush is returned by buildPushConfig if the clone URL of the
+// repository uses the ssh:// scheme, which is currently not supported by campaigns.
+type ErrNoSSHPush struct{}
+
+func (e ErrNoSSHPush) Error() string {
+	return "campaigns currently do not support pushing commits via SSH, only HTTP(s) is supported. See https://docs.sourcegraph.com/admin/repo/auth for information on which settings can cause SSH to be used."
+}
+
+func (e ErrNoSSHPush) NonRetryable() bool { return true }
+
 func buildPushConfig(extSvcType, cloneURL string, a auth.Authenticator) (*protocol.PushConfig, error) {
 	u, err := url.Parse(cloneURL)
 	if err != nil {
 		return nil, errors.Wrap(err, "parsing repository clone URL")
+	}
+
+	if u.Scheme == "ssh" {
+		return nil, ErrNoSSHPush{}
 	}
 
 	switch av := a.(type) {
@@ -594,11 +608,11 @@ func loadCampaign(ctx context.Context, tx getCampaigner, id int64) (*campaigns.C
 }
 
 func loadUser(ctx context.Context, id int32) (*types.User, error) {
-	return db.Users.GetByID(ctx, id)
+	return db.GlobalUsers.GetByID(ctx, id)
 }
 
 func loadUserCredential(ctx context.Context, userID int32, repo *types.Repo) (*db.UserCredential, error) {
-	return db.UserCredentials.GetByScope(ctx, db.UserCredentialScope{
+	return db.GlobalUserCredentials.GetByScope(ctx, db.UserCredentialScope{
 		Domain:              db.UserCredentialDomainCampaigns,
 		UserID:              userID,
 		ExternalServiceType: repo.ExternalRepo.ServiceType,
@@ -614,7 +628,7 @@ func decorateChangesetBody(ctx context.Context, tx getCampaigner, cs *repos.Chan
 
 	// We need to get the namespace, since external campaign URLs are
 	// namespaced.
-	ns, err := db.Namespaces.GetByID(ctx, campaign.NamespaceOrgID, campaign.NamespaceUserID)
+	ns, err := db.GlobalNamespaces.GetByID(ctx, campaign.NamespaceOrgID, campaign.NamespaceUserID)
 	if err != nil {
 		return errors.Wrap(err, "retrieving namespace")
 	}

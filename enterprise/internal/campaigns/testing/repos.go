@@ -11,8 +11,8 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/api"
 	"github.com/sourcegraph/sourcegraph/internal/conf"
 	idb "github.com/sourcegraph/sourcegraph/internal/db"
-	"github.com/sourcegraph/sourcegraph/internal/db/dbtesting"
 	"github.com/sourcegraph/sourcegraph/internal/extsvc"
+	"github.com/sourcegraph/sourcegraph/internal/timeutil"
 	"github.com/sourcegraph/sourcegraph/internal/types"
 	"github.com/sourcegraph/sourcegraph/schema"
 )
@@ -20,13 +20,13 @@ import (
 func TestRepo(t *testing.T, store *idb.ExternalServiceStore, serviceKind string) *types.Repo {
 	t.Helper()
 
-	clock := dbtesting.NewFakeClock(time.Now(), 0)
+	clock := timeutil.NewFakeClock(time.Now(), 0)
 	now := clock.Now()
 
 	svc := types.ExternalService{
 		Kind:        serviceKind,
 		DisplayName: serviceKind + " - Test",
-		Config:      `{"url": "https://github.com"}`,
+		Config:      `{"url": "https://github.com", "authorization": {}}`,
 		CreatedAt:   now,
 		UpdatedAt:   now,
 	}
@@ -56,8 +56,8 @@ func TestRepo(t *testing.T, store *idb.ExternalServiceStore, serviceKind string)
 func CreateTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int) ([]*types.Repo, *types.ExternalService) {
 	t.Helper()
 
-	repoStore := idb.NewRepoStoreWithDB(db)
-	esStore := idb.NewExternalServicesStoreWithDB(db)
+	repoStore := idb.Repos(db)
+	esStore := idb.ExternalServices(db)
 
 	ext := &types.ExternalService{
 		Kind:        extsvc.KindGitHub,
@@ -101,8 +101,8 @@ func CreateTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int) (
 func CreateGitlabTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int) ([]*types.Repo, *types.ExternalService) {
 	t.Helper()
 
-	repoStore := idb.NewRepoStoreWithDB(db)
-	esStore := idb.NewExternalServicesStoreWithDB(db)
+	repoStore := idb.Repos(db)
+	esStore := idb.ExternalServices(db)
 
 	ext := &types.ExternalService{
 		Kind:        extsvc.KindGitLab,
@@ -138,9 +138,6 @@ func CreateGitlabTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count 
 func CreateBbsTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int) ([]*types.Repo, *types.ExternalService) {
 	t.Helper()
 
-	repoStore := idb.NewRepoStoreWithDB(db)
-	esStore := idb.NewExternalServicesStoreWithDB(db)
-
 	ext := &types.ExternalService{
 		Kind:        extsvc.KindBitbucketServer,
 		DisplayName: "Bitbucket Server",
@@ -149,6 +146,33 @@ func CreateBbsTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int
 			Token: "SECRETTOKEN",
 		}),
 	}
+
+	return createBbsRepos(t, ctx, db, ext, count, "https://bbs-user:bbs-token@bitbucket.sourcegraph.com/scm")
+}
+
+func CreateBbsSSHTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int) ([]*types.Repo, *types.ExternalService) {
+	t.Helper()
+
+	ext := &types.ExternalService{
+		Kind:        extsvc.KindBitbucketServer,
+		DisplayName: "Bitbucket Server SSH",
+		Config: MarshalJSON(t, &schema.BitbucketServerConnection{
+			Url:        "https://bitbucket.sgdev.org",
+			Token:      "SECRETTOKEN",
+			GitURLType: "ssh",
+		}),
+	}
+
+	return createBbsRepos(t, ctx, db, ext, count, "ssh://git@bitbucket.sgdev.org:7999")
+}
+
+func createBbsRepos(t *testing.T, ctx context.Context, db *sql.DB, ext *types.ExternalService, count int, cloneBaseURL string) ([]*types.Repo, *types.ExternalService) {
+
+	t.Helper()
+
+	repoStore := idb.Repos(db)
+	esStore := idb.ExternalServices(db)
+
 	if err := esStore.Upsert(ctx, ext); err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +183,7 @@ func CreateBbsTestRepos(t *testing.T, ctx context.Context, db *sql.DB, count int
 		r.Sources = map[string]*types.SourceInfo{
 			ext.URN(): {
 				ID:       ext.URN(),
-				CloneURL: "https://bbs-user:bbs-token@bitbucket.sourcegraph.com/scm/" + string(r.Name),
+				CloneURL: cloneBaseURL + "/" + string(r.Name),
 			},
 		}
 

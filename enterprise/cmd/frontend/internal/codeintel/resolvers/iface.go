@@ -72,6 +72,7 @@ type LSIFStore interface {
 
 type GitserverClient interface {
 	CommitGraph(ctx context.Context, repositoryID int, options gitserver.CommitGraphOptions) (*gitserver.CommitGraph, error)
+	CommitExists(ctx context.Context, repositoryID int, commit string) (bool, error)
 }
 
 type IndexEnqueuer interface {

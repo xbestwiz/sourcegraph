@@ -846,6 +846,11 @@ type Mutation {
         """
         id: ID!
     ): EmptyResponse!
+
+    """
+    Triggers a test email for a code monitor action.
+    """
+    triggerTestEmailAction(namespace: ID!, description: String!, email: MonitorEmailInput!): EmptyResponse!
 }
 
 """
@@ -1462,6 +1467,19 @@ type ChangesetApplyPreviewConnectionStats {
     The changeset is removed from some of the associated campaigns.
     """
     detach: Int!
+
+    """
+    The amount of changesets that are added to the campaign in this operation.
+    """
+    added: Int!
+    """
+    The amount of changesets that are already attached to the campaign and modified in this operation.
+    """
+    modified: Int!
+    """
+    The amount of changesets that are disassociated from the campaign in this operation.
+    """
+    removed: Int!
 }
 
 """
@@ -1549,6 +1567,10 @@ type CampaignSpec implements Node {
         Opaque pagination cursor.
         """
         after: String
+        """
+        Search for changesets matching this query. Queries may include quoted substrings to match phrases, and words may be preceded by - to negate them.
+        """
+        search: String
     ): ChangesetApplyPreviewConnection!
 
     """
@@ -2212,6 +2234,12 @@ type ExternalChangeset implements Node & Changeset {
     body: String
 
     """
+    The author of the changeset, or null if the data hasn't been synced from the code host yet,
+    or the changeset has not yet been published.
+    """
+    author: Person
+
+    """
     The publication state of the changeset.
     """
     publicationState: ChangesetPublicationState!
@@ -2310,6 +2338,18 @@ type ChangesetsStats {
     """
     deleted: Int!
     """
+    The count of changesets in retrying state.
+    """
+    retrying: Int!
+    """
+    The count of changesets in failed state.
+    """
+    failed: Int!
+    """
+    The count of changesets that are currently processing or enqueued to be.
+    """
+    processing: Int!
+    """
     The count of all changesets.
     """
     total: Int!
@@ -2373,6 +2413,31 @@ type ChangesetEventConnection {
     Pagination information.
     """
     pageInfo: PageInfo!
+}
+
+"""
+Insights about code.
+"""
+type Insights {
+    """
+    Data points over a time range (inclusive)
+    """
+    points(from: DateTime, to: DateTime): [InsightDataPoint!]!
+}
+
+"""
+A code insight data point.
+"""
+type InsightDataPoint {
+    """
+    The time of this data point.
+    """
+    dateTime: DateTime!
+
+    """
+    The value of the insight at this point in time.
+    """
+    value: Float!
 }
 
 """
@@ -2688,6 +2753,11 @@ type Query {
         """
         name: String!
     ): Campaign
+
+    """
+    EXPERIMENTAL: Queries code insights
+    """
+    insights: Insights
 
     """
     Looks up a repository by either name or cloneURL.
@@ -3331,6 +3401,8 @@ type SearchResults {
     """
     repositoriesCount: Int!
     """
+    DEPRECATED in v3.24. Will be removed in v3.26.
+
     Repositories that were actually searched. Excludes repositories that would have been searched but were not
     because a timeout or error occurred while performing the search, or because the result limit was already
     reached, or because they were excluded due to being forks or archives.
@@ -3339,10 +3411,14 @@ type SearchResults {
     would be searched if further requests were made.
     """
     repositoriesSearched: [Repository!]!
+        @deprecated(reason: "expensive to calculate and unused by official clients. Will be removed in v3.26.")
     """
+    DEPRECATED in v3.24. Will be removed in v3.26.
+
     Indexed repositories searched. This is a subset of repositoriesSearched.
     """
     indexedRepositoriesSearched: [Repository!]!
+        @deprecated(reason: "expensive to calculate and unused by official clients. Will be removed in v3.26.")
     """
     Repositories that are busy cloning onto gitserver.
     In paginated search requests, some repositories may be cloning. These are reported here
@@ -4065,6 +4141,7 @@ enum ExternalServiceKind {
     GITHUB
     GITLAB
     GITOLITE
+    PERFORCE
     PHABRICATOR
     OTHER
 }
@@ -4122,6 +4199,14 @@ type ExternalService implements Node {
     will contain any errors that occured during the most recent completed sync.
     """
     lastSyncError: String
+    """
+    LastSyncAt is the time the last sync job was run for this code host
+    """
+    lastSyncAt: DateTime!
+    """
+    The timestamp of the next sync job
+    """
+    nextSyncAt: DateTime!
 }
 
 """

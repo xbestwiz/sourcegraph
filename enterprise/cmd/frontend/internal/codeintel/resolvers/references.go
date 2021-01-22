@@ -15,6 +15,7 @@ import (
 type ReferencePageResolver struct {
 	dbStore         DBStore
 	lsifStore       LSIFStore
+	gitserverClient GitserverClient
 	repositoryID    int
 	commit          string
 	remoteDumpLimit int
@@ -244,7 +245,7 @@ func (s *ReferencePageResolver) handleDefinitionMonikersCursor(ctx context.Conte
 			continue
 		}
 
-		locations, count, err := lookupMoniker(s.dbStore, s.lsifStore, cursor.DumpID, cursor.Path, "references", moniker, cursor.SkipResults, s.limit)
+		locations, count, err := lookupMoniker(ctx, s.dbStore, s.lsifStore, cursor.DumpID, cursor.Path, "references", moniker, cursor.SkipResults, s.limit)
 		if err != nil {
 			return nil, Cursor{}, false, err
 		}
@@ -313,6 +314,7 @@ func (s *ReferencePageResolver) resolveLocationsViaReferencePager(ctx context.Co
 	scheme := cursor.Scheme
 	identifier := cursor.Identifier
 	limit := s.limit
+	commitExistenceCache := map[int]map[string]bool{}
 
 	if len(cursor.DumpIDs) == 0 {
 		totalCount, pager, err := createPager(ctx)
@@ -369,6 +371,28 @@ func (s *ReferencePageResolver) resolveLocationsViaReferencePager(ctx context.Co
 			return nil, Cursor{}, false, pkgerrors.Wrap(err, "store.GetDumpByID")
 		}
 		if !exists {
+			continue
+		}
+
+		if _, ok := commitExistenceCache[dump.RepositoryID]; !ok {
+			commitExistenceCache[dump.RepositoryID] = map[string]bool{}
+		}
+
+		// We've already determined the target commit doesn't exist
+		if exists, ok := commitExistenceCache[dump.RepositoryID][dump.Commit]; ok && !exists {
+			continue
+		}
+
+		commitExists, err := s.gitserverClient.CommitExists(ctx, dump.RepositoryID, dump.Commit)
+		if err != nil {
+			return nil, Cursor{}, false, pkgerrors.Wrap(err, "gitserverClient.CommitExists")
+		}
+
+		// Cache result as we're likely to have multiple
+		// dumps per commit if there are overlapping roots.
+		commitExistenceCache[dump.RepositoryID][dump.Commit] = exists
+
+		if !commitExists {
 			continue
 		}
 

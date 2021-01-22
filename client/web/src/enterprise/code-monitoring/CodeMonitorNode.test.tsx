@@ -1,8 +1,8 @@
 import { CodeMonitorNode } from './CodeMonitoringNode'
 import * as React from 'react'
 import * as H from 'history'
-import { AuthenticatedUser } from '../../auth'
 import sinon from 'sinon'
+import { AuthenticatedUser } from '../../auth'
 import { mount } from 'enzyme'
 import { mockCodeMonitor } from './testing/util'
 

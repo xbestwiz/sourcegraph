@@ -65,8 +65,9 @@ type ChangesetSpecsConnectionArgs struct {
 }
 
 type ChangesetApplyPreviewConnectionArgs struct {
-	First int32
-	After *string
+	First  int32
+	After  *string
+	Search *string
 }
 
 type CampaignArgs struct {
@@ -225,6 +226,10 @@ type ChangesetApplyPreviewConnectionStatsResolver interface {
 	Reopen() int32
 	Sleep() int32
 	Detach() int32
+
+	Added() int32
+	Modified() int32
+	Removed() int32
 }
 
 type ChangesetApplyPreviewConnectionResolver interface {
@@ -372,6 +377,9 @@ type CampaignsConnectionResolver interface {
 }
 
 type ChangesetsStatsResolver interface {
+	Retrying() int32
+	Failed() int32
+	Processing() int32
 	Unpublished() int32
 	Draft() int32
 	Open() int32
@@ -429,6 +437,7 @@ type ExternalChangesetResolver interface {
 	ExternalID() *string
 	Title(context.Context) (*string, error)
 	Body(context.Context) (*string, error)
+	Author() (*PersonResolver, error)
 	ExternalURL() (*externallink.Resolver, error)
 	ReviewState(context.Context) *campaigns.ChangesetReviewState
 	CheckState() *campaigns.ChangesetCheckState

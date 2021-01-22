@@ -41,6 +41,10 @@ type Request struct {
 	// The deadline for the search request.
 	// It is parsed with time.Time.UnmarshalText.
 	Deadline string
+
+	// Endpoint(s) for reaching Zoekt. See description in
+	// endpoint.go:Static(...)
+	IndexerEndpoints []string
 }
 
 // PatternInfo describes a search request on a repo. Most of the fields
@@ -103,7 +107,11 @@ type PatternInfo struct {
 	// Languages is the languages passed via the lang filters (e.g., "lang:c")
 	Languages []string
 
-	// CombyRule is a rule that constrains matching for structural search. It only applies when IsStructuralPat is true.
+	// CombyRule is a rule that constrains matching for structural search.
+	// It only applies when IsStructuralPat is true.
+	// As a temporary measure, the expression `where "zoekt" == "zoekt"` acts as
+	// a flag to activate a new structural search path to directly query
+	// Zoekt for file contents.
 	CombyRule string
 }
 

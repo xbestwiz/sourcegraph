@@ -260,7 +260,7 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 		for _, monikers := range rangeMonikers {
 			for _, moniker := range monikers {
 				if moniker.Kind == "import" {
-					locations, _, err := lookupMoniker(r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
+					locations, _, err := lookupMoniker(ctx, r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
 					if err != nil {
 						return nil, err
 					}
@@ -389,7 +389,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 			continue
 		}
 
-		cursor, err := DecodeOrCreateCursor(adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID, rawCursor, r.dbStore, r.lsifStore)
+		cursor, err := DecodeOrCreateCursor(ctx, adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID, rawCursor, r.dbStore, r.lsifStore)
 		if err != nil {
 			return nil, "", err
 		}
@@ -463,7 +463,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 		for _, monikers := range rangeMonikers {
 			for _, moniker := range monikers {
 				if moniker.Kind == "import" {
-					locations, _, err := lookupMoniker(r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
+					locations, _, err := lookupMoniker(ctx, r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
 					if err != nil {
 						return nil, err
 					}
@@ -754,6 +754,7 @@ func resolveLocationsWithDump(dump store.Dump, locations []lsifstore.Location) [
 }
 
 func lookupMoniker(
+	ctx context.Context,
 	dbStore DBStore,
 	lsifStore LSIFStore,
 	dumpID int,
@@ -767,7 +768,7 @@ func lookupMoniker(
 		return nil, 0, nil
 	}
 
-	pid, _, err := lsifStore.PackageInformation(context.Background(), dumpID, path, string(moniker.PackageInformationID))
+	pid, _, err := lsifStore.PackageInformation(ctx, dumpID, path, string(moniker.PackageInformationID))
 	if err != nil {
 		if err == lsifstore.ErrNotFound {
 			log15.Warn("Bundle does not exist")
@@ -776,12 +777,12 @@ func lookupMoniker(
 		return nil, 0, errors.Wrap(err, "lsifStore.BundleClient")
 	}
 
-	dump, exists, err := dbStore.GetPackage(context.Background(), moniker.Scheme, pid.Name, pid.Version)
+	dump, exists, err := dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
 	if err != nil || !exists {
 		return nil, 0, errors.Wrap(err, "store.GetPackage")
 	}
 
-	locations, count, err := lsifStore.MonikerResults(context.Background(), dump.ID, modelType, moniker.Scheme, moniker.Identifier, skip, take)
+	locations, count, err := lsifStore.MonikerResults(ctx, dump.ID, modelType, moniker.Scheme, moniker.Identifier, skip, take)
 	if err != nil {
 		if err == lsifstore.ErrNotFound {
 			log15.Warn("Bundle does not exist")
