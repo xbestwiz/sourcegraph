@@ -141,6 +141,7 @@ func (r *resolver) QueryResolver(ctx context.Context, args *gql.GitBlobLSIFDataA
 	var dumps []store.Dump
 	for _, dump := range candidates {
 		if args.ExactPath {
+			// TODO - batch these together
 			exists, err := r.lsifStore.Exists(ctx, dump.ID, strings.TrimPrefix(args.Path, dump.Root))
 			if err != nil {
 				return nil, err
@@ -158,9 +159,12 @@ func (r *resolver) QueryResolver(ctx context.Context, args *gql.GitBlobLSIFDataA
 		return nil, err
 	}
 
+	// TODO - did I accidentally kill a commit exists check?
+
 	return NewQueryResolver(
 		r.dbStore,
 		r.lsifStore,
+		r.gitserverClient,
 		NewPositionAdjuster(args.Repo, string(args.Commit), r.hunkCache),
 		int(args.Repo.ID),
 		string(args.Commit),

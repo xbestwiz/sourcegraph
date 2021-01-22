@@ -17,22 +17,10 @@ import (
 
 var ErrMissingDump = errors.New("missing dump")
 
-type ResolvedCodeIntelligenceRange struct {
-	Range       lsifstore.Range
-	Definitions []ResolvedLocation
-	References  []ResolvedLocation
-	HoverText   string
-}
-
 type ResolvedLocation struct {
 	Dump  store.Dump
 	Path  string
 	Range lsifstore.Range
-}
-
-type ResolvedDiagnostic struct {
-	Dump       store.Dump
-	Diagnostic lsifstore.Diagnostic
 }
 
 // AdjustedLocation is similar to a ResolvedLocation, but with fields denoting
@@ -77,6 +65,7 @@ type QueryResolver interface {
 type queryResolver struct {
 	dbStore          DBStore
 	lsifStore        LSIFStore
+	gitserverClient  GitserverClient
 	positionAdjuster PositionAdjuster
 	repositoryID     int
 	commit           string
@@ -91,6 +80,7 @@ type queryResolver struct {
 func NewQueryResolver(
 	dbStore DBStore,
 	lsifStore LSIFStore,
+	gitserverClient GitserverClient,
 	positionAdjuster PositionAdjuster,
 	repositoryID int,
 	commit string,
@@ -101,6 +91,7 @@ func NewQueryResolver(
 	return &queryResolver{
 		dbStore:          dbStore,
 		lsifStore:        lsifStore,
+		gitserverClient:  gitserverClient,
 		positionAdjuster: positionAdjuster,
 		operations:       operations,
 		repositoryID:     repositoryID,
@@ -128,9 +119,16 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 	})
 	defer endObservation()
 
-	var adjustedRanges []AdjustedCodeIntelligenceRange
-	for i := range r.uploads {
-		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, r.uploads[i].Commit, r.path, false)
+	type TEMPORARY struct {
+		Upload       store.Dump
+		AdjustedPath string
+		Ranges       []lsifstore.CodeIntelligenceRange
+	}
+	worklist := make([]TEMPORARY, 0, len(r.uploads))
+
+	for _, upload := range r.uploads {
+		// TODO - adjust pos
+		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, upload.Commit, r.path, false)
 		if err != nil {
 			return nil, err
 		}
@@ -138,47 +136,41 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 			continue
 		}
 
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
-		if err != nil {
-			return nil, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			continue
-		}
+		worklist = append(worklist, TEMPORARY{
+			Upload:       upload,
+			AdjustedPath: adjustedPath,
+		})
+	}
 
-		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
-		ranges, err := r.lsifStore.Ranges(ctx, dump.ID, pathInBundle, startLine, endLine)
+	for i, w := range worklist {
+		// TODO - batch these requests together
+		ranges, err := r.lsifStore.Ranges(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), startLine, endLine)
 		if err != nil {
 			return nil, err
 		}
 
-		var codeIntelRanges []ResolvedCodeIntelligenceRange
-		for _, r := range ranges {
-			codeIntelRanges = append(codeIntelRanges, ResolvedCodeIntelligenceRange{
-				Range:       r.Range,
-				Definitions: resolveLocationsWithDump(dump, r.Definitions),
-				References:  resolveLocationsWithDump(dump, r.References),
-				HoverText:   r.HoverText,
-			})
-		}
+		worklist[i].Ranges = ranges
+	}
 
-		for _, rn := range codeIntelRanges {
-			adjustedDefinitions, err := r.adjustLocations(ctx, rn.Definitions)
+	var ranges []AdjustedCodeIntelligenceRange
+	for _, w := range worklist {
+		for _, rn := range w.Ranges {
+			_, adjustedRange, err := r.adjustRange(ctx, w.Upload.RepositoryID, w.Upload.Commit, w.AdjustedPath, rn.Range)
 			if err != nil {
 				return nil, err
 			}
 
-			adjustedReferences, err := r.adjustLocations(ctx, rn.References)
+			adjustedDefinitions, err := r.adjustLocations(ctx, resolveLocationsWithDump(w.Upload, rn.Definitions))
 			if err != nil {
 				return nil, err
 			}
 
-			_, adjustedRange, err := r.adjustRange(ctx, r.uploads[i].RepositoryID, r.uploads[i].Commit, adjustedPath, rn.Range)
+			adjustedReferences, err := r.adjustLocations(ctx, resolveLocationsWithDump(w.Upload, rn.References))
 			if err != nil {
 				return nil, err
 			}
 
-			adjustedRanges = append(adjustedRanges, AdjustedCodeIntelligenceRange{
+			ranges = append(ranges, AdjustedCodeIntelligenceRange{
 				Range:       adjustedRange,
 				Definitions: adjustedDefinitions,
 				References:  adjustedReferences,
@@ -187,7 +179,7 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 		}
 	}
 
-	return adjustedRanges, nil
+	return ranges, nil
 }
 
 const slowDefinitionsRequestThreshold = time.Second
@@ -209,12 +201,22 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 	})
 	defer endObservation()
 
-	const defintionMonikersLimit = 100
+	position := lsifstore.Position{
+		Line:      line,
+		Character: character,
+	}
 
-	position := lsifstore.Position{Line: line, Character: character}
+	type TEMPORARY struct {
+		Upload           store.Dump
+		AdjustedPath     string
+		AdjustedPosition lsifstore.Position
+		Locations        []lsifstore.Location
+		OrderedMonikers  []lsifstore.MonikerData
+	}
+	var worklist []TEMPORARY
 
-	for i := range r.uploads {
-		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, r.uploads[i].Commit, r.path, position, false)
+	for _, upload := range r.uploads {
+		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, upload.Commit, r.path, position, false)
 		if err != nil {
 			return nil, err
 		}
@@ -222,52 +224,89 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 			continue
 		}
 
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
-		if err != nil {
-			return nil, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			continue
-		}
+		worklist = append(worklist, TEMPORARY{
+			Upload:           upload,
+			AdjustedPath:     adjustedPath,
+			AdjustedPosition: adjustedPosition,
+		})
+	}
 
-		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
-		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
-		if err != nil {
-			return nil, err
-		}
-		if len(locations) > 0 {
-			return r.adjustLocations(ctx, resolveLocationsWithDump(dump, locations))
-		}
-
-		rangeMonikers, err := r.lsifStore.MonikersByPosition(context.Background(), dump.ID, pathInBundle, adjustedPosition.Line, adjustedPosition.Character)
+	for i, w := range worklist {
+		// TODO - batch these requests together
+		locations, err := r.lsifStore.Definitions(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), line, character)
 		if err != nil {
 			return nil, err
 		}
 
+		worklist[i].Locations = locations
+	}
+
+	for i, w := range worklist {
+		if len(w.Locations) > 0 {
+			break
+		}
+
+		// TODO - batch these requests together
+		rangeMonikers, err := r.lsifStore.MonikersByPosition(
+			ctx,
+			w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root),
+			w.AdjustedPosition.Line,
+			w.AdjustedPosition.Character,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		var orderedMonikers []lsifstore.MonikerData
 		for _, monikers := range rangeMonikers {
 			for _, moniker := range monikers {
-				if moniker.Kind == "import" {
-					locations, _, err := lookupMoniker(ctx, r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
-					if err != nil {
-						return nil, err
-					}
-					if len(locations) > 0 {
-						return r.adjustLocations(ctx, locations)
-					}
-				} else {
-					// This symbol was not imported from another bundle. We search the definitions
-					// of our own bundle in case there was a definition that wasn't properly attached
-					// to a result set but did have the correct monikers attached.
-
-					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
-					if err != nil {
-						return nil, err
-					}
-					if len(locations) > 0 {
-						return r.adjustLocations(ctx, resolveLocationsWithDump(dump, locations))
-					}
+				if moniker.Kind == "import" && moniker.PackageInformationID != "" {
+					orderedMonikers = append(orderedMonikers, moniker)
 				}
 			}
+		}
+
+		// TODO - ensure uniqueness
+		worklist[i].OrderedMonikers = orderedMonikers
+	}
+
+	for i, w := range worklist {
+		for _, moniker := range w.OrderedMonikers {
+			// TODO - batch these requests together
+			pid, _, err := r.lsifStore.PackageInformation(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), string(moniker.PackageInformationID))
+			if err != nil {
+				return nil, err
+			}
+
+			dump, exists, err := r.dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
+			if err != nil {
+				return nil, err
+			}
+			if !exists {
+				continue
+			}
+
+			const defintionMonikersLimit = 100
+			locations, _, err := r.lsifStore.MonikerResults(ctx, dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
+			if err != nil {
+				return nil, err
+			}
+
+			if len(locations) > 0 {
+				worklist[i].Locations = locations
+				break
+			}
+		}
+	}
+
+	for _, w := range worklist {
+		if len(w.Locations) > 0 {
+			adjustedLocations, err := r.adjustLocations(ctx, resolveLocationsWithDump(w.Upload, w.Locations))
+			if err != nil {
+				return nil, err
+			}
+
+			return adjustedLocations, nil
 		}
 	}
 
@@ -343,7 +382,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 			return nil, "", ErrIllegalLimit
 		}
 
-		locations, newCursor, hasNewCursor, err := NewReferencePageResolver(r.dbStore, r.lsifStore, r.repositoryID, r.commit, remoteDumpLimit, limit).ResolvePage(ctx, cursor)
+		locations, newCursor, hasNewCursor, err := NewReferencePageResolver(r.dbStore, r.lsifStore, r.gitserverClient, r.repositoryID, r.commit, remoteDumpLimit, limit).ResolvePage(ctx, cursor)
 		if err != nil {
 			return nil, "", err
 		}
@@ -385,64 +424,22 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 	})
 	defer endObservation()
 
-	const defintionMonikersLimit = 100
-
-	definitionsRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) ([]ResolvedLocation, error) {
-		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
-		if err != nil {
-			return nil, err
-		}
-		if len(locations) > 0 {
-			return resolveLocationsWithDump(dump, locations), nil
-		}
-
-		rangeMonikers, err := r.lsifStore.MonikersByPosition(context.Background(), dump.ID, pathInBundle, line, character)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, monikers := range rangeMonikers {
-			for _, moniker := range monikers {
-				if moniker.Kind == "import" {
-					locations, _, err := lookupMoniker(ctx, r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
-					if err != nil {
-						return nil, err
-					}
-					if len(locations) > 0 {
-						return locations, nil
-					}
-				} else {
-					// This symbol was not imported from another bundle. We search the definitions
-					// of our own bundle in case there was a definition that wasn't properly attached
-					// to a result set but did have the correct monikers attached.
-
-					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
-					if err != nil {
-						return nil, err
-					}
-					if len(locations) > 0 {
-						return resolveLocationsWithDump(dump, locations), nil
-					}
-				}
-			}
-		}
-
-		return nil, nil
+	position := lsifstore.Position{
+		Line:      line,
+		Character: character,
 	}
 
-	definitionRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) (ResolvedLocation, bool, error) {
-		resolved, err := definitionsRaw(ctx, dump, pathInBundle, line, character)
-		if err != nil || len(resolved) == 0 {
-			return ResolvedLocation{}, false, err
-		}
-
-		return resolved[0], true, nil
+	type TEMPORARY struct {
+		Upload           store.Dump
+		AdjustedPath     string
+		AdjustedPosition lsifstore.Position
+		Text             string
+		Range            lsifstore.Range
 	}
+	var worklist []TEMPORARY
 
-	position := lsifstore.Position{Line: line, Character: character}
-
-	for i := range r.uploads {
-		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, r.uploads[i].Commit, r.path, position, false)
+	for _, upload := range r.uploads {
+		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, upload.Commit, r.path, position, false)
 		if err != nil {
 			return "", lsifstore.Range{}, false, err
 		}
@@ -450,31 +447,16 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 			continue
 		}
 
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
-		if err != nil {
-			return "", lsifstore.Range{}, false, err
-		}
-		if !exists {
-			continue
-		}
+		worklist = append(worklist, TEMPORARY{
+			Upload:           upload,
+			AdjustedPath:     adjustedPath,
+			AdjustedPosition: adjustedPosition,
+		})
+	}
 
-		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
-		text, rn, exists, err := r.lsifStore.Hover(ctx, dump.ID, pathInBundle, adjustedPosition.Line, adjustedPosition.Character)
-		if err != nil {
-			return "", lsifstore.Range{}, false, err
-		}
-		if exists {
-			return text, rn, true, nil
-		}
-
-		definition, exists, err := definitionRaw(ctx, dump, pathInBundle, adjustedPosition.Line, adjustedPosition.Character)
-		if err != nil || !exists {
-			return "", lsifstore.Range{}, false, err
-		}
-
-		pathInDefinitionBundle := strings.TrimPrefix(definition.Path, definition.Dump.Root)
-
-		text, rn, exists, err = r.lsifStore.Hover(ctx, definition.Dump.ID, pathInDefinitionBundle, definition.Range.Start.Line, definition.Range.Start.Character)
+	for i, w := range worklist {
+		// TODO - batch these requests
+		text, r, exists, err := r.lsifStore.Hover(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), w.AdjustedPosition.Line, w.AdjustedPosition.Character)
 		if err != nil {
 			return "", lsifstore.Range{}, false, err
 		}
@@ -482,18 +464,19 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 			continue
 		}
 
-		if _, adjustedRange, ok, err := r.positionAdjuster.AdjustRange(ctx, r.uploads[i].Commit, r.path, rn, true); err != nil {
-			return "", lsifstore.Range{}, false, err
-		} else if ok {
-			return text, adjustedRange, true, nil
-		}
+		worklist[i].Text = text
+		worklist[i].Range = r
+	}
 
-		// Failed to adjust range. This _might_ happen in cases where the LSIF range
-		// spans multiple lines which intersect a diff; the hover position on an earlier
-		// line may not be edited, but the ending line of the expression may have been
-		// edited or removed. This is rare and unfortunate, and we'll skip the result
-		// in this case because we have low confidence that it will be rendered correctly.
-		continue
+	for _, w := range worklist {
+		if w.Text != "" {
+			_, adjustedRange, ok, err := r.positionAdjuster.AdjustRange(ctx, w.Upload.Commit, r.path, w.Range, true)
+			if err != nil || !ok {
+				return "", lsifstore.Range{}, false, err
+			}
+
+			return w.Text, adjustedRange, true, nil
+		}
 	}
 
 	return "", lsifstore.Range{}, false, nil
@@ -516,10 +499,16 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 	})
 	defer endObservation()
 
-	totalCount := 0
-	var allDiagnostics []ResolvedDiagnostic
-	for i := range r.uploads {
-		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, r.uploads[i].Commit, r.path, false)
+	type TEMPORARY struct {
+		Upload       store.Dump
+		AdjustedPath string
+		Diagnostics  []lsifstore.Diagnostic
+		Count        int
+	}
+	var worklist []TEMPORARY
+
+	for _, upload := range r.uploads {
+		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, upload.Commit, r.path, false)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -527,47 +516,62 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 			continue
 		}
 
-		dump, exists, err := r.dbStore.GetDumpByID(ctx, r.uploads[i].ID)
-		if err != nil {
-			return nil, 0, errors.Wrap(err, "store.GetDumpByID")
-		}
-		if !exists {
-			continue
-		}
-
-		l := limit - len(allDiagnostics)
-		if l < 0 {
-			l = 0
-		}
-
-		pathInBundle := strings.TrimPrefix(adjustedPath, dump.Root)
-		diagnostics, count, err := r.lsifStore.Diagnostics(ctx, dump.ID, pathInBundle, 0, l)
-		if err != nil {
-			return nil, 0, err
-		}
-
-		totalCount += count
-		allDiagnostics = append(allDiagnostics, resolveDiagnosticsWithDump(dump, diagnostics)...)
+		worklist = append(worklist, TEMPORARY{
+			Upload:       upload,
+			AdjustedPath: adjustedPath,
+		})
 	}
 
-	adjustedDiagnostics := make([]AdjustedDiagnostic, 0, len(allDiagnostics))
-	for i := range allDiagnostics {
-		clientRange := lsifstore.Range{
-			Start: lsifstore.Position{Line: allDiagnostics[i].Diagnostic.StartLine, Character: allDiagnostics[i].Diagnostic.StartCharacter},
-			End:   lsifstore.Position{Line: allDiagnostics[i].Diagnostic.EndLine, Character: allDiagnostics[i].Diagnostic.EndCharacter},
-		}
-
-		adjustedCommit, adjustedRange, err := r.adjustRange(ctx, allDiagnostics[i].Dump.RepositoryID, allDiagnostics[i].Dump.Commit, allDiagnostics[i].Diagnostic.Path, clientRange)
+	for i, w := range worklist {
+		// TODO - batch these requests
+		diagnostics, count, err := r.lsifStore.Diagnostics(
+			ctx,
+			w.Upload.ID,
+			strings.TrimPrefix(w.AdjustedPath, w.Upload.Root),
+			0,
+			limit,
+		)
 		if err != nil {
 			return nil, 0, err
 		}
 
-		adjustedDiagnostics = append(adjustedDiagnostics, AdjustedDiagnostic{
-			Diagnostic:     allDiagnostics[i].Diagnostic,
-			Dump:           allDiagnostics[i].Dump,
-			AdjustedCommit: adjustedCommit,
-			AdjustedRange:  adjustedRange,
-		})
+		worklist[i].Diagnostics = diagnostics
+		worklist[i].Count = count
+	}
+
+	totalCount := 0
+	var adjustedDiagnostics []AdjustedDiagnostic
+	for _, w := range worklist {
+		for _, diagnostic := range w.Diagnostics {
+			diagnostic = lsifstore.Diagnostic{
+				DumpID:         diagnostic.DumpID,
+				Path:           w.Upload.Root + diagnostic.Path,
+				DiagnosticData: diagnostic.DiagnosticData,
+			}
+
+			clientRange := lsifstore.Range{
+				Start: lsifstore.Position{Line: diagnostic.StartLine, Character: diagnostic.StartCharacter},
+				End:   lsifstore.Position{Line: diagnostic.EndLine, Character: diagnostic.EndCharacter},
+			}
+
+			adjustedCommit, adjustedRange, err := r.adjustRange(ctx, w.Upload.RepositoryID, w.Upload.Commit, diagnostic.Path, clientRange)
+			if err != nil {
+				return nil, 0, err
+			}
+
+			adjustedDiagnostics = append(adjustedDiagnostics, AdjustedDiagnostic{
+				Diagnostic:     diagnostic,
+				Dump:           w.Upload,
+				AdjustedCommit: adjustedCommit,
+				AdjustedRange:  adjustedRange,
+			})
+		}
+
+		totalCount += w.Count
+	}
+
+	if len(adjustedDiagnostics) > limit {
+		adjustedDiagnostics = adjustedDiagnostics[:limit]
 	}
 
 	return adjustedDiagnostics, totalCount, nil
@@ -658,50 +662,4 @@ func resolveLocationsWithDump(dump store.Dump, locations []lsifstore.Location) [
 	}
 
 	return resolvedLocations
-}
-
-func lookupMoniker(
-	ctx context.Context,
-	dbStore DBStore,
-	lsifStore LSIFStore,
-	dumpID int,
-	path string,
-	modelType string,
-	moniker lsifstore.MonikerData,
-	skip int,
-	take int,
-) ([]ResolvedLocation, int, error) {
-	if moniker.PackageInformationID == "" {
-		return nil, 0, nil
-	}
-
-	pid, _, err := lsifStore.PackageInformation(ctx, dumpID, path, string(moniker.PackageInformationID))
-	if err != nil {
-		return nil, 0, err
-	}
-
-	dump, exists, err := dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
-	if err != nil || !exists {
-		return nil, 0, err
-	}
-
-	locations, count, err := lsifStore.MonikerResults(ctx, dump.ID, modelType, moniker.Scheme, moniker.Identifier, skip, take)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resolveLocationsWithDump(dump, locations), count, nil
-}
-
-func resolveDiagnosticsWithDump(dump store.Dump, diagnostics []lsifstore.Diagnostic) []ResolvedDiagnostic {
-	var resolvedDiagnostics []ResolvedDiagnostic
-	for _, diagnostic := range diagnostics {
-		diagnostic.Path = dump.Root + diagnostic.Path
-		resolvedDiagnostics = append(resolvedDiagnostics, ResolvedDiagnostic{
-			Dump:       dump,
-			Diagnostic: diagnostic,
-		})
-	}
-
-	return resolvedDiagnostics
 }

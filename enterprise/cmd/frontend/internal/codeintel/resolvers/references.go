@@ -25,6 +25,7 @@ type ReferencePageResolver struct {
 func NewReferencePageResolver(
 	dbStore DBStore,
 	lsifStore LSIFStore,
+	gitserverClient GitserverClient,
 	repositoryID int,
 	commit string,
 	remoteDumpLimit int,
@@ -33,6 +34,7 @@ func NewReferencePageResolver(
 	return &ReferencePageResolver{
 		dbStore:         dbStore,
 		lsifStore:       lsifStore,
+		gitserverClient: gitserverClient,
 		repositoryID:    repositoryID,
 		commit:          commit,
 		remoteDumpLimit: remoteDumpLimit,
@@ -473,4 +475,37 @@ func sliceLocations(locations []lsifstore.Location, lo, hi int) []lsifstore.Loca
 		hi = len(locations)
 	}
 	return locations[lo:hi]
+}
+
+func lookupMoniker(
+	ctx context.Context,
+	dbStore DBStore,
+	lsifStore LSIFStore,
+	dumpID int,
+	path string,
+	modelType string,
+	moniker lsifstore.MonikerData,
+	skip int,
+	take int,
+) ([]ResolvedLocation, int, error) {
+	if moniker.PackageInformationID == "" {
+		return nil, 0, nil
+	}
+
+	pid, _, err := lsifStore.PackageInformation(ctx, dumpID, path, string(moniker.PackageInformationID))
+	if err != nil {
+		return nil, 0, err
+	}
+
+	dump, exists, err := dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
+	if err != nil || !exists {
+		return nil, 0, err
+	}
+
+	locations, count, err := lsifStore.MonikerResults(ctx, dump.ID, modelType, moniker.Scheme, moniker.Identifier, skip, take)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resolveLocationsWithDump(dump, locations), count, nil
 }
