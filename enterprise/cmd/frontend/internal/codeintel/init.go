@@ -71,7 +71,7 @@ func newResolver(ctx context.Context, observationContext *observation.Context) (
 	innerResolver := codeintelresolvers.NewResolver(
 		&resolvers.DBStoreShim{services.dbStore},
 		services.lsifStore,
-		services.api,
+		services.gitserverClient,
 		services.indexEnqueuer,
 		hunkCache,
 		observationContext,

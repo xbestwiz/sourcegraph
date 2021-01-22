@@ -3,21 +3,11 @@ package resolvers
 import (
 	"context"
 
-	"github.com/sourcegraph/sourcegraph/enterprise/cmd/frontend/internal/codeintel/api"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/gitserver"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
 )
-
-type CodeIntelAPI interface {
-	FindClosestDumps(ctx context.Context, repositoryID int, commit, path string, exactPath bool, indexer string) ([]store.Dump, error)
-	Ranges(ctx context.Context, file string, startLine, endLine, uploadID int) ([]api.ResolvedCodeIntelligenceRange, error)
-	Definitions(ctx context.Context, file string, line, character, uploadID int) ([]api.ResolvedLocation, error)
-	References(ctx context.Context, repositoryID int, commit string, limit int, cursor api.Cursor) ([]api.ResolvedLocation, api.Cursor, bool, error)
-	Hover(ctx context.Context, file string, line, character, uploadID int) (string, lsifstore.Range, bool, error)
-	Diagnostics(ctx context.Context, prefix string, uploadID, limit, offset int) ([]api.ResolvedDiagnostic, int, error)
-}
 
 type DBStore interface {
 	gitserver.DBStore
@@ -29,8 +19,8 @@ type DBStore interface {
 	FindClosestDumps(ctx context.Context, repositoryID int, commit, path string, rootMustEnclosePath bool, indexer string) ([]dbstore.Dump, error)
 	FindClosestDumpsFromGraphFragment(ctx context.Context, repositoryID int, commit, path string, rootMustEnclosePath bool, indexer string, graph *gitserver.CommitGraph) ([]dbstore.Dump, error)
 	GetPackage(ctx context.Context, scheme, name, version string) (dbstore.Dump, bool, error)
-	SameRepoPager(ctx context.Context, repositoryID int, commit, scheme, name, version string, limit int) (int, api.ReferencePager, error)
-	PackageReferencePager(ctx context.Context, scheme, name, version string, repositoryID, limit int) (int, api.ReferencePager, error)
+	SameRepoPager(ctx context.Context, repositoryID int, commit, scheme, name, version string, limit int) (int, ReferencePager, error)
+	PackageReferencePager(ctx context.Context, scheme, name, version string, repositoryID, limit int) (int, ReferencePager, error)
 	HasRepository(ctx context.Context, repositoryID int) (bool, error)
 	HasCommit(ctx context.Context, repositoryID int, commit string) (bool, error)
 	MarkRepositoryAsDirty(ctx context.Context, repositoryID int) error
@@ -45,7 +35,7 @@ type DBStoreShim struct {
 	*dbstore.Store
 }
 
-func (s *DBStoreShim) SameRepoPager(ctx context.Context, repositoryID int, commit, scheme, name, version string, limit int) (int, api.ReferencePager, error) {
+func (s *DBStoreShim) SameRepoPager(ctx context.Context, repositoryID int, commit, scheme, name, version string, limit int) (int, ReferencePager, error) {
 	count, pager, err := s.Store.SameRepoPager(ctx, repositoryID, commit, scheme, name, version, limit)
 	if err != nil {
 		return 0, nil, err
@@ -54,7 +44,7 @@ func (s *DBStoreShim) SameRepoPager(ctx context.Context, repositoryID int, commi
 	return count, pager, nil
 }
 
-func (s *DBStoreShim) PackageReferencePager(ctx context.Context, scheme, name, version string, repositoryID, limit int) (int, api.ReferencePager, error) {
+func (s *DBStoreShim) PackageReferencePager(ctx context.Context, scheme, name, version string, repositoryID, limit int) (int, ReferencePager, error) {
 	count, pager, err := s.Store.PackageReferencePager(ctx, scheme, name, version, repositoryID, limit)
 	if err != nil {
 		return 0, nil, err
@@ -63,8 +53,25 @@ func (s *DBStoreShim) PackageReferencePager(ctx context.Context, scheme, name, v
 	return count, pager, nil
 }
 
+type ReferencePager interface {
+	PageFromOffset(ctx context.Context, offset int) ([]lsifstore.PackageReference, error)
+	Done(err error) error
+}
+
 type LSIFStore interface {
-	api.LSIFStore
+	Exists(ctx context.Context, bundleID int, path string) (bool, error)
+	Ranges(ctx context.Context, bundleID int, path string, startLine, endLine int) ([]lsifstore.CodeIntelligenceRange, error)
+	Definitions(ctx context.Context, bundleID int, path string, line, character int) ([]lsifstore.Location, error)
+	References(ctx context.Context, bundleID int, path string, line, character int) ([]lsifstore.Location, error)
+	Hover(ctx context.Context, bundleID int, path string, line, character int) (string, lsifstore.Range, bool, error)
+	Diagnostics(ctx context.Context, bundleID int, prefix string, skip, take int) ([]lsifstore.Diagnostic, int, error)
+	MonikersByPosition(ctx context.Context, bundleID int, path string, line, character int) ([][]lsifstore.MonikerData, error)
+	MonikerResults(ctx context.Context, bundleID int, tableName, scheme, identifier string, skip, take int) ([]lsifstore.Location, int, error)
+	PackageInformation(ctx context.Context, bundleID int, path string, packageInformationID string) (lsifstore.PackageInformationData, bool, error)
+}
+
+type GitserverClient interface {
+	CommitGraph(ctx context.Context, repositoryID int, options gitserver.CommitGraphOptions) (*gitserver.CommitGraph, error)
 }
 
 type IndexEnqueuer interface {

@@ -11,13 +11,32 @@ import (
 	"github.com/opentracing/opentracing-go/log"
 	"github.com/pkg/errors"
 
-	codeintelapi "github.com/sourcegraph/sourcegraph/enterprise/cmd/frontend/internal/codeintel/api"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
 	"github.com/sourcegraph/sourcegraph/internal/observation"
 )
 
-// AdjustedLocation is similar to a codeintelapi.ResolvedLocation, but with fields denoting
+var ErrMissingDump = errors.New("missing dump")
+
+type ResolvedCodeIntelligenceRange struct {
+	Range       lsifstore.Range
+	Definitions []ResolvedLocation
+	References  []ResolvedLocation
+	HoverText   string
+}
+
+type ResolvedLocation struct {
+	Dump  store.Dump
+	Path  string
+	Range lsifstore.Range
+}
+
+type ResolvedDiagnostic struct {
+	Dump       store.Dump
+	Diagnostic lsifstore.Diagnostic
+}
+
+// AdjustedLocation is similar to a ResolvedLocation, but with fields denoting
 // the commit and range adjusted for the target commit (when the requested commit is not indexed).
 type AdjustedLocation struct {
 	Dump           store.Dump
@@ -26,7 +45,7 @@ type AdjustedLocation struct {
 	AdjustedRange  lsifstore.Range
 }
 
-// AdjustedDiagnostic is similar to a codeintelapi.ResolvedDiagnostic, but with fields denoting
+// AdjustedDiagnostic is similar to a ResolvedDiagnostic, but with fields denoting
 // the commit and range adjusted for the target commit (when the requested commit is not indexed).
 type AdjustedDiagnostic struct {
 	lsifstore.Diagnostic
@@ -35,7 +54,7 @@ type AdjustedDiagnostic struct {
 	AdjustedRange  lsifstore.Range
 }
 
-// AdjustedCodeIntelligenceRange is similar to a codeintelapi.CodeIntelligenceRange,
+// AdjustedCodeIntelligenceRange is similar to a CodeIntelligenceRange,
 // but with adjusted definition and reference locations.
 type AdjustedCodeIntelligenceRange struct {
 	Range       lsifstore.Range
@@ -59,7 +78,6 @@ type QueryResolver interface {
 type queryResolver struct {
 	dbStore          DBStore
 	lsifStore        LSIFStore
-	codeIntelAPI     CodeIntelAPI
 	positionAdjuster PositionAdjuster
 	repositoryID     int
 	commit           string
@@ -74,7 +92,6 @@ type queryResolver struct {
 func NewQueryResolver(
 	dbStore DBStore,
 	lsifStore LSIFStore,
-	codeIntelAPI CodeIntelAPI,
 	positionAdjuster PositionAdjuster,
 	repositoryID int,
 	commit string,
@@ -85,7 +102,6 @@ func NewQueryResolver(
 	return &queryResolver{
 		dbStore:          dbStore,
 		lsifStore:        lsifStore,
-		codeIntelAPI:     codeIntelAPI,
 		positionAdjuster: positionAdjuster,
 		operations:       operations,
 		repositoryID:     repositoryID,
@@ -113,13 +129,13 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 	})
 	defer endObservation()
 
-	Ranges := func(ctx context.Context, file string, startLine, endLine, uploadID int) (_ []codeintelapi.ResolvedCodeIntelligenceRange, err error) {
+	Ranges := func(ctx context.Context, file string, startLine, endLine, uploadID int) (_ []ResolvedCodeIntelligenceRange, err error) {
 		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
 		if err != nil {
 			return nil, errors.Wrap(err, "store.GetDumpByID")
 		}
 		if !exists {
-			return nil, codeintelapi.ErrMissingDump
+			return nil, ErrMissingDump
 		}
 
 		pathInBundle := strings.TrimPrefix(file, dump.Root)
@@ -132,9 +148,9 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 			return nil, errors.Wrap(err, "bundleClient.Ranges")
 		}
 
-		var codeintelRanges []codeintelapi.ResolvedCodeIntelligenceRange
+		var codeintelRanges []ResolvedCodeIntelligenceRange
 		for _, r := range ranges {
-			codeintelRanges = append(codeintelRanges, codeintelapi.ResolvedCodeIntelligenceRange{
+			codeintelRanges = append(codeintelRanges, ResolvedCodeIntelligenceRange{
 				Range:       r.Range,
 				Definitions: resolveLocationsWithDump(dump, r.Definitions),
 				References:  resolveLocationsWithDump(dump, r.References),
@@ -210,13 +226,13 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 
 	const defintionMonikersLimit = 100
 
-	Definitions := func(ctx context.Context, file string, line, character, uploadID int) (_ []codeintelapi.ResolvedLocation, err error) {
+	Definitions := func(ctx context.Context, file string, line, character, uploadID int) (_ []ResolvedLocation, err error) {
 		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
 		if err != nil {
 			return nil, errors.Wrap(err, "store.GetDumpByID")
 		}
 		if !exists {
-			return nil, codeintelapi.ErrMissingDump
+			return nil, ErrMissingDump
 		}
 
 		pathInBundle := strings.TrimPrefix(file, dump.Root)
@@ -323,12 +339,12 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 	// RemoteDumpLimit is the limit for fetching batches of remote dumps.
 	const RemoteDumpLimit = 20
 
-	References := func(ctx context.Context, repositoryID int, commit string, limit int, cursor codeintelapi.Cursor) (_ []codeintelapi.ResolvedLocation, _ codeintelapi.Cursor, _ bool, err error) {
+	References := func(ctx context.Context, repositoryID int, commit string, limit int, cursor Cursor) (_ []ResolvedLocation, _ Cursor, _ bool, err error) {
 		if limit <= 0 {
-			return nil, codeintelapi.Cursor{}, false, ErrIllegalLimit
+			return nil, Cursor{}, false, ErrIllegalLimit
 		}
 
-		return codeintelapi.NewReferencePageResolver(
+		return NewReferencePageResolver(
 			r.dbStore,
 			r.lsifStore,
 			repositoryID,
@@ -353,7 +369,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 	// this request.
 	newCursors := map[int]string{}
 
-	var allLocations []codeintelapi.ResolvedLocation
+	var allLocations []ResolvedLocation
 	for i := range r.uploads {
 		rawCursor := ""
 		if cursor, ok := cursors[r.uploads[i].ID]; ok {
@@ -373,7 +389,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 			continue
 		}
 
-		cursor, err := codeintelapi.DecodeOrCreateCursor(adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID, rawCursor, r.dbStore, r.lsifStore)
+		cursor, err := DecodeOrCreateCursor(adjustedPath, adjustedPosition.Line, adjustedPosition.Character, r.uploads[i].ID, rawCursor, r.dbStore, r.lsifStore)
 		if err != nil {
 			return nil, "", err
 		}
@@ -385,7 +401,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 
 		allLocations = append(allLocations, locations...)
 		if hasNewCursor {
-			newCursors[r.uploads[i].ID] = codeintelapi.EncodeCursor(newCursor)
+			newCursors[r.uploads[i].ID] = EncodeCursor(newCursor)
 		}
 	}
 
@@ -420,7 +436,9 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 	})
 	defer endObservation()
 
-	definitionsRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) ([]codeintelapi.ResolvedLocation, error) {
+	const defintionMonikersLimit = 100
+
+	definitionsRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) ([]ResolvedLocation, error) {
 		locations, err := r.lsifStore.Definitions(ctx, dump.ID, pathInBundle, line, character)
 		if err != nil {
 			if err == lsifstore.ErrNotFound {
@@ -445,7 +463,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 		for _, monikers := range rangeMonikers {
 			for _, moniker := range monikers {
 				if moniker.Kind == "import" {
-					locations, _, err := lookupMoniker(r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, codeintelapi.DefintionMonikersLimit)
+					locations, _, err := lookupMoniker(r.dbStore, r.lsifStore, dump.ID, pathInBundle, "definitions", moniker, 0, defintionMonikersLimit)
 					if err != nil {
 						return nil, err
 					}
@@ -457,7 +475,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 					// of our own bundle in case there was a definition that wasn't properly attached
 					// to a result set but did have the correct monikers attached.
 
-					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, codeintelapi.DefintionMonikersLimit)
+					locations, _, err := r.lsifStore.MonikerResults(context.Background(), dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
 					if err != nil {
 						if err == lsifstore.ErrNotFound {
 							log15.Warn("Bundle does not exist")
@@ -475,10 +493,10 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 		return nil, nil
 	}
 
-	definitionRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) (codeintelapi.ResolvedLocation, bool, error) {
+	definitionRaw := func(ctx context.Context, dump store.Dump, pathInBundle string, line, character int) (ResolvedLocation, bool, error) {
 		resolved, err := definitionsRaw(ctx, dump, pathInBundle, line, character)
 		if err != nil || len(resolved) == 0 {
-			return codeintelapi.ResolvedLocation{}, false, errors.Wrap(err, "api.definitionsRaw")
+			return ResolvedLocation{}, false, errors.Wrap(err, "api.definitionsRaw")
 		}
 
 		return resolved[0], true, nil
@@ -490,7 +508,7 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 			return "", lsifstore.Range{}, false, errors.Wrap(err, "store.GetDumpByID")
 		}
 		if !exists {
-			return "", lsifstore.Range{}, false, codeintelapi.ErrMissingDump
+			return "", lsifstore.Range{}, false, ErrMissingDump
 		}
 
 		pathInBundle := strings.TrimPrefix(file, dump.Root)
@@ -578,13 +596,13 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 	})
 	defer endObservation()
 
-	Diagnostics := func(ctx context.Context, prefix string, uploadID, limit, offset int) (_ []codeintelapi.ResolvedDiagnostic, _ int, err error) {
+	Diagnostics := func(ctx context.Context, prefix string, uploadID, limit, offset int) (_ []ResolvedDiagnostic, _ int, err error) {
 		dump, exists, err := r.dbStore.GetDumpByID(ctx, uploadID)
 		if err != nil {
 			return nil, 0, errors.Wrap(err, "store.GetDumpByID")
 		}
 		if !exists {
-			return nil, 0, codeintelapi.ErrMissingDump
+			return nil, 0, ErrMissingDump
 		}
 
 		pathInBundle := strings.TrimPrefix(prefix, dump.Root)
@@ -601,7 +619,7 @@ func (r *queryResolver) Diagnostics(ctx context.Context, limit int) (_ []Adjuste
 	}
 
 	totalCount := 0
-	var allDiagnostics []codeintelapi.ResolvedDiagnostic
+	var allDiagnostics []ResolvedDiagnostic
 	for i := range r.uploads {
 		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, r.uploads[i].Commit, r.path, false)
 		if err != nil {
@@ -660,7 +678,7 @@ func (r *queryResolver) uploadIDs() []string {
 
 // adjustLocations translates a list of resolved locations (relative to the indexed commit) into a list of
 // equivalent locations in the requested commit.
-func (r *queryResolver) adjustLocations(ctx context.Context, locations []codeintelapi.ResolvedLocation) ([]AdjustedLocation, error) {
+func (r *queryResolver) adjustLocations(ctx context.Context, locations []ResolvedLocation) ([]AdjustedLocation, error) {
 	adjustedLocations := make([]AdjustedLocation, 0, len(locations))
 	for i := range locations {
 		adjustedCommit, adjustedRange, err := r.adjustRange(ctx, locations[i].Dump.RepositoryID, locations[i].Dump.Commit, locations[i].Path, locations[i].Range)
@@ -722,10 +740,10 @@ func makeCursor(cursors map[int]string) (string, error) {
 	return string(encoded), nil
 }
 
-func resolveLocationsWithDump(dump store.Dump, locations []lsifstore.Location) []codeintelapi.ResolvedLocation {
-	var resolvedLocations []codeintelapi.ResolvedLocation
+func resolveLocationsWithDump(dump store.Dump, locations []lsifstore.Location) []ResolvedLocation {
+	var resolvedLocations []ResolvedLocation
 	for _, location := range locations {
-		resolvedLocations = append(resolvedLocations, codeintelapi.ResolvedLocation{
+		resolvedLocations = append(resolvedLocations, ResolvedLocation{
 			Dump:  dump,
 			Path:  dump.Root + location.Path,
 			Range: location.Range,
@@ -744,7 +762,7 @@ func lookupMoniker(
 	moniker lsifstore.MonikerData,
 	skip int,
 	take int,
-) ([]codeintelapi.ResolvedLocation, int, error) {
+) ([]ResolvedLocation, int, error) {
 	if moniker.PackageInformationID == "" {
 		return nil, 0, nil
 	}
@@ -775,11 +793,11 @@ func lookupMoniker(
 	return resolveLocationsWithDump(dump, locations), count, nil
 }
 
-func resolveDiagnosticsWithDump(dump store.Dump, diagnostics []lsifstore.Diagnostic) []codeintelapi.ResolvedDiagnostic {
-	var resolvedDiagnostics []codeintelapi.ResolvedDiagnostic
+func resolveDiagnosticsWithDump(dump store.Dump, diagnostics []lsifstore.Diagnostic) []ResolvedDiagnostic {
+	var resolvedDiagnostics []ResolvedDiagnostic
 	for _, diagnostic := range diagnostics {
 		diagnostic.Path = dump.Root + diagnostic.Path
-		resolvedDiagnostics = append(resolvedDiagnostics, codeintelapi.ResolvedDiagnostic{
+		resolvedDiagnostics = append(resolvedDiagnostics, ResolvedDiagnostic{
 			Dump:       dump,
 			Diagnostic: diagnostic,
 		})

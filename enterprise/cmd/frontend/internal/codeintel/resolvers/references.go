@@ -1,49 +1,16 @@
-package api
+package resolvers
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/inconshreveable/log15"
-	"github.com/opentracing/opentracing-go/log"
 	pkgerrors "github.com/pkg/errors"
 
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/bloomfilter"
 	store "github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/dbstore"
 	"github.com/sourcegraph/sourcegraph/enterprise/internal/codeintel/stores/lsifstore"
-	"github.com/sourcegraph/sourcegraph/internal/observation"
 )
-
-// RemoteDumpLimit is the limit for fetching batches of remote dumps.
-const RemoteDumpLimit = 20
-
-// ErrIllegalLimit occurs when a zero-length page of references is requested
-var ErrIllegalLimit = errors.New("limit must be positive")
-
-// References returns the list of source locations that reference the symbol at the given position.
-// This may include references from other dumps and repositories.
-func (api *CodeIntelAPI) References(ctx context.Context, repositoryID int, commit string, limit int, cursor Cursor) (_ []ResolvedLocation, _ Cursor, _ bool, err error) {
-	ctx, endObservation := api.operations.references.With(ctx, &err, observation.Args{LogFields: []log.Field{
-		log.Int("repositoryID", repositoryID),
-		log.String("commit", commit),
-		log.Int("limit", limit),
-	}})
-	defer endObservation(1, observation.Args{})
-
-	if limit <= 0 {
-		return nil, Cursor{}, false, ErrIllegalLimit
-	}
-
-	return NewReferencePageResolver(
-		api.dbStore,
-		api.lsifStore,
-		repositoryID,
-		commit,
-		RemoteDumpLimit,
-		limit,
-	).ResolvePage(ctx, cursor)
-}
 
 type ReferencePageResolver struct {
 	dbStore         DBStore
@@ -472,4 +439,14 @@ func applyBloomFilter(packageReferences []lsifstore.PackageReference, identifier
 	}
 
 	return filteredReferences, len(packageReferences)
+}
+
+func sliceLocations(locations []lsifstore.Location, lo, hi int) []lsifstore.Location {
+	if lo >= len(locations) {
+		return nil
+	}
+	if hi >= len(locations) {
+		hi = len(locations)
+	}
+	return locations[lo:hi]
 }
