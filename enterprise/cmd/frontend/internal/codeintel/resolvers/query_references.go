@@ -89,7 +89,16 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 			return nil, "", ErrIllegalLimit
 		}
 
-		locations, newCursor, hasNewCursor, err := NewReferencePageResolver(r.dbStore, r.lsifStore, r.gitserverClient, r.repositoryID, r.commit, remoteDumpLimit, limit).ResolvePage(ctx, cursor)
+		referenceResolver := &ReferencePageResolver{
+			dbStore:         r.dbStore,
+			lsifStore:       r.lsifStore,
+			gitserverClient: r.gitserverClient,
+			repositoryID:    r.repositoryID,
+			commit:          r.commit,
+			remoteDumpLimit: remoteDumpLimit,
+			limit:           limit,
+		}
+		locations, newCursor, hasNewCursor, err := referenceResolver.ResolvePage(ctx, cursor)
 		if err != nil {
 			return nil, "", err
 		}
@@ -121,26 +130,6 @@ type ReferencePageResolver struct {
 	commit          string
 	remoteDumpLimit int
 	limit           int
-}
-
-func NewReferencePageResolver(
-	dbStore DBStore,
-	lsifStore LSIFStore,
-	gitserverClient GitserverClient,
-	repositoryID int,
-	commit string,
-	remoteDumpLimit int,
-	limit int,
-) *ReferencePageResolver {
-	return &ReferencePageResolver{
-		dbStore:         dbStore,
-		lsifStore:       lsifStore,
-		gitserverClient: gitserverClient,
-		repositoryID:    repositoryID,
-		commit:          commit,
-		remoteDumpLimit: remoteDumpLimit,
-		limit:           limit,
-	}
 }
 
 func (s *ReferencePageResolver) ResolvePage(ctx context.Context, cursor Cursor) ([]ResolvedLocation, Cursor, bool, error) {

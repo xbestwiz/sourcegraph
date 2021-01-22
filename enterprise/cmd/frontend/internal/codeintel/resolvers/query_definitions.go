@@ -63,7 +63,7 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 
 	for i, w := range worklist {
 		// TODO - batch these requests together
-		locations, err := r.lsifStore.Definitions(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), line, character)
+		locations, err := r.lsifStore.Definitions(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), w.AdjustedPosition.Line, w.AdjustedPosition.Character)
 		if err != nil {
 			return nil, err
 		}
@@ -73,13 +73,14 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 
 	for i, w := range worklist {
 		if len(w.Locations) > 0 {
-			break
+			continue
 		}
 
 		// TODO - batch these requests together
 		rangeMonikers, err := r.lsifStore.MonikersByPosition(
 			ctx,
-			w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root),
+			w.Upload.ID,
+			strings.TrimPrefix(w.AdjustedPath, w.Upload.Root),
 			w.AdjustedPosition.Line,
 			w.AdjustedPosition.Character,
 		)
@@ -123,6 +124,7 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 			}
 
 			if len(locations) > 0 {
+				worklist[i].Upload = dump
 				worklist[i].Locations = locations
 				break
 			}
