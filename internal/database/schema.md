@@ -175,6 +175,7 @@ Referenced by:
 Indexes:
     "changesets_pkey" PRIMARY KEY, btree (id)
     "changesets_repo_external_id_unique" UNIQUE CONSTRAINT, btree (repo_id, external_id)
+    "changeset_states_idx" btree (external_state, publication_state, reconciler_state)
 Check constraints:
     "changesets_campaign_ids_check" CHECK (jsonb_typeof(campaign_ids) = 'object'::text)
     "changesets_external_id_check" CHECK (external_id <> ''::text)
@@ -1441,6 +1442,9 @@ Indexes:
  owner_campaign_id | bigint  | 
  repo_name         | citext  | 
  changeset_name    | text    | 
+ external_state    | text    | 
+ publication_state | text    | 
+ reconciler_state  | text    | 
 
 ```
 
@@ -1584,6 +1588,9 @@ Indexes:
  campaign_spec_id  | bigint  | 
  repo_name         | citext  | 
  changeset_name    | text    | 
+ external_state    | text    | 
+ publication_state | text    | 
+ reconciler_state  | text    | 
 
 ```
 
