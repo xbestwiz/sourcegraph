@@ -91,7 +91,7 @@ func (prometheusTracer) TraceQuery(ctx context.Context, queryString string, oper
 	}
 	requestSource := sgtrace.RequestSource(ctx)
 
-	if !disableLog {
+	if !disableLog && false {
 		lvl("serving GraphQL request", "name", requestName, "user", currentUserName, "source", requestSource)
 		if requestName == "unknown" {
 			log.Printf(`logging complete query for unnamed GraphQL request above name=%s user=%s source=%s:

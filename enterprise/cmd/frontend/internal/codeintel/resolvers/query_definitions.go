@@ -36,12 +36,16 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 		Character: character,
 	}
 
+	type TEMPORARY2 struct {
+		Upload    store.Dump
+		Locations []lsifstore.Location
+	}
 	type TEMPORARY struct {
 		Upload           store.Dump
 		AdjustedPath     string
 		AdjustedPosition lsifstore.Position
-		Locations        []lsifstore.Location
 		OrderedMonikers  []lsifstore.MonikerData
+		Locations        []TEMPORARY2
 	}
 	var worklist []TEMPORARY
 
@@ -68,8 +72,15 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 			return nil, err
 		}
 
-		worklist[i].Locations = locations
+		if len(locations) > 0 {
+			worklist[i].Locations = append(worklist[i].Locations, TEMPORARY2{
+				Upload:    w.Upload,
+				Locations: locations,
+			})
+		}
 	}
+
+	// TODO - can early exit here
 
 	for i, w := range worklist {
 		if len(w.Locations) > 0 {
@@ -109,7 +120,7 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 				return nil, err
 			}
 
-			dump, exists, err := r.dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
+			definitionUpload, exists, err := r.dbStore.GetPackage(ctx, moniker.Scheme, pid.Name, pid.Version)
 			if err != nil {
 				return nil, err
 			}
@@ -118,28 +129,37 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 			}
 
 			const defintionMonikersLimit = 100
-			locations, _, err := r.lsifStore.MonikerResults(ctx, dump.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
+			locations, _, err := r.lsifStore.MonikerResults(ctx, definitionUpload.ID, "definitions", moniker.Scheme, moniker.Identifier, 0, defintionMonikersLimit)
 			if err != nil {
 				return nil, err
 			}
 
 			if len(locations) > 0 {
-				worklist[i].Upload = dump
-				worklist[i].Locations = locations
+				worklist[i].Locations = append(worklist[i].Locations, TEMPORARY2{
+					Upload:    definitionUpload,
+					Locations: locations,
+				})
 				break
 			}
 		}
 	}
 
 	for _, w := range worklist {
-		if len(w.Locations) > 0 {
-			adjustedLocations, err := r.adjustLocations(ctx, resolveLocationsWithDump(w.Upload, w.Locations))
+		if len(w.Locations) == 0 {
+			continue
+		}
+
+		var adjustedLocations []AdjustedLocation
+		for _, pair := range w.Locations {
+			locations, err := r.adjustLocations(ctx, resolveLocationsWithDump(pair.Upload, pair.Locations))
 			if err != nil {
 				return nil, err
 			}
 
-			return adjustedLocations, nil
+			adjustedLocations = append(adjustedLocations, locations...)
 		}
+
+		return adjustedLocations, nil
 	}
 
 	return nil, nil

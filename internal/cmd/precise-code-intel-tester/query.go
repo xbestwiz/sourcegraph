@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+
 	"github.com/sourcegraph/sourcegraph/internal/cmd/precise-code-intel-tester/util"
 )
 
@@ -265,6 +266,10 @@ func queryReferences(ctx context.Context, location Location) (locations []Locati
 			break
 		}
 	}
+
+	fmt.Printf("\n\n\n\n\n\n")
+	fmt.Printf("> %d\n", len(locations))
+	fmt.Printf("\n\n\n\n\n\n")
 
 	return locations, nil
 }
