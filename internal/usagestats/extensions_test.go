@@ -19,7 +19,8 @@ func TestExtensionsUsageStatistics(t *testing.T) {
 		timeNow = time.Now
 	}()
 
-	now := time.Date(2021, 1, 20, 0, 0, 0, 0, time.UTC)
+	weekStart := time.Date(2021, 1, 25, 0, 0, 0, 0, time.UTC)
+	now := time.Date(2021, 1, 28, 0, 0, 0, 0, time.UTC)
 	mockTimeNow(now)
 
 	dbtesting.SetupGlobalTestDB(t)
@@ -50,16 +51,19 @@ func TestExtensionsUsageStatistics(t *testing.T) {
 
 	usageStatisticsByExtension := map[string]*types.ExtensionUsageStatistics{
 		"codecov": {
+			WeekStart:          weekStart,
 			UserCount:          &oneInt,
 			AverageActivations: &oneFloat,
 		},
 		"link-preview-expander": {
+			WeekStart:          weekStart,
 			UserCount:          &twoInt,
 			AverageActivations: &oneAndAHalfFloat,
 		},
 	}
 
 	want := &types.ExtensionsUsageStatistics{
+		WeekStart:                   weekStart,
 		UsageStatisticsByExtension:  usageStatisticsByExtension,
 		AverageNonDefaultExtensions: &oneAndAHalfFloat,
 		NonDefaultExtensionUsers:    &twoInt,
