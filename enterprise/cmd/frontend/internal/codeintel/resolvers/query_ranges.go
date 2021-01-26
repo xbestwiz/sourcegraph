@@ -38,7 +38,7 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 	worklist := make([]TEMPORARY, 0, len(r.uploads))
 
 	for _, upload := range r.uploads {
-		// TODO - adjust pos
+		// TODO - adjust line offsets as well as path
 		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, upload.Commit, r.path, false)
 		if err != nil {
 			return nil, err
@@ -71,12 +71,12 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 				return nil, err
 			}
 
-			adjustedDefinitions, err := r.adjustLocations(ctx, resolveLocationsWithDump(w.Upload, rn.Definitions))
+			adjustedDefinitions, err := r.adjustLocations(ctx, w.Upload, rn.Definitions)
 			if err != nil {
 				return nil, err
 			}
 
-			adjustedReferences, err := r.adjustLocations(ctx, resolveLocationsWithDump(w.Upload, rn.References))
+			adjustedReferences, err := r.adjustLocations(ctx, w.Upload, rn.References)
 			if err != nil {
 				return nil, err
 			}

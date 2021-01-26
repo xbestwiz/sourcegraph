@@ -151,7 +151,7 @@ func (r *queryResolver) Definitions(ctx context.Context, line, character int) (_
 
 		var adjustedLocations []AdjustedLocation
 		for _, pair := range w.Locations {
-			locations, err := r.adjustLocations(ctx, resolveLocationsWithDump(pair.Upload, pair.Locations))
+			locations, err := r.adjustLocations(ctx, pair.Upload, pair.Locations)
 			if err != nil {
 				return nil, err
 			}

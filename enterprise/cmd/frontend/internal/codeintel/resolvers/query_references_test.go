@@ -2,6 +2,6 @@ package resolvers
 
 import "testing"
 
-func TestResolverTODO(t *testing.T) {
+func TestQueryReferencesTODO(t *testing.T) {
 	// TODO
 }

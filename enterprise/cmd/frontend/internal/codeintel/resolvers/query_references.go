@@ -275,7 +275,7 @@ func (r *queryResolver) References(ctx context.Context, line, character, limit i
 	var allAdjustedLocations []AdjustedLocation
 	for _, w := range worklist {
 		for _, pair := range w.Locations {
-			adjustedLocations, err := r.adjustLocations(ctx, resolveLocationsWithDump(pair.Upload, pair.Locations))
+			adjustedLocations, err := r.adjustLocations(ctx, pair.Upload, pair.Locations)
 			if err != nil {
 				return nil, "", err
 			}

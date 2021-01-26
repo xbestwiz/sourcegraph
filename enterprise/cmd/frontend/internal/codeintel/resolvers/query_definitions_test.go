@@ -2,6 +2,6 @@ package resolvers
 
 import "testing"
 
-func TestResolverTODO(t *testing.T) {
+func TestQueryDefinitionsTODO(t *testing.T) {
 	// TODO
 }

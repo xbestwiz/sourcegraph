@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"encoding/json"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -107,19 +106,27 @@ func (r *queryResolver) uploadIDs() []string {
 	return uploadIDs
 }
 
-// adjustLocations translates a list of resolved locations (relative to the indexed commit) into a list of
-// equivalent locations in the requested commit.
-func (r *queryResolver) adjustLocations(ctx context.Context, locations []ResolvedLocation) ([]AdjustedLocation, error) {
-	adjustedLocations := make([]AdjustedLocation, 0, len(locations))
-	for i := range locations {
-		adjustedCommit, adjustedRange, err := r.adjustRange(ctx, locations[i].Dump.RepositoryID, locations[i].Dump.Commit, locations[i].Path, locations[i].Range)
+// adjustLocations translates a list of locations into a list of equivalent locations in the requested commit.
+func (r *queryResolver) adjustLocations(ctx context.Context, dump store.Dump, locations []lsifstore.Location) ([]AdjustedLocation, error) {
+	var resolvedLocations []ResolvedLocation
+	for _, location := range locations {
+		resolvedLocations = append(resolvedLocations, ResolvedLocation{
+			Dump:  dump,
+			Path:  dump.Root + location.Path,
+			Range: location.Range,
+		})
+	}
+
+	adjustedLocations := make([]AdjustedLocation, 0, len(resolvedLocations))
+	for i := range resolvedLocations {
+		adjustedCommit, adjustedRange, err := r.adjustRange(ctx, resolvedLocations[i].Dump.RepositoryID, resolvedLocations[i].Dump.Commit, resolvedLocations[i].Path, resolvedLocations[i].Range)
 		if err != nil {
 			return nil, err
 		}
 
 		adjustedLocations = append(adjustedLocations, AdjustedLocation{
-			Dump:           locations[i].Dump,
-			Path:           locations[i].Path,
+			Dump:           resolvedLocations[i].Dump,
+			Path:           resolvedLocations[i].Path,
 			AdjustedCommit: adjustedCommit,
 			AdjustedRange:  adjustedRange,
 		})
@@ -142,44 +149,4 @@ func (r *queryResolver) adjustRange(ctx context.Context, repositoryID int, commi
 	}
 
 	return commit, rx, nil
-}
-
-// readCursor decodes a cursor into a map from upload ids to URLs that serves the next page of results.
-func readCursor(after string) (map[int]string, error) {
-	if after == "" {
-		return nil, nil
-	}
-
-	var cursors map[int]string
-	if err := json.Unmarshal([]byte(after), &cursors); err != nil {
-		return nil, err
-	}
-	return cursors, nil
-}
-
-// makeCursor encodes a map from upload ids to URLs that serves the next page of results into a single string
-// that can be sent back for use in cursor pagination.
-func makeCursor(cursors map[int]string) (string, error) {
-	if len(cursors) == 0 {
-		return "", nil
-	}
-
-	encoded, err := json.Marshal(cursors)
-	if err != nil {
-		return "", err
-	}
-	return string(encoded), nil
-}
-
-func resolveLocationsWithDump(dump store.Dump, locations []lsifstore.Location) []ResolvedLocation {
-	var resolvedLocations []ResolvedLocation
-	for _, location := range locations {
-		resolvedLocations = append(resolvedLocations, ResolvedLocation{
-			Dump:  dump,
-			Path:  dump.Root + location.Path,
-			Range: location.Range,
-		})
-	}
-
-	return resolvedLocations
 }

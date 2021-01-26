@@ -2,6 +2,6 @@ package resolvers
 
 import "testing"
 
-func TestResolverTODO(t *testing.T) {
+func TestQueryHoverTODO(t *testing.T) {
 	// TODO
 }
