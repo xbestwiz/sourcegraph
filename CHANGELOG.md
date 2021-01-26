@@ -16,6 +16,7 @@ All notable changes to Sourcegraph are documented in this file.
 ### Added
 
 - New site config option `"log": { "sentry": { "backendDSN": "<REDACTED>" } }` to use a separate Sentry project for backend errors. [#17363](https://github.com/sourcegraph/sourcegraph/pull/17363)
+- Pings now contain Sourcegraph extension activation statistics. [#16421](https://github.com/sourcegraph/sourcegraph/pull/16421)
 
 ### Changed
 
