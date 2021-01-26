@@ -74,15 +74,11 @@ export class ClientExtensions {
                         // Since extension activation is passive from the user's perspective, and we don't yet track extension usage events,
                         // there's no way that we could measure how often extensions are actually useful anyways.
 
-                        // Hash extension IDs that specify host, since that means that it's a private registry extension.
-                        // TODO(tj): Is it ok to compare publisher + name of private extensions to see if it's a copy of
-                        // a public extension?
-
                         const defaultExtensions = getEnabledExtensionsForSubject(settings, 'DefaultSettings') || {}
 
                         // We only want to log non-default extension events
                         if (!defaultExtensions[extension.id]) {
-                            // Anonymize private registry extensions
+                            // Hash extension IDs that specify host, since that means that it's a private registry extension.
                             const telemetryExtensionID = splitExtensionID(extension.id).host
                                 ? hashCode(extension.id, 20)
                                 : extension.id
