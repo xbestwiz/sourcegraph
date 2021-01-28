@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useObservable } from '../../../shared/src/util/useObservable'
 import { getViewsForContainer } from '../../../shared/src/api/client/services/viewService'
 import { ContributableViewContainer } from '../../../shared/src/api/protocol'
@@ -11,12 +11,14 @@ import GearIcon from 'mdi-react/GearIcon'
 import { LoadingSpinner } from '@sourcegraph/react-loading-spinner'
 import { PageHeader } from '../components/PageHeader'
 import { BreadcrumbsProps, BreadcrumbSetters } from '../components/Breadcrumbs'
+import { TelemetryProps } from '../../../shared/src/telemetry/telemetryService'
 
 interface InsightsPageProps
     extends ExtensionsControllerProps,
         Omit<ViewGridProps, 'views'>,
         BreadcrumbsProps,
-        BreadcrumbSetters {}
+        BreadcrumbSetters,
+        TelemetryProps {}
 export const InsightsPage: React.FunctionComponent<InsightsPageProps> = props => {
     props.useBreadcrumb(
         useMemo(
@@ -27,6 +29,7 @@ export const InsightsPage: React.FunctionComponent<InsightsPageProps> = props =>
             []
         )
     )
+
     const views = useObservable(
         useMemo(
             () =>
@@ -38,6 +41,19 @@ export const InsightsPage: React.FunctionComponent<InsightsPageProps> = props =>
             [props.extensionsController.services.view]
         )
     )
+
+    useEffect(() => {
+        props.telemetryService.logViewEvent('Insights')
+    }, [props.telemetryService])
+
+    const logConfigureClick = useCallback(() => {
+        props.telemetryService.log('InsightConfigureClick')
+    }, [props.telemetryService])
+
+    const logAddMoreClick = useCallback(() => {
+        props.telemetryService.log('InsightAddMoreClick')
+    }, [props.telemetryService])
+
     return (
         <div className="w-100">
             <div className="container mt-3 web-content">
@@ -53,10 +69,14 @@ export const InsightsPage: React.FunctionComponent<InsightsPageProps> = props =>
                     }
                     actions={
                         <>
-                            <Link to="/user/settings" className="btn btn-secondary mr-1">
+                            <Link to="/user/settings" onClick={logConfigureClick} className="btn btn-secondary mr-1">
                                 <GearIcon className="icon-inline" /> Configure insights
                             </Link>
-                            <Link to="/extensions?query=category:Insights" className="btn btn-secondary">
+                            <Link
+                                to="/extensions?query=category:Insights"
+                                onClick={logAddMoreClick}
+                                className="btn btn-secondary"
+                            >
                                 <PlusIcon className="icon-inline" /> Add more insights
                             </Link>
                         </>
