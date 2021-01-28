@@ -30,22 +30,26 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 	})
 	defer endObservation()
 
-	position := lsifstore.Position{
-		Line:      line,
-		Character: character,
-	}
-
-	type TEMPORARY struct {
+	type sliceOfWork struct {
 		Upload           store.Dump
 		AdjustedPath     string
 		AdjustedPosition lsifstore.Position
 		Text             string
 		Range            lsifstore.Range
 	}
-	var worklist []TEMPORARY
+	var worklist []sliceOfWork
 
-	for _, upload := range r.uploads {
-		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, upload.Commit, r.path, position, false)
+	// Step 1: Seed the worklist with the adjusted path and position for each candidate upload.
+	// If an upload is attached to a commit with no equivalent path or position, that candidate
+	// is skipped.
+
+	position := lsifstore.Position{
+		Line:      line,
+		Character: character,
+	}
+
+	for i := range r.uploads {
+		adjustedPath, adjustedPosition, ok, err := r.positionAdjuster.AdjustPosition(ctx, r.uploads[i].Commit, r.path, position, false)
 		if err != nil {
 			return "", lsifstore.Range{}, false, err
 		}
@@ -53,16 +57,25 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 			continue
 		}
 
-		worklist = append(worklist, TEMPORARY{
-			Upload:           upload,
+		worklist = append(worklist, sliceOfWork{
+			Upload:           r.uploads[i],
 			AdjustedPath:     adjustedPath,
 			AdjustedPosition: adjustedPosition,
 		})
 	}
 
-	for i, w := range worklist {
-		// TODO - batch these requests
-		text, r, exists, err := r.lsifStore.Hover(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), w.AdjustedPosition.Line, w.AdjustedPosition.Character)
+	// Phase 2: Perform a hover query for each viable upload candidate with the adjusted path
+	// and position.
+
+	for i := range worklist {
+		// TODO(efritz) - batch these requests
+		text, r, exists, err := r.lsifStore.Hover(
+			ctx,
+			worklist[i].Upload.ID,
+			strings.TrimPrefix(worklist[i].AdjustedPath, worklist[i].Upload.Root),
+			worklist[i].AdjustedPosition.Line,
+			worklist[i].AdjustedPosition.Character,
+		)
 		if err != nil {
 			return "", lsifstore.Range{}, false, err
 		}
@@ -74,14 +87,24 @@ func (r *queryResolver) Hover(ctx context.Context, line, character int) (_ strin
 		worklist[i].Range = r
 	}
 
-	for _, w := range worklist {
-		if w.Text != "" {
-			_, adjustedRange, ok, err := r.positionAdjuster.AdjustRange(ctx, w.Upload.Commit, r.path, w.Range, true)
+	// Phase 5: Return the hover text attached to the inner-most range (with non-empty results)
+	// and re-adjust the associated ranges so that it targets the same commit that the user has
+	// requested hover results for.
+
+	for i := range worklist {
+		if worklist[i].Text != "" {
+			_, adjustedRange, ok, err := r.positionAdjuster.AdjustRange(
+				ctx,
+				worklist[i].Upload.Commit,
+				r.path,
+				worklist[i].Range,
+				true,
+			)
 			if err != nil || !ok {
 				return "", lsifstore.Range{}, false, err
 			}
 
-			return w.Text, adjustedRange, true, nil
+			return worklist[i].Text, adjustedRange, true, nil
 		}
 	}
 

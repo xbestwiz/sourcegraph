@@ -30,16 +30,20 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 	})
 	defer endObservation()
 
-	type TEMPORARY struct {
+	type sliceOfWork struct {
 		Upload       store.Dump
 		AdjustedPath string
 		Ranges       []lsifstore.CodeIntelligenceRange
 	}
-	worklist := make([]TEMPORARY, 0, len(r.uploads))
+	worklist := make([]sliceOfWork, 0, len(r.uploads))
 
-	for _, upload := range r.uploads {
-		// TODO - adjust line offsets as well as path
-		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, upload.Commit, r.path, false)
+	// Step 1: Seed the worklist with the adjusted path and position for each candidate upload.
+	// If an upload is attached to a commit with no equivalent path or position, that candidate
+	// is skipped.
+
+	for i := range r.uploads {
+		// TODO(efritz) - adjust line offsets as well as path
+		adjustedPath, ok, err := r.positionAdjuster.AdjustPath(ctx, r.uploads[i].Commit, r.path, false)
 		if err != nil {
 			return nil, err
 		}
@@ -47,36 +51,58 @@ func (r *queryResolver) Ranges(ctx context.Context, startLine, endLine int) (_ [
 			continue
 		}
 
-		worklist = append(worklist, TEMPORARY{
-			Upload:       upload,
+		worklist = append(worklist, sliceOfWork{
+			Upload:       r.uploads[i],
 			AdjustedPath: adjustedPath,
 		})
 	}
 
-	for i, w := range worklist {
-		// TODO - batch these requests together
-		ranges, err := r.lsifStore.Ranges(ctx, w.Upload.ID, strings.TrimPrefix(w.AdjustedPath, w.Upload.Root), startLine, endLine)
+	// Phase 2: Perform a ranges query for each viable upload candidate with the adjusted path and
+	// position. As a side-effect, this phase will count the total number of range items that will
+	// be returned in `n`.
+
+	n := 0
+
+	for i := range worklist {
+		// TODO(efritz) - batch these requests together
+		ranges, err := r.lsifStore.Ranges(
+			ctx,
+			worklist[i].Upload.ID,
+			strings.TrimPrefix(worklist[i].AdjustedPath, worklist[i].Upload.Root),
+			startLine,
+			endLine,
+		)
 		if err != nil {
 			return nil, err
 		}
 
+		n += len(ranges)
 		worklist[i].Ranges = ranges
 	}
 
-	var ranges []AdjustedCodeIntelligenceRange
-	for _, w := range worklist {
-		for _, rn := range w.Ranges {
-			_, adjustedRange, err := r.adjustRange(ctx, w.Upload.RepositoryID, w.Upload.Commit, w.AdjustedPath, rn.Range)
+	// Phase 3: Combine all range results and re-adjust the locations in the output ranges so they
+	// target the same commit that the user has requested range results for.
+
+	ranges := make([]AdjustedCodeIntelligenceRange, 0, n)
+	for i := range worklist {
+		for _, rn := range worklist[i].Ranges {
+			_, adjustedRange, err := r.adjustRange(
+				ctx,
+				worklist[i].Upload.RepositoryID,
+				worklist[i].Upload.Commit,
+				worklist[i].AdjustedPath,
+				rn.Range,
+			)
 			if err != nil {
 				return nil, err
 			}
 
-			adjustedDefinitions, err := r.adjustLocations(ctx, w.Upload, rn.Definitions)
+			adjustedDefinitions, err := r.adjustLocations(ctx, worklist[i].Upload, rn.Definitions)
 			if err != nil {
 				return nil, err
 			}
 
-			adjustedReferences, err := r.adjustLocations(ctx, w.Upload, rn.References)
+			adjustedReferences, err := r.adjustLocations(ctx, worklist[i].Upload, rn.References)
 			if err != nil {
 				return nil, err
 			}
