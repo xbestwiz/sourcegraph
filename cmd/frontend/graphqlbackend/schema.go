@@ -750,6 +750,10 @@ type Mutation {
         The credential to be stored. This can never be retrieved through the API and will be stored encrypted.
         """
         credential: String!
+
+        """
+        Optional additional SSH key to be stored for pushing to repos cloned via ssh protocol.
+        """
         sshKey: String
     ): CampaignsCredential!
 
@@ -918,6 +922,8 @@ type CampaignsCredential implements Node {
     The date and time this token has been created at.
     """
     createdAt: DateTime!
+
+    hasSSHKey: Boolean!
 }
 
 """
