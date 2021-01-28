@@ -4,9 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -15,6 +18,7 @@ import (
 
 	"github.com/inconshreveable/log15"
 	"github.com/pkg/errors"
+
 	"github.com/sourcegraph/sourcegraph/internal/gitserver/protocol"
 )
 
@@ -246,8 +250,36 @@ func (s *Server) createCommitFromPatch(ctx context.Context, req protocol.CreateC
 	}
 
 	if req.Push != nil {
+		parsedRemoteURL, err := url.Parse(remoteURL)
+		if err != nil {
+			resp.SetError(repo, "", "", errors.Wrap(err, "parsing remote url"))
+			return http.StatusInternalServerError, resp
+		}
+
 		cmd = exec.CommandContext(ctx, "git", "push", "--force", remoteURL, fmt.Sprintf("%s:%s", cmtHash, ref))
 		cmd.Dir = repoGitDir
+
+		if parsedRemoteURL.Scheme == "ssh" && req.Push.SSHKey != "" {
+			// Ensure tmp directory exists
+			tmpKeyPath, err := s.tempDir("patch-key-")
+			if err != nil {
+				resp.SetError(repo, "", "", errors.Wrap(err, "gitserver: make tmp patch key dir"))
+				return http.StatusInternalServerError, resp
+			}
+			defer cleanUpTmpRepo(tmpKeyPath)
+			sshKeyPath := path.Join(tmpKeyPath, "private_key")
+			if err = ioutil.WriteFile(sshKeyPath, []byte(req.Push.SSHKey), 0600); err != nil {
+				resp.SetError(repo, "", "", errors.Wrap(err, "gitserver: writing ssh key to temp file"))
+				return http.StatusInternalServerError, resp
+			}
+			cmd.Env = append(
+				os.Environ(),
+				[]string{
+					fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", sshKeyPath),
+					fmt.Sprintf("GIT_SSH_VARIANT=ssh"),
+				}...,
+			)
+		}
 
 		if out, err = run(cmd, "pushing ref"); err != nil {
 			log15.Error("Failed to push", "ref", ref, "commit", cmtHash, "output", string(out))

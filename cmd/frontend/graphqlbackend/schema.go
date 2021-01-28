@@ -750,6 +750,7 @@ type Mutation {
         The credential to be stored. This can never be retrieved through the API and will be stored encrypted.
         """
         credential: String!
+        sshKey: String
     ): CampaignsCredential!
 
     """
