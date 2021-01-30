@@ -144,11 +144,11 @@ func TestAddQueryRegexpField(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("%s, add %s:%s", test.query, test.addField, test.addPattern), func(t *testing.T) {
-			parseTree, err := query.Parse(test.query)
+			parseTree, err := query.ParseLiteral(test.query)
 			if err != nil {
 				t.Fatal(err)
 			}
-			got := query.AddRegexpField(parseTree, test.addField, test.addPattern)
+			got := query.AddRegexpField(parseTree, test.addField, test.addPattern) // FIX THIS
 			if got != test.want {
 				t.Errorf("got %q, want %q", got, test.want)
 			}

@@ -3,10 +3,8 @@
 package query
 
 import (
-	"errors"
 	"strings"
 
-	"github.com/sourcegraph/sourcegraph/internal/search/query/syntax"
 	"github.com/sourcegraph/sourcegraph/internal/search/query/types"
 )
 
@@ -101,28 +99,6 @@ type Query struct {
 	types.Fields // the query fields
 }
 
-func Parse(input string) (syntax.ParseTree, error) {
-	parseTree, err := syntax.Parse(input)
-	if err != nil {
-		return nil, err
-	}
-
-	// We want to make query fields case insensitive
-	for _, expr := range parseTree {
-		expr.Field = strings.ToLower(expr.Field)
-	}
-	return parseTree, nil
-}
-
-func Check(parseTree syntax.ParseTree) (QueryInfo, error) {
-	checkedFields, err := conf.Check(parseTree)
-	if err != nil {
-		return nil, err
-	}
-	query := &Query{conf: &conf, Fields: *checkedFields}
-	return &OrdinaryQuery{Query: query}, nil
-}
-
 func processSearchPattern(q QueryInfo) string {
 	var pieces []string
 	for _, v := range q.Values(FieldDefault) {
@@ -139,66 +115,6 @@ type ValidationError struct {
 
 func (e *ValidationError) Error() string {
 	return e.Msg
-}
-
-// Validate validates legal combinations of fields and search patterns of a
-// successfully parsed query.
-func Validate(q QueryInfo, searchType SearchType) error {
-	if searchType == SearchTypeStructural {
-		if q.Fields()[FieldCase] != nil {
-			return errors.New(`the parameter "case:" is not valid for structural search, matching is always case-sensitive`)
-		}
-		if q.Fields()[FieldType] != nil && processSearchPattern(q) != "" {
-			return errors.New(`the parameter "type:" is not valid for structural search, search is always performed on file content`)
-		}
-	}
-	return nil
-}
-
-// Process is a top level convenience function for processing a raw string into
-// a validated and type checked query, and the parse tree of the raw string.
-func Process(queryString string, searchType SearchType) (QueryInfo, error) {
-	parseTree, err := Parse(queryString)
-	if err != nil {
-		return nil, err
-	}
-
-	query, err := Check(parseTree)
-	if err != nil {
-		return nil, err
-	}
-
-	err = Validate(query, searchType)
-	if err != nil {
-		return nil, err
-	}
-
-	ordinaryQuery, ok := query.(*OrdinaryQuery)
-	if !ok {
-		return nil, errors.New("Check failed: Expected OrdinaryQuery")
-	}
-	ordinaryQuery.parseTree = parseTree
-
-	return ordinaryQuery, nil
-}
-
-// parseAndCheck is preserved for testing custom Configs only.
-func parseAndCheck(conf *types.Config, input string) (*Query, error) {
-	parseTree, err := syntax.Parse(input)
-	if err != nil {
-		return nil, err
-	}
-
-	// We want to make query fields case insensitive
-	for _, expr := range parseTree {
-		expr.Field = strings.ToLower(expr.Field)
-	}
-
-	checkedQuery, err := conf.Check(parseTree)
-	if err != nil {
-		return nil, err
-	}
-	return &Query{conf: conf, Fields: *checkedQuery}, nil
 }
 
 // BoolValue returns the last boolean value (yes/no) for the field. For example, if the query is

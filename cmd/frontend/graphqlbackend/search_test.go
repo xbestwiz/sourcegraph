@@ -338,7 +338,7 @@ func TestExactlyOneRepo(t *testing.T) {
 func TestQuoteSuggestions(t *testing.T) {
 	t.Run("regex error", func(t *testing.T) {
 		raw := "*"
-		_, err := query.Process(raw, query.SearchTypeRegex)
+		_, err := query.ParseRegexp(raw)
 		if err == nil {
 			t.Fatalf("error returned from query.Process(%q) is nil", raw)
 		}
@@ -353,7 +353,7 @@ func TestQuoteSuggestions(t *testing.T) {
 
 	t.Run("type error that is not a regex error should show a suggestion", func(t *testing.T) {
 		raw := "-foobar"
-		_, alert := query.Process(raw, query.SearchTypeRegex)
+		_, alert := query.ParseRegexp(raw)
 		if alert == nil {
 			t.Fatalf("alert returned from query.Process(%q) is nil", raw)
 		}
@@ -361,7 +361,7 @@ func TestQuoteSuggestions(t *testing.T) {
 
 	t.Run("query parse error", func(t *testing.T) {
 		raw := ":"
-		_, err := query.Process(raw, query.SearchTypeRegex)
+		_, err := query.ParseRegexp(raw)
 		if err == nil {
 			t.Fatalf("error returned from query.Process(%q) is nil", raw)
 		}
@@ -376,7 +376,7 @@ func TestQuoteSuggestions(t *testing.T) {
 
 	t.Run("negated file field with an invalid regex", func(t *testing.T) {
 		raw := "-f:(a"
-		_, err := query.Process(raw, query.SearchTypeRegex)
+		_, err := query.ParseRegexp(raw)
 		if err == nil {
 			t.Fatal("query.Process failed to detect the invalid regex in the f: field")
 		}
@@ -408,7 +408,7 @@ func TestEueryForStableResults(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run("query for stable results", func(t *testing.T) {
-			queryInfo, _ := query.Process(c.query, query.SearchTypeLiteral)
+			queryInfo, _ := query.ParseLiteral(c.query)
 			args, queryInfo, err := queryForStableResults(&SearchArgs{}, queryInfo)
 			if err != nil {
 				if !reflect.DeepEqual(err, c.wantError) {
