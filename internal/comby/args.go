@@ -41,5 +41,9 @@ func (args Args) String() string {
 		log15.Error("unrecognized input type: %T", i)
 	}
 
+	if args.Ripgrep {
+		s = append(s, "-rg", "")
+	}
+
 	return strings.Join(s, " ")
 }
