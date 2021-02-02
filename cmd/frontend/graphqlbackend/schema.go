@@ -5209,6 +5209,20 @@ type RepositoryContributor {
     ): GitCommitConnection!
 }
 
+type DocSymbol {
+    """
+    The name of the symbol.
+    """
+    name: String!
+
+    children: [DocSymbol!]!
+}
+
+type DocSymbolConnection {
+    nodes: [DocSymbol!]!
+    pageInfo: PageInfo!
+}
+
 """
 A code symbol (e.g., a function, variable, type, class, etc.).
 It is derived from DocumentSymbol as defined in the Language Server Protocol (see https://microsoft.github.io/language-server-protocol/specifications/specification-3-14/#textDocument_documentSymbol).
@@ -5794,6 +5808,7 @@ type GitCommit implements Node {
         """
         includePatterns: [String!]
     ): SymbolConnection!
+    #    docSymbols(first: Int): DocSymbolConnection!
 }
 
 """
@@ -6052,6 +6067,7 @@ type GitTree implements TreeEntry {
         """
         query: String
     ): SymbolConnection!
+    docSymbols(first: Int): DocSymbolConnection!
     """
     Whether this tree entry is a single child
     """
@@ -6329,6 +6345,7 @@ type GitBlob implements TreeEntry & File2 {
         """
         query: String
     ): SymbolConnection!
+    #    docSymbols(first: Int): DocSymbolConnection!
     """
     Always false, since a blob is a file, not directory.
     """
