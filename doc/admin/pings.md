@@ -82,4 +82,4 @@ By default, Sourcegraph also aggregates usage and performance metrics for some p
   - Total number of users that use a given non-default Sourcegraph extension
   - Average number of activations for users that use a given non-default Sourcegraph extension
   - Total number of users that use non-default Sourcegraph extensions
-  - Average number of activations for users that use non-default Sourcegraph extensions
+  - Average number of non-default extensions enabled for users that use non-default Sourcegraph extensions
