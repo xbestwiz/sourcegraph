@@ -20,7 +20,8 @@ Parameters → Parameter { " " Parameter }
 */
 
 type Node interface {
-	String() string
+	String() string      // An internal string representation of the query.
+	StringHuman() string // Generates a valid query string from the internal representation.
 	node()
 }
 
@@ -101,6 +102,63 @@ func (node Operator) String() string {
 	}
 
 	return fmt.Sprintf("(%s %s)", kind, strings.Join(result, " "))
+}
+
+func StringHuman(nodes []Node) string {
+	var v []string
+	for _, node := range nodes {
+		switch n := node.(type) {
+		case Pattern:
+			v = append(v, n.StringHuman())
+		case Parameter:
+			v = append(v, n.StringHuman())
+		case Operator:
+			v = append(v, n.StringHuman())
+		}
+	}
+	return strings.Join(v, " ")
+}
+
+func (node Pattern) StringHuman() string {
+	v := node.Value
+	if node.Annotation.Labels.isSet(Quoted) {
+		v = strconv.Quote(node.Value)
+	}
+	if node.Negated {
+		return fmt.Sprintf("(not %s)", v)
+	}
+	return v
+}
+
+func (node Parameter) StringHuman() string {
+	v := node.Value
+	if node.Annotation.Labels.isSet(Quoted) {
+		v = strconv.Quote(node.Value)
+	}
+	switch {
+	case node.Negated:
+		v = fmt.Sprintf("-%s:%s", node.Field, v)
+	default:
+		v = fmt.Sprintf("%s:%s", node.Field, v)
+	}
+	return v
+}
+
+func (node Operator) StringHuman() string {
+	var result []string
+	for _, child := range node.Operands {
+		result = append(result, child.StringHuman())
+	}
+	switch node.Kind {
+	case Or:
+		return "(" + strings.Join(result, " or ") + ")"
+	case And:
+		return "(" + strings.Join(result, " and ") + ")"
+	case Concat:
+		return strings.Join(result, " ")
+	default:
+		panic("unreachable")
+	}
 }
 
 type keyword string

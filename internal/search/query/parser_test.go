@@ -640,3 +640,26 @@ func TestScanBalancedPattern(t *testing.T) {
 	autogold.Want("repo:foo AND bar", "ERROR").Equal(t, test("repo:foo AND bar"))
 	autogold.Want("repo:foo bar", "ERROR").Equal(t, test("repo:foo bar"))
 }
+
+func TestStringHuman(t *testing.T) {
+	test := func(input string) string {
+		q, _ := ParseLiteral(input)
+		parameters, pattern, _ := PartitionSearchPattern(q.(*AndOrQuery).Query)
+		// FIXME do expansion
+		// FIXME this needs to go in StringHuman
+		if len(parameters) > 0 {
+			// FIXME handle case where pattern empty, or is expression.
+			return StringHuman(parameters) + " " + StringHuman([]Node{pattern})
+		}
+		return StringHuman([]Node{pattern})
+	}
+
+	autogold.Want("1", "a b c").Equal(t, test("a b c"))
+	autogold.Want("1", "(this or that)").Equal(t, test("this or that"))
+	autogold.Want("2", "(this or (that and here) or there)").Equal(t, test("this or that and here or there"))
+	autogold.Want("3", "((not x) and y)").Equal(t, test("not x and y"))
+	autogold.Want("4", `repo:quoted" `).Equal(t, test(`repo:"quoted\""`)) // FIXME, this value isn't quoted. Think we don't set quoted label
+	autogold.Want("5", `"ab\"cd"`).Equal(t, test(`"ab\"cd"`))
+	autogold.Want("6", "repo:foo file:bar (baz and qux)").Equal(t, test(`repo:foo file:bar baz and qux`))
+	autogold.Want("7", "patterntype:regexp /abcd\\//").Equal(t, test(`/abcd\// patterntype:regexp`))
+}
